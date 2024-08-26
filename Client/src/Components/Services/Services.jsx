@@ -1,10 +1,10 @@
 import React from 'react'
-import img1 from '../../Assets/Images/ServiceImg1.png'
-import img2 from "../../Assets/Images/ServiceImg2.png";
-import img3 from "../../Assets/Images/ServiceImg3.png";
-import img4 from "../../Assets/Images/ServiceImg4.png";
-import img5 from "../../Assets/Images/ServiceImg5.png";
-import img6 from "../../Assets/Images/ServiceImg6.png";
+import img1 from '../../Assets/Images/ServicesImg/ServiceImg1.png';
+import img2 from "../../Assets/Images/ServicesImg/ServiceImg2.png";
+import img3 from "../../Assets/Images/ServicesImg/ServiceImg3.png";
+import img4 from "../../Assets/Images/ServicesImg/ServiceImg4.png";
+import img5 from "../../Assets/Images/ServicesImg/ServiceImg5.png";
+import img6 from "../../Assets/Images/ServicesImg/ServiceImg6.png";
 
 
 function Services() {
