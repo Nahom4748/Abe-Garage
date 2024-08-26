@@ -254,14 +254,14 @@ function AboutUs() {
 											<a href="#" className="site-button">Read More</a>
 										</div>
 										<div className="col-lg-5 about-img">
-											<img src={image1} alt=""/>
+											<img src={image2} alt=""/>
 										</div>
 									</div>
 								</div>
 								<div id="technology" className="tab-pane">
 									<div className="row">
 										<div className="col-lg-5 about-img">
-											<img src={image2} alt=""/>
+											<img src={image1} alt=""/>
 										</div>
 										<div className="col-lg-7 about-contant">
 											<div className="m-b20">
