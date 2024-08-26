@@ -127,6 +127,10 @@ body {
     margin: 0;
     overflow-x: hidden;
 }
+.site-footer{
+    background-color: #191F23;
+    padding-top: 40px;
+}
 a {
     color: #EFBB20;
     outline: 0 none;
