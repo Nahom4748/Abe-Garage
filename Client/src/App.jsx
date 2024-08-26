@@ -1,6 +1,7 @@
 import Footer from "./Components/Footer/Footer";
 import Header from "./Components/Header/Header";
 import HeroPage from "./Components/HeroPage/HeroPage";
+import Services from "./Components/Services/Services";
 import "./assets/css/coming-soon.css";
 import "./assets/css/css-slide.css";
 import "./assets/css/star-rating-svg.css";
@@ -16,6 +17,7 @@ function App() {
     <>
       <Header />
       <HeroPage />
+      <Services />
       <Footer />
     </>
   );
