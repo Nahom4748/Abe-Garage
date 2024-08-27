@@ -15,6 +15,7 @@ import "./assets/css/templete.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./Components/Login/Login";
 import Register from "./Components/Register/Register";
+import AddService from './Components/AddService/AddService';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Header />
       <HeroPage />
       <Login />
+      <AddService/>
       <Register />
       <AboutUs />
       <Services />
