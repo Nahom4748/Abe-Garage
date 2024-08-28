@@ -163,11 +163,11 @@ function AboutUs() {
                           Read More
                         </a>
                       </div>
-                      <div className="col-lg-5 dlab-we-best ">
-                        <div className="p-lr20 p-tb40 m-t30 dlab-appoinment-now-form tp-dark  clearfix bg-secondry border-1 text-black">
+                      <div className="col-lg-5 dlab-we-best">
+                        <div className="p-lr20 p-tb40 m-t30 dlab-appoinment-now-form tp-dark clearfix  text-white rounded shadow">
                           <form
                             method="post"
-                            className="dzForm"
+                            className="dzForm "
                             action="script/contact.php"
                           >
                             <input
@@ -176,21 +176,23 @@ function AboutUs() {
                               type="hidden"
                             />
                             <div className="row">
-                              <div className="col-lg-12 text-center text-white m-b10">
-                                <h2 className=" m-t0 m-b10 ">
-                                  Make An Appoinment
+                              <div className="col-lg-12 text-center m-b20">
+                                <h2 className="m-t0 m-b10 font-bold text-black">
+                                  Make An Appointment
                                 </h2>
-                                <div className="dlab-separator-outer">
-                                  <div className="dlab-separator bg-primary"></div>
-                                </div>
                               </div>
                               <div className="col-lg-12">
-                                <div className="form-group">
+                                <div className="form-group bg-blue">
                                   <input
                                     name="dzName"
-                                    className="form-control"
+                                    className="form-control font-bold bg-blue"
                                     placeholder="Name"
                                     type="text"
+                                    style={{
+                                      borderRadius: "5px",
+                                      padding: "10px",
+                                      backgroundColor: "blue",
+                                    }}
                                   />
                                 </div>
                               </div>
@@ -198,9 +200,14 @@ function AboutUs() {
                                 <div className="form-group">
                                   <input
                                     name="dzEmail"
-                                    className="form-control"
+                                    className="form-control text-black font-bold"
                                     placeholder="Email"
                                     type="text"
+                                    style={{
+                                      borderRadius: "5px",
+                                      padding: "10px",
+                                      backgroundColor: "white",
+                                    }}
                                   />
                                 </div>
                               </div>
@@ -208,17 +215,27 @@ function AboutUs() {
                                 <div className="form-group">
                                   <input
                                     name="dzOther[date]"
-                                    className="form-control"
+                                    className="form-control text-black font-bold"
                                     placeholder="Select Date"
                                     type="text"
+                                    style={{
+                                      borderRadius: "5px",
+                                      padding: "10px",
+                                      backgroundColor: "white",
+                                    }}
                                   />
                                 </div>
                               </div>
                               <div className="col-lg-12">
                                 <div className="form-group">
                                   <select
-                                    className="bs-select-hidden"
+                                    className="form-control text-black font-bold"
                                     name="dzOther[service]"
+                                    style={{
+                                      borderRadius: "5px",
+                                      padding: "10px",
+                                      backgroundColor: "white",
+                                    }}
                                   >
                                     <option value="">Services</option>
                                     <option value="">Services 2</option>
@@ -233,40 +250,29 @@ function AboutUs() {
                                     <textarea
                                       name="dzMessage"
                                       rows="4"
-                                      className="form-control"
+                                      className="form-control text-black font-bold"
                                       required=""
-                                      placeholder="Text messege..."
+                                      placeholder="Text message..."
+                                      style={{
+                                        borderRadius: "5px",
+                                        padding: "10px",
+                                        backgroundColor: "white",
+                                      }}
                                     ></textarea>
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-lg-12">
-                                <div className="form-group">
-                                  <div className="input-group">
-                                    <div
-                                      className="g-recaptcha"
-                                      data-theme="dark"
-                                      data-sitekey="<!-- Put reCaptcha Site Key -->"
-                                      data-callback="verifyRecaptchaCallback"
-                                      data-expired-callback="expiredRecaptchaCallback"
-                                    ></div>
-                                    <input
-                                      className="form-control d-none"
-                                      style={{ display: "none" }}
-                                      data-recaptcha="true"
-                                      required
-                                      data-error="Please complete the Captcha"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
                               <div className="col-lg-12 text-center">
-                                <div className="dzFormMsg "></div>
+                                <div className="dzFormMsg"></div>
                                 <button
                                   name="Reset"
                                   value="Reset"
                                   type="reset"
-                                  className="site-button skew-secondry m-r10"
+                                  className="site-button m-r10 bg-white text-blue border-blue font-bold"
+                                  style={{
+                                    borderRadius: "5px",
+                                    padding: "10px 20px",
+                                  }}
                                 >
                                   <span>Reset</span>
                                 </button>
@@ -274,7 +280,11 @@ function AboutUs() {
                                   name="submit"
                                   type="submit"
                                   value="Submit"
-                                  className="site-button skew-secondry"
+                                  className="site-button bg-white text-blue border-blue font-bold"
+                                  style={{
+                                    borderRadius: "5px",
+                                    padding: "10px 20px",
+                                  }}
                                 >
                                   <span>Submit</span>
                                 </button>

@@ -18,6 +18,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./Components/Login/Login";
 import Register from "./Components/Register/Register";
 import AddService from "./Components/AddService/AddService";
+import Location from "./Components/Location/Location";
 
 function App() {
   return (
@@ -29,7 +30,7 @@ function App() {
       <Login />
       <AddService />
       <Register />
-
+      <Location />
       <Footer />
     </>
   );
