@@ -4,8 +4,8 @@ import Header from "./Components/Header/Header";
 import HeroPage from "./Components/HeroPage/HeroPage";
 import Services from "./Components/Services/Services";
 //Styles
-import './assets/css/font-icons.css';
-import './assets/css/style.scss';
+import "./assets/css/font-icons.css";
+import "./assets/css/style.scss";
 import "./assets/css/coming-soon.css";
 import "./assets/css/css-slide.css";
 import "./assets/css/star-rating-svg.css";
@@ -17,18 +17,19 @@ import "./assets/css/templete.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./Components/Login/Login";
 import Register from "./Components/Register/Register";
-import AddService from './Components/AddService/AddService';
+import AddService from "./Components/AddService/AddService";
 
 function App() {
   return (
     <>
       <Header />
       <HeroPage />
-      <Login />
-      <AddService/>
-      <Register />
-      <AboutUs />
       <Services />
+      <AboutUs />
+      <Login />
+      <AddService />
+      <Register />
+
       <Footer />
     </>
   );

@@ -1,51 +1,74 @@
 import React from "react";
-import { Carousel } from "react-bootstrap";
-import slide1 from "../../assets/images/swipe-1-1920x1080.jpg"; // Replace with the actual path to your image
-import slide2 from "../../assets/images/12-1920x1080.jpg"; // Replace with the actual path to your image
-import slide3 from "../../assets/images/swipe-1-1920x1080.jpg"; // Replace with the actual path to your image
+import { Container, Row, Col, Tab, Nav } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "animate.css"; // Import animate.css for animations
+import vedio from "../../Assets/Advert_Vedio/Advert.mp4";
 
 function HeroPage() {
   return (
-    <Carousel interval={3000} controls={false} indicators={false} loop={true}>
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src={slide1}
-          alt="First slide"
-          style={{ height: "100vh", objectFit: "cover" }}
-        />
-        <Carousel.Caption>
-          <h3>Abe Garage - Premium Cars</h3>
-          <p>Experience the luxury of top-class vehicles at Abe Garage.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
+    <div className="position-relative" style={{ overflow: "hidden" }}>
+      {/* Video Background */}
+      <video
+        autoPlay
+        muted
+        loop
+        className="w-100 position-absolute top-0 left-0 h-100 object-fit-cover"
+        style={{ zIndex: "-1" }}
+      >
+        <source src={vedio} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
 
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src={slide2}
-          alt="Second slide"
-          style={{ height: "100vh", objectFit: "cover" }}
-        />
-        <Carousel.Caption>
-          <h3>Exceptional Service</h3>
-          <p>Providing world-class services for your dream cars.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src={slide3}
-          alt="Third slide"
-          style={{ height: "100vh", objectFit: "cover" }}
-        />
-        <Carousel.Caption>
-          <h3>Your Dream Car Awaits</h3>
-          <p>Find the perfect car that matches your style and personality.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-    </Carousel>
+      {/* Content Overlay */}
+      <div
+        className="position-relative z-1 text-white text-center d-flex align-items-center justify-content-center"
+        style={{ height: "100vh", backgroundColor: "rgba(0, 0, 0, 0.3)" }}
+      >
+        <Container>
+          <Row className="justify-content-center">
+            <Col lg={12} className="align-self-center">
+              <div className="mb-5">
+                <h1 className="text-white animate__animated animate__fadeInDown">
+                  Find Your <span className="text-primary">Perfect</span> Car
+                </h1>
+                <p className="text-white animate__animated animate__fadeInUp animate__delay-2s">
+                  Our mission is to connect customers with their ideal cars
+                  while offering exceptional service.
+                </p>
+              </div>
+              <Tab.Container defaultActiveKey="all">
+                <Nav variant="pills" className="justify-content-center mb-3">
+                  <Nav.Item>
+                    <Nav.Link
+                      eventKey="all"
+                      className="animate__animated animate__fadeInUp"
+                    >
+                      Contact Us
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link
+                      eventKey="new"
+                      className="animate__animated animate__fadeInUp animate__delay-1s"
+                    >
+                      Services
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link
+                      eventKey="used"
+                      className="animate__animated animate__fadeInUp animate__delay-2s"
+                    >
+                      About Us
+                    </Nav.Link>
+                  </Nav.Item>
+                </Nav>
+              </Tab.Container>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    </div>
   );
 }
 

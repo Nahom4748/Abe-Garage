@@ -1,74 +1,75 @@
 import React from "react";
-import { Navbar, Nav, Container, Row, Col, Button } from "react-bootstrap";
-import logo from "../../assets/images/Logo.ico";
+import { Navbar, Nav, Container, Button } from "react-bootstrap";
+import logo from "../../Assets/Images/Logo.png";
 
 function Header() {
   return (
     <>
       <header className="site-header header-style-6 style-1">
-        <div className="bg-dark">
-          <Container className="header-contant-block">
-            <Row>
-              <Col lg={8}>
-                <ul className="contact-info list-inline">
-                  <li className="list-inline-item">
-                    <h6 className="text-primary">
-                      <i className="ti-mobile text-primary"></i> Call Us
-                    </h6>
-                    <span>+141 0800-123456</span>
-                  </li>
-
-                  <li className="list-inline-item">
-                    <h6 className="text-primary">
-                      <i className="fa fa-clock-o text-primary"></i> Opening
-                      Time
-                    </h6>
-                    <span>Mon - Sat: 7:00 - 17:00</span>
-                  </li>
-                </ul>
-              </Col>
-              <Col lg={4} className="text-end pt-4">
-                <h6 className="text-white">Welcome</h6>
-              </Col>
-            </Row>
-          </Container>
+        <div className="header-top bg-primary text-white py-2">
+          <div className="auto-container d-flex justify-content-between align-items-center">
+            <div className="left-column d-flex align-items-center">
+              <div className="text me-4">
+                Schedule Appointment: <strong>1800 456 7890</strong>
+              </div>
+              <div className="office-hour me-4">
+                Monday - Saturday 7:00AM - 6:00PM
+              </div>
+            </div>
+            <div className="right-column d-flex align-items-center">
+              <div className="phone-number me-4">
+                <strong>Welcome</strong>
+              </div>
+            </div>
+          </div>
         </div>
+
         <Navbar
           collapseOnSelect
           expand="lg"
           bg="dark"
           variant="dark"
           sticky="top"
-          className="main-bar-wraper"
         >
           <Container>
-            <Navbar.Brand href="index.html">
-              <img src={logo} width="50" height="50" alt="Logo" />
+            {/* Left-aligned: Logo */}
+            <Navbar.Brand href="index.html" className="me-auto">
+              <img src={logo} width="60" height="50" alt="Logo" />
             </Navbar.Brand>
+
+            {/* Center-aligned: Nav Links */}
             <Navbar.Toggle
               aria-controls="navbarNavDropdown"
               className="border-0"
             >
-              <span
-                className="navbar-toggler-icon"
-                style={{ color: "white" }}
-              ></span>
+              <span className="navbar-toggler-icon"></span>
             </Navbar.Toggle>
-            <Navbar.Collapse id="navbarNavDropdown">
-              <Nav className="me-auto">
-                <Nav.Link href="#home" active>
+            <Navbar.Collapse
+              id="navbarNavDropdown"
+              className="justify-content-center"
+            >
+              <Nav className="text-center">
+                <Nav.Link href="#home" className="text-white fw-bold" active>
                   Home
                 </Nav.Link>
-                <Nav.Link href="#features">About us </Nav.Link>
-                <Nav.Link href="#pages">Service</Nav.Link>
-                <Nav.Link href="#shop">Contact Us</Nav.Link>
+                <Nav.Link href="#features" className="text-white fw-bold">
+                  About us
+                </Nav.Link>
+                <Nav.Link href="#pages" className="text-white fw-bold">
+                  Service
+                </Nav.Link>
+                <Nav.Link href="#shop" className="text-white fw-bold">
+                  Contact Us
+                </Nav.Link>
               </Nav>
-              <div className="extra-nav">
-                <Button id="quik-search-btn" className="site-button">
-                  Login
-                </Button>
-              </div>
             </Navbar.Collapse>
+
+            {/* Right-aligned: Login Button */}
+            <div className="ms-auto">
+              <Button className="site-button bg-primary text-white fw-bold border-0">
+                Login
+              </Button>
+            </div>
           </Container>
         </Navbar>
       </header>
