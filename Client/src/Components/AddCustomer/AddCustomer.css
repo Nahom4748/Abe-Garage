@@ -1,0 +1,12 @@
+input::placeholder {
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  color: #dddddd;
+  font-style: italic;
+}
+select {
+  font-weight: bold;
+}
+.bb{
+  background-color: rebeccapurple;
+}
