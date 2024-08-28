@@ -29,7 +29,7 @@ function Header() {
           expand="lg"
           bg="dark"
           variant="dark"
-          sticky="top"
+          sticky="top" // Ensures the navbar sticks to the top when scrolling
         >
           <Container>
             {/* Left-aligned: Logo */}

@@ -6,7 +6,7 @@ import img3 from "../../Assets/Images/ServicesImg/ServiceImg3.png";
 import img4 from "../../Assets/Images/ServicesImg/ServiceImg4.png";
 import img5 from "../../Assets/Images/ServicesImg/ServiceImg5.png";
 import img6 from "../../Assets/Images/ServicesImg/ServiceImg6.png";
-import "./Service.css"; // Create and import a custom CSS file for additional styling
+import "./Service.css";
 
 function Services() {
   const services = [

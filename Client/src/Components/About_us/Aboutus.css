@@ -1,0 +1,25 @@
+.about-us {
+  background-color: #f8f9fa;
+  padding: 3rem 0;
+}
+
+.about-us h2 {
+  color: #333;
+}
+
+.about-us p {
+  color: #555;
+}
+
+.about-us ul {
+  padding-left: 0;
+}
+
+.about-us ul li {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.about-us ul li strong {
+  color: #007bff;
+}
