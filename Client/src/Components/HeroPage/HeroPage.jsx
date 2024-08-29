@@ -29,7 +29,8 @@ function HeroPage() {
             <Col lg={12} className="align-self-center">
               <div className="mb-5">
                 <h1 className="text-white animate__animated animate__fadeInDown">
-                  Find Your <span className="text-primary">Perfect</span> Car
+                  Professional
+                  <span className="text-primary"> Car Service </span> Provide
                 </h1>
                 <p className="text-white animate__animated animate__fadeInUp animate__delay-2s">
                   Our mission is to connect customers with their ideal cars
@@ -43,7 +44,7 @@ function HeroPage() {
                       eventKey="all"
                       className="animate__animated animate__fadeInUp"
                     >
-                      Contact Us
+                      Appointment
                     </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
