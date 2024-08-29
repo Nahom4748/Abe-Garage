@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col, Container } from "react-bootstrap";
-import backgroundImage from "../../Assets/Images/Bg-image2.jpg"; // Example path
+import backgroundImage from "../../../Assets/Images/Bg-image2.jpg"; // Example path
 
 function AboutUs() {
   return (
@@ -8,7 +8,7 @@ function AboutUs() {
       fluid
       className="about-us py-5"
       style={{
-        backgroundImage: `url(${backgroundImage})`,
+        // backgroundImage: `url(${backgroundImage})`,
         backgroundSize: "cover",
         minHeight: "80vh",
         backgroundPosition: "center",
@@ -20,6 +20,7 @@ function AboutUs() {
           <Row
             className="align-items-center bg-dark bg-opacity-75 text-white p-4 rounded"
             style={{
+              // backgroundImage: `url(${backgroundImage})`,
               border: "3px solid #007bff", // Blue border
               boxShadow: "0 0 15px rgba(0, 123, 255, 0.5)", // Blue shadow
             }}

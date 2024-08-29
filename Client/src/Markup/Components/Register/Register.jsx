@@ -1,5 +1,6 @@
 import React from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function Register() {
   return (
@@ -65,9 +66,11 @@ function Register() {
               By creating an account, you agree to our Terms and Conditions and
               Privacy Policy.
             </p>
-            <Button href="login.html" className="theme-btn-1 black-btn">
-              ALREADY HAVE AN ACCOUNT?
-            </Button>
+            <Link to={"/login"}>
+              <Button className="theme-btn-1 black-btn">
+                ALREADY HAVE AN ACCOUNT?
+              </Button>
+            </Link>
           </Col>
         </Row>
       </Container>

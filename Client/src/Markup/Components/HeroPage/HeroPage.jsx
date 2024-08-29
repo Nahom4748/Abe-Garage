@@ -2,9 +2,12 @@ import React from "react";
 import { Container, Row, Col, Tab, Nav } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "animate.css"; // Import animate.css for animations
-import vedio from "../../Assets/Advert_Vedio/Advert.mp4";
+import vedio from "../../../Assets/Advert_Vedio/Advert.mp4";
+import { useNavigate } from "react-router-dom";
 
 function HeroPage() {
+  const navigate = useNavigate();
+
   return (
     <div className="position-relative" style={{ overflow: "hidden" }}>
       {/* Video Background */}
@@ -43,6 +46,7 @@ function HeroPage() {
                     <Nav.Link
                       eventKey="all"
                       className="animate__animated animate__fadeInUp"
+                      onClick={() => navigate("/Appointment")}
                     >
                       Appointment
                     </Nav.Link>

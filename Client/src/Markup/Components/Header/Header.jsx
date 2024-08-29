@@ -1,8 +1,13 @@
 import React from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
-import logo from "../../Assets/Images/Logo.png";
+import logo from "../../../Assets/Images/Logo.png";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../Contexts/AuthContext";
 
-function Header() {
+function Header(props) {
+  console.log(useAuth());
+
+  const Navigate = useNavigate();
   return (
     <>
       <header className="site-header header-style-6 style-1">
@@ -33,8 +38,14 @@ function Header() {
         >
           <Container>
             {/* Left-aligned: Logo */}
-            <Navbar.Brand href="index.html" className="me-auto">
-              <img src={logo} width="60" height="50" alt="Logo" />
+            <Navbar.Brand className="me-auto">
+              <img
+                onClick={() => Navigate("/")}
+                src={logo}
+                width="60"
+                height="50"
+                alt="Logo"
+              />
             </Navbar.Brand>
 
             {/* Center-aligned: Nav Links */}
@@ -66,7 +77,10 @@ function Header() {
 
             {/* Right-aligned: Login Button */}
             <div className="ms-auto">
-              <Button className="site-button bg-primary text-white fw-bold border-0">
+              <Button
+                onClick={() => Navigate("/login")}
+                className="site-button bg-primary text-white fw-bold border-0"
+              >
                 Login
               </Button>
             </div>
