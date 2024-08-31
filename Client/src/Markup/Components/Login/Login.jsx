@@ -66,7 +66,14 @@ function Login() {
         }
 
         if (location.pathname === "/login") {
-          window.location.replace("/");
+          {
+            if (data.data.roles == 3) {
+              window.location.replace("/Admin");
+            }
+            if (data.data.roles == 2) {
+              window.location.replace("/Admin-Dashbord");
+            }
+          }
         } else {
           window.location.reload();
         }

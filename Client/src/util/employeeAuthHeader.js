@@ -1,10 +1,9 @@
+// src/util/employeeAuthHeader.js
+
 const employeeAuthHeader = async () => {
-  // console.log("Inside employeeAuthHeader");
-  const employee = await JSON.parse(localStorage.getItem("employee"));
+  const employee = JSON.parse(localStorage.getItem("employee"));
   if (employee && employee.employee_token) {
-    console.log("Inside employeeAuthHeader if statement");
-    const decodedToken = await decodeTokenPayload(employee.employee_token);
-    console.log(decodedToken);
+    const decodedToken = decodeTokenPayload(employee.employee_token);
     employee.employee_role = decodedToken.employee_role;
     employee.employee_id = decodedToken.employee_id;
     employee.employee_first_name = decodedToken.employee_first_name;
@@ -14,8 +13,6 @@ const employeeAuthHeader = async () => {
   }
 };
 
-// Function to decode the payload from the token
-// The purpose of this code is to take a JWT token, extract its payload, decode it from Base64Url encoding, and then convert the decoded payload into a JavaScript object for further use and manipulation
 const decodeTokenPayload = (token) => {
   const base64Url = token.split(".")[1];
   const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
