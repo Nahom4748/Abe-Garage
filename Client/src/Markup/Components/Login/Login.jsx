@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import loginService from "../../../services/login.service";
-
+import { useAuth } from "../../../Contexts/AuthContext";
 import {
   Form,
   Button,
@@ -16,6 +16,7 @@ import { Envelope, Lock } from "react-bootstrap-icons";
 function Login() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { setIsLogged, setEmployee, setIsAdmin } = useAuth();
   const [employee_email, setEmail] = useState("");
   const [employee_password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -27,10 +28,7 @@ function Login() {
     let valid = true;
 
     if (!employee_email) {
-      setEmailError("Please enter your email address first");
-      valid = false;
-    } else if (!employee_email.includes("@")) {
-      setEmailError("Invalid email format");
+      setEmailError("Please enter your email address");
       valid = false;
     } else {
       const regex = /^\S+@\S+\.\S+$/;
@@ -51,30 +49,26 @@ function Login() {
 
     if (!valid) return;
 
-    const formData = {
-      employee_email,
-      employee_password,
-    };
+    const formData = { employee_email, employee_password };
 
     try {
-      const response = await loginService.logIn(formData); // Correct usage of the imported function
+      const response = await loginService.logIn(formData);
       const data = await response.json();
 
       if (data.status === "success") {
         if (data.data.employee_token) {
           localStorage.setItem("employee", JSON.stringify(data.data));
-        }
-
-        if (location.pathname === "/login") {
-          {
-            if (data.data.roles === 3) {
-              navigate("/Admin");
-            } else if (data.data.roles === 2) {
-              navigate("/Admin-Dashbord");
-            }
+          setIsLogged(true);
+          setEmployee(data.data);
+          setIsAdmin(data.data.employee_role === 3); // Set admin status
+          // Redirect based on user role
+          if (data.data.employee_role === 3) {
+            navigate("/admin-dashboard");
+          } else if (data.data.employee_role === 2) {
+            navigate("/");
+          } else {
+            navigate("/"); // Default navigation for other roles
           }
-        } else {
-          window.location.reload();
         }
       } else {
         setServerError(data.message);
@@ -104,7 +98,7 @@ function Login() {
                     type="email"
                     placeholder="Email"
                     value={employee_email}
-                    onChange={(event) => setEmail(event.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                     isInvalid={!!emailError}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -122,7 +116,7 @@ function Login() {
                     type="password"
                     placeholder="Password"
                     value={employee_password}
-                    onChange={(event) => setPassword(event.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                     isInvalid={!!passwordError}
                   />
                   <Form.Control.Feedback type="invalid">
