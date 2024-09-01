@@ -1,0 +1,35 @@
+
+.afex__service-form-margin {
+  margin-top: 0px;
+  margin-bottom: 160px;
+ }
+ .afex__bg-image {
+  background-image: url(../../assets/ServicesImg/ServiceImg7.png);
+  width: 1665px;
+  height: 390px;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat; 
+  z-index: 9;
+  position: relative;
+}
+afex__section-title-2 .afex_section-title {
+  color: white !;
+  font-size: 72px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  line-height: 1;
+  /* z-index: 9; */
+}
+.afex_white-color {
+  color: white;
+}
+afex_section-subtitle .afex__section-title-2 {
+  text-transform: uppercase;
+}
+.afex__service-form-color-white  .afex__service-form-color-white .nice-select{
+  background-color: transparent;
+  border: 2px solid;
+  border-color: #d1dae0;
+  color: white;
+}

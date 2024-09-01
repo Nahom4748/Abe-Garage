@@ -1,0 +1,44 @@
+/* Add these styles to your CSS file */
+
+.header-section {
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  font-family: "Open Sans", sans-serif;
+}
+
+.sticky-active {
+  /* Styles for when the header is sticky */
+}
+.bg-color {
+  background-color: #e53e29;
+  border: none;
+}
+.nav-link {
+  color: white !important;
+}
+
+.bg-primary {
+  background-color: #071c1f !important;
+}
+
+.text-white {
+  color: white;
+}
+
+.dropdown-menu {
+  background-color: #071c1f !important;
+}
+
+.dropdown-item-custom {
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-item-custom:hover {
+  background-color: red !important;
+}
+
+/* Optional: Adjust the text color of hovered items */
+.dropdown-item-custom:hover .text-white {
+  color: white !important;
+}
