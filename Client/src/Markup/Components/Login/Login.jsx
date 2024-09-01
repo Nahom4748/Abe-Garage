@@ -67,11 +67,10 @@ function Login() {
 
         if (location.pathname === "/login") {
           {
-            if (data.data.roles == 3) {
-              window.location.replace("/Admin");
-            }
-            if (data.data.roles == 2) {
-              window.location.replace("/Admin-Dashbord");
+            if (data.data.roles === 3) {
+              navigate("/Admin");
+            } else if (data.data.roles === 2) {
+              navigate("/Admin-Dashbord");
             }
           }
         } else {

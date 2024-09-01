@@ -31,11 +31,10 @@ function App() {
         <Route path="/" element={<HeroPageComponent />} />
         <Route path="/login" element={<LoginPage />} />
         <Route element={<PrivateAuthRoute roles={[3]} />}>
-          <Route path="/admin" element={<AdminDashbord />} />
+          <Route path="/Admin" element={<AdminDashbord />} />
         </Route>
 
         {/* <Route path="/admin/add-employee" element={<AddEmployee />} /> */}
-        <Route path="/Appointment" element={<AppointmentForm />} />
         <Route path="/register" element={<Register />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
       </Routes>
