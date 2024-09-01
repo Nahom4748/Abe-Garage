@@ -26,6 +26,7 @@ import AddcustomerManager from "./Markup/pages/Manager/AddcustomerManager";
 import CustomersManager from "./Markup/pages/Manager/CustomersManager";
 import AddServiceManager from "./Markup/pages/Manager/AddServiceManager";
 import News from "./Markup/pages/Manager/News";
+import HomePage from "./Markup/pages/HomePage";
 
 function App() {
   const { isLogged, employee } = useAuth();
@@ -53,7 +54,7 @@ function App() {
         {!isLogged ? (
           <>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={<HeroPage />} />
+            <Route path="/" element={<HomePage />} />
           </>
         ) : (
           <Route element={<PrivateAuthRoute />}>
