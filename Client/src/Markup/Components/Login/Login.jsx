@@ -65,7 +65,7 @@ function Login() {
           if (data.data.employee_role === 3) {
             navigate("/admin-dashboard");
           } else if (data.data.employee_role === 2) {
-            navigate("/");
+            navigate("/manager");
           } else {
             navigate("/"); // Default navigation for other roles
           }
