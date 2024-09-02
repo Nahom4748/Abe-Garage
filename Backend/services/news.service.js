@@ -1,5 +1,4 @@
-// src/services/news.service.js
-const { query } = require("../config/db.config"); // Import the query function
+const { query } = require("../config/db.config");
 
 async function createNews(newsData) {
   const { title, content } = newsData;

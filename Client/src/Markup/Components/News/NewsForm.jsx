@@ -12,14 +12,12 @@ function NewsForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!title || !content) {
       setError("Title and content are required.");
       return;
     }
 
     try {
-      // Replace with your backend API URL
       const response = await axios.post("http://localhost:5000/api/news", {
         title,
         content,

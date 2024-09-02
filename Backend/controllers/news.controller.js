@@ -1,12 +1,10 @@
-// src/controllers/news.controller.js
-
 const newsService = require("../services/news.service");
 
 async function createNews(req, res) {
   try {
     const newsData = req.body;
     const news = await newsService.createNews(newsData);
-    res.status(200).json(news);
+    res.status(200).json(news); // Use 201 for resource creation
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to create news post" });
