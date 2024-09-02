@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
 import Footer from "./Markup/Components/Footer/Footer";
 import Header from "./Markup/Components/Header/Header";
-import AppointmentForm from "./Markup/Components/AppointmentForm/AppointmentForm";
 import Register from "./Markup/Components/Register/Register";
 import "./index.css";
 import { Routes, Route, Navigate } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
-import HeroPageComponent from "./Markup/pages/HeroPageComponent";
 import LoginPage from "./Markup/pages/LoginPage";
 import AddEmployee from "./Markup/pages/admin/AddEmployee";
 import PrivateAuthRoute from "./Markup/Components/Auth/PrivateAuthRoute";
@@ -20,6 +18,15 @@ import Employees from "./Markup/pages/admin/Employees";
 import NewOrder from "./Markup/pages/admin/NewOrder";
 import Orders from "./Markup/pages/admin/Orders";
 import HeroPage from "./Markup/Components/HeroPage/HeroPage";
+import ManagerDashbord from "./Markup/pages/Manager/ManagerDashbord";
+import OrdersManager from "./Markup/pages/Manager/OrdersManager";
+import NewOrderManager from "./Markup/pages/Manager/NewOrderManager";
+import EmployeesManager from "./Markup/pages/Manager/EmployeesManager";
+import AddcustomerManager from "./Markup/pages/Manager/AddcustomerManager";
+import CustomersManager from "./Markup/pages/Manager/CustomersManager";
+import AddServiceManager from "./Markup/pages/Manager/AddServiceManager";
+import News from "./Markup/pages/Manager/News";
+import HomePage from "./Markup/pages/HomePage";
 
 function App() {
   const { isLogged, employee } = useAuth();
@@ -30,7 +37,7 @@ function App() {
     if (employeeData) {
       setUserType(employeeData.roles);
     }
-  }, []);
+  }, [employee]);
 
   const [userType, setUserType] = React.useState(null);
 
@@ -47,10 +54,10 @@ function App() {
         {!isLogged ? (
           <>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={<HeroPage />} />
+            <Route path="/" element={<HomePage />} />
           </>
         ) : (
-          <>
+          <Route element={<PrivateAuthRoute />}>
             {userType === 3 ? (
               <>
                 <Route path="/" element={<Navigate to="/admin-dashboard" />} />
@@ -65,12 +72,34 @@ function App() {
               </>
             ) : (
               <>
-                <Route path="/" element={<Navigate to="/userDetails" />} />
-                <Route path="/userDetails" element={<HeroPageComponent />} />
-                <Route path="/admin-dashboard" element={<Navigate to="/" />} />
+                <Route path="/" element={<Navigate to="/manager" />} />
+                <Route path="/manager/orders" element={<OrdersManager />} />
+                <Route
+                  path="/manager/new-order"
+                  element={<NewOrderManager />}
+                />
+                <Route
+                  path="/manager/employees"
+                  element={<EmployeesManager />}
+                />
+                <Route
+                  path="/manager/services"
+                  element={<AddServiceManager />}
+                />
+                <Route
+                  path="/manager/add-customer"
+                  element={<AddcustomerManager />}
+                />
+                <Route
+                  path="/manager/customers"
+                  element={<CustomersManager />}
+                />
+
+                <Route path="/manager/add-news" element={<News />} />
+                <Route path="/manager" element={<ManagerDashbord />} />
               </>
             )}
-          </>
+          </Route>
         )}
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<Register />} />
