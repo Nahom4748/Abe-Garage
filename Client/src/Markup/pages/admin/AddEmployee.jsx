@@ -1,10 +1,10 @@
-import React from 'react';
-// Import the AddEmployeeForm component 
-import AddEmployeeForm from '../../components/Admin/AddEmployeeForm/AddEmployeeForm';
-// Import the AdminMenu component 
-import AdminMenu from '../../components/Admin/AdminMenu/AdminMenu';
+import React from "react";
+// Import the AddEmployeeForm component
+import AddEmployeeForm from "../../../Markup/Components/Admin/AddEmployee/AddEmployeeForm";
+// Import the AdminMenu component
+import AdminMenu from "../../Components/Admin/AdminMenu/AdminMenu";
 
-function AddEmployee(props) {
+function AddEmployee() {
   return (
     <div>
       <div className="container-fluid admin-pages">

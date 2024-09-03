@@ -1,43 +1,109 @@
+import React, { useEffect } from "react";
 import Footer from "./Markup/Components/Footer/Footer";
 import Header from "./Markup/Components/Header/Header";
-import AppointmentForm from "./Markup/Components/AppointmentForm/AppointmentForm";
 import Register from "./Markup/Components/Register/Register";
 import "./index.css";
-import { Routes, Route } from "react-router";
-import "./assets/css/font-icons.css";
-import "./assets/css/style.scss";
-import "./assets/css/coming-soon.css";
-import "./assets/css/css-slide.css";
-import "./assets/css/star-rating-svg.css";
-import "./assets/css/style.css";
-import "./assets/css/style.min.css";
-import "./assets/css/swiper.css";
-import "./assets/css/templete.css";
-import "./assets/css/templete.min.css";
+import { Routes, Route, Navigate } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
-import HeroPageComponent from "./Markup/pages/HeroPageComponent";
 import LoginPage from "./Markup/pages/LoginPage";
-import AddEmployee from "./Markup/Components/Admin/AddEmployee/AddEmployee";
+import AddEmployee from "./Markup/pages/admin/AddEmployee";
 import PrivateAuthRoute from "./Markup/Components/Auth/PrivateAuthRoute";
 import Unauthorized from "./Markup/pages/Unauthorized";
 import AdminDashbord from "./Markup/pages/admin/AdminDashbord";
-import AdminMenu from "./Markup/Components/Admin/AdminMenu/AdminMenu";
+import { useAuth } from "./Contexts/AuthContext";
+import AddService from "./Markup/pages/admin/AddService";
+import Customers from "./Markup/pages/admin/customers";
+import Addcustomer from "./Markup/pages/admin/addcustomer";
+import Employees from "./Markup/pages/admin/Employees";
+import NewOrder from "./Markup/pages/admin/NewOrder";
+import Orders from "./Markup/pages/admin/Orders";
+import HeroPage from "./Markup/Components/HeroPage/HeroPage";
+import ManagerDashbord from "./Markup/pages/Manager/ManagerDashbord";
+import OrdersManager from "./Markup/pages/Manager/OrdersManager";
+import NewOrderManager from "./Markup/pages/Manager/NewOrderManager";
+import EmployeesManager from "./Markup/pages/Manager/EmployeesManager";
+import AddcustomerManager from "./Markup/pages/Manager/AddcustomerManager";
+import CustomersManager from "./Markup/pages/Manager/CustomersManager";
+import AddServiceManager from "./Markup/pages/Manager/AddServiceManager";
+import News from "./Markup/pages/Manager/News";
+import HomePage from "./Markup/pages/HomePage";
 
 function App() {
+  const { isLogged, employee } = useAuth();
+
+  useEffect(() => {
+    // This hook ensures that the state is updated when component mounts
+    const employeeData = JSON.parse(localStorage.getItem("employee"));
+    if (employeeData) {
+      setUserType(employeeData.roles);
+    }
+  }, [employee]);
+
+  const [userType, setUserType] = React.useState(null);
+
+  useEffect(() => {
+    if (employee && employee.roles) {
+      setUserType(employee.roles);
+    }
+  }, [employee]);
+
   return (
     <>
       <Header />
       <Routes>
-        <Route path="/" element={<HeroPageComponent />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route element={<PrivateAuthRoute roles={[3]} />}>
-          <Route path="/admin" element={<AdminDashbord />} />
-        </Route>
+        {!isLogged ? (
+          <>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/" element={<HomePage />} />
+          </>
+        ) : (
+          <Route element={<PrivateAuthRoute />}>
+            {userType === 3 ? (
+              <>
+                <Route path="/" element={<Navigate to="/admin-dashboard" />} />
+                <Route path="/admin/add-employee" element={<AddEmployee />} />
+                <Route path="/admin/orders" element={<Orders />} />
+                <Route path="/admin/new-order" element={<NewOrder />} />
+                <Route path="/admin/services" element={<AddService />} />
+                <Route path="/admin/employees" element={<Employees />} />
+                <Route path="/admin/add-customer" element={<Addcustomer />} />
+                <Route path="/admin/customers" element={<Customers />} />
+                <Route path="/admin-dashboard" element={<AdminDashbord />} />
+              </>
+            ) : (
+              <>
+                <Route path="/" element={<Navigate to="/manager" />} />
+                <Route path="/manager/orders" element={<OrdersManager />} />
+                <Route
+                  path="/manager/new-order"
+                  element={<NewOrderManager />}
+                />
+                <Route
+                  path="/manager/employees"
+                  element={<EmployeesManager />}
+                />
+                <Route
+                  path="/manager/services"
+                  element={<AddServiceManager />}
+                />
+                <Route
+                  path="/manager/add-customer"
+                  element={<AddcustomerManager />}
+                />
+                <Route
+                  path="/manager/customers"
+                  element={<CustomersManager />}
+                />
 
-        {/* <Route path="/admin/add-employee" element={<AddEmployee />} /> */}
-        <Route path="/Appointment" element={<AppointmentForm />} />
+                <Route path="/manager/add-news" element={<News />} />
+                <Route path="/manager" element={<ManagerDashbord />} />
+              </>
+            )}
+          </Route>
+        )}
         <Route path="/register" element={<Register />} />
-        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/about" element={<Register />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <Footer />
     </>

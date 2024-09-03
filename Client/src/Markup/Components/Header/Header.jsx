@@ -3,26 +3,23 @@ import { Navbar, Nav, Container, Button, Dropdown } from "react-bootstrap";
 import logo from "../../../Assets/Images/Logo.png";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../../Contexts/AuthContext";
-import { FaUserCircle, FaEdit, FaSignOutAlt } from "react-icons/fa"; // Import necessary icons
+import { FaUserCircle, FaEdit, FaSignOutAlt } from "react-icons/fa";
 import "./Header.css";
 
 function Header() {
   const { isLogged, employee, logout } = useAuth();
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    Navigate("/");
+    navigate("/");
   };
 
   return (
     <>
       <header className="site-header header-style-6 style-1 Header">
         <div className="-top bg-primary text-white py-2">
-          <div
-            className="container-fluid d-flex justify-content-between align-items-center"
-            style={{ flex: "0 1 auto" }}
-          >
+          <div className="container-fluid d-flex justify-content-between align-items-center">
             <div className="left-column d-flex align-items-center">
               <div className="text me-4">
                 Schedule Appointment: <strong>1800 456 7890</strong>
@@ -35,7 +32,7 @@ function Header() {
               <div className="phone-number me-4">
                 <strong>
                   {isLogged
-                    ? `Welcome, ${employee.employee_first_name}`
+                    ? `Welcome, ${employee?.employee_first_name || "User"}`
                     : "Welcome"}
                 </strong>
               </div>
@@ -53,7 +50,7 @@ function Header() {
           <Container>
             <Navbar.Brand className="me-auto">
               <img
-                onClick={() => Navigate("/")}
+                onClick={() => navigate("/")}
                 src={logo}
                 width="60"
                 height="50"
@@ -61,7 +58,7 @@ function Header() {
               />
             </Navbar.Brand>
 
-            {!isLogged && ( // Conditionally hide the navigation links when logged in
+            {!isLogged && (
               <>
                 <Navbar.Toggle
                   aria-controls="navbarNavDropdown"
@@ -94,37 +91,36 @@ function Header() {
               </>
             )}
 
-            <div className="ms-auto ">
+            <div className="ms-auto">
               {isLogged ? (
                 <Dropdown align="end">
                   <Dropdown.Toggle
                     variant="link"
                     id="dropdown-avatar"
-                    className="text-white  "
+                    className="text-white"
                   >
-                    <FaUserCircle size={30} /> {/* Avatar icon */}
+                    <FaUserCircle size={30} />
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu className="custom-dropdown bg-primary">
                     <Dropdown.Item
-                      onClick={() => Navigate("/edit-profile")}
-                      className="d-flex align-items-center bg-primary text-white "
+                      onClick={() => navigate("/edit-profile")}
+                      className="d-flex align-items-center bg-primary text-white"
                     >
-                      <FaEdit className="me-2 bg-primary text-white" /> Edit
-                      Profile
+                      <FaEdit className="me-2" /> Edit Profile
                     </Dropdown.Item>
                     <Dropdown.Divider />
                     <Dropdown.Item
                       onClick={handleLogout}
-                      className="d-flex align-items-center text-white "
+                      className="d-flex align-items-center text-white"
                     >
-                      <FaSignOutAlt className="me-2 text-white" /> Logout
+                      <FaSignOutAlt className="me-2" /> Logout
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               ) : (
                 <Button
-                  onClick={() => Navigate("/login")}
+                  onClick={() => navigate("/login")}
                   className="site-button bg-primary text-white fw-bold border-0"
                 >
                   Login
