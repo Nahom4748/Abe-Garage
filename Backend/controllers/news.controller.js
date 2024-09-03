@@ -4,7 +4,7 @@ async function createNews(req, res) {
   try {
     const newsData = req.body;
     const news = await newsService.createNews(newsData);
-    res.status(200).json(news); // Use 201 for resource creation
+    res.status(200).json(news); //
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to create news post" });
