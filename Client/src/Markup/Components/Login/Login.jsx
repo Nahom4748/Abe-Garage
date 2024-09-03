@@ -11,7 +11,6 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import { Envelope, Lock } from "react-bootstrap-icons";
 
 function Login() {
   const navigate = useNavigate();
@@ -91,9 +90,6 @@ function Login() {
             <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
                 <InputGroup>
-                  <InputGroup.Text>
-                    <Envelope />
-                  </InputGroup.Text>
                   <Form.Control
                     type="email"
                     placeholder="Email"
@@ -109,9 +105,6 @@ function Login() {
 
               <Form.Group className="mb-3">
                 <InputGroup>
-                  <InputGroup.Text>
-                    <Lock />
-                  </InputGroup.Text>
                   <Form.Control
                     type="password"
                     placeholder="Password"
@@ -126,7 +119,7 @@ function Login() {
               </Form.Group>
 
               <div className="d-grid">
-                <Button variant="primary" type="submit">
+                <Button variant="danger" type="submit">
                   Login
                 </Button>
               </div>

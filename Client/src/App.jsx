@@ -1,4 +1,12 @@
 import React, { useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
+import "./Assets/css/font-icons.css";
+import "./Assets/sass/style.scss";
+
+import "./Assets/sass/elements/_button.scss";
+
 import Footer from "./Markup/Components/Footer/Footer";
 import Header from "./Markup/Components/Header/Header";
 import Register from "./Markup/Components/Register/Register";

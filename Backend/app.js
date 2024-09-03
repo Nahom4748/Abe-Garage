@@ -27,7 +27,7 @@ app.use(sanitize.middleware);
 app.use(router);
 // Start the webserver
 app.listen(port, () => {
-  console.log(`Server running on port: ${port}`);
+  console.log(`Server running on port from your backend: ${port}`);
 });
 // Export the webserver for use in the application
 module.exports = app;
