@@ -1,0 +1,244 @@
+.afex-transparent {
+  position: absolute;
+  /* color:  blue; */
+  width: 100%;
+  z-index: 999;
+  /* background-color: #00000000; */
+ 
+}
+.top-area-color-white{
+  background-color: rgba(0, 0, 0, 0);
+ 
+}
+.afex-area {
+ padding-bottom: 10px;
+  z-index: 999;
+  position: relative;
+}
+.afex-2 {
+  background: linear-gradient(180deg, rgba(7, 28, 31, 0.546) 30%, rgba(138, 152, 155, 0.261) 100%);
+}
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: none;
+    -moz-osx-font-smoothing: grayscale;
+    /* Firefox */
+    -webkit-font-smoothing: antialiased;
+    /* WebKit  */
+}
+body {
+    color: #071c1f;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.8;
+    margin: 0 auto;
+}
+h1, .h1 {
+    font-size: 36px;
+    line-height: 1.2;
+}
+h2, .h2 {
+    font-size: 30px;
+}
+h3, .h3 {
+    font-size: 24px;
+}
+h4, .h4 {
+    font-size: 20px;
+}
+h5, .h5 {
+    font-size: 18px;
+}
+h6, .h6 {
+    font-size: 16px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    color: #071c1f;
+    clear: both;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 15px;
+}
+p {
+    color: #071c1f;
+    margin-bottom: 1.5em;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+}
+a {
+    color: inherit;
+    text-decoration: none;
+    color: #071c1f;
+    transition: all 0.3s ease 0s;
+}
+a,
+a:hover,
+a:focus,
+a:active {
+    text-decoration: none;
+    outline: none;
+    color: inherit;
+}
+a:hover {
+    color: #cb3421;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+    font-family: 'Open Sans', sans-serif;
+}
+pre,
+code,
+kbd,
+tt,
+var,
+samp {
+    font-family: 'Open Sans', sans-serif;
+}
+pre {
+    word-break: break-word;
+}
+a i {
+    padding: 0 2px;
+}
+img {
+    max-width: 100%;
+}
+ul li {
+    margin-top: 1rem;
+}
+
+
+.afex-top-area .afex-4{
+  border-color: #576466;
+}
+.afex-top-area{
+  border-bottom: 0.1px solid rgb(87, 87, 87);
+}
+
+.afex__top-bar-menu{
+  color:#e53e29 ;
+  margin-right: 3px;
+  padding-top: 10px;
+}
+.text-right{
+  text-align: right;
+}
+
+.afex-middle-area .afex-4{
+  padding-top: 22px;
+  padding-bottom: 22px;
+}
+.afex-middle-area{
+  flex-grow: 1;
+  position: static;
+  -webkit-box-flex: 0;
+  z-index: 999;
+}
+.site-logo-wrap{
+  display: flex;
+}
+.site-logo-wrap .site-logo{
+  min-width:auto;
+}
+.site-logo{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  -webkit-box-align: center;
+  white-space: nowrap;
+  padding-top: 20px;
+}
+
+.get-support{
+      display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: relative;
+    padding-left: 20px;
+    margin-left: 20px;
+    padding-top: 20px;
+}
+.afex-bg-1{
+  background-color: #F2F6F7;
+}
+.afex__slide-item{
+  /* background-image: url(../../assets/Advert_Vedio/Advert.mp4); */
+  width: 100%;
+    position: absolute;
+    overflow: hidden;
+    left: 0px;
+    top: 0px;
+    z-index: -1;
+    opacity: 0.8;
+}
+.afex__slide-item-inner{
+  height: 100%;
+    /* display: -webkit-box; */
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    /* -ms-flex-align: center; */
+    align-items: center;
+}
+.slide-item-info{
+  max-width: 600px;
+  margin-top: 150px;
+  margin-bottom: 150px;
+  z-index: 9;
+  position: relative;
+}
+.slide-item-info-inner{
+  width: 100%;
+}
+.slide-sub-title{
+  
+  margin-bottom: 20px;
+}
+.slide-title {
+  font-size: 70px;
+  line-height: 1.2;
+  
+}
+.sticky-active  {
+    
+    background-color: #071c1f;
+}
+/* Sticky Background Black */
+
+.ltn__slide-item-3 .slide-item-img{
+  bottom: 0;
+  height: 80%;
+  position: absolute;
+  right: 310px;
+}
+
+.ltn__slide-item-3 .slide-item-img img{
+  text-align: right;
+  margin-left: auto;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  display: block;
+
+}
