@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import car from "../../../Assets/Images/10001.png";
+import car from "../../../Assets/img/home-demos/home-10.jpg";
 import "./Location.css";
 
 function Location() {
