@@ -2,10 +2,13 @@
 // const api_url = process.env.REACT_APP_API_URL;
 
 // A function to send post request to create a new employee
-const createEmployee = async (formData) => {
+const createEmployee = async (formData, token) => {
   const requestOptions = {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token, // Ensure token is being sent
+    },
     body: JSON.stringify(formData),
   };
   const response = await fetch(
@@ -14,6 +17,7 @@ const createEmployee = async (formData) => {
   );
   return response;
 };
+
 // Export all the functions
 const getAllEmployees = async (token) => {
   // console.log(token);

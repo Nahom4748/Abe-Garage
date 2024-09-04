@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
   const [isLogged, setIsLogged] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [employee, setEmployee] = useState(null);
+  const [userType, setUserType] = useState();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -21,6 +22,7 @@ export const AuthProvider = ({ children }) => {
       if (loggedInEmployee.employee_token) {
         setIsLogged(true);
         setEmployee(loggedInEmployee);
+        setUserType(loggedInEmployee.employee_role);
         if (loggedInEmployee.employee_role === 3) {
           setIsAdmin(true);
         }
@@ -45,6 +47,7 @@ export const AuthProvider = ({ children }) => {
     setEmployee,
     employee,
     logout,
+    userType,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
