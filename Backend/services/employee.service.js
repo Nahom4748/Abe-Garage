@@ -19,49 +19,53 @@ async function createEmployee(employee) {
   try {
     // Generate a salt and hash the password
     const salt = await bcrypt.genSalt(10);
-    // Hash the password
     const hashedPassword = await bcrypt.hash(employee.employee_password, salt);
-    // Insert the email in to the employee table
+
+    // Insert into employee table
     const query =
       "INSERT INTO employee (employee_email, active_employee) VALUES (?, ?)";
     const rows = await conn.query(query, [
       employee.employee_email,
       employee.active_employee,
     ]);
-    console.log(rows);
     if (rows.affectedRows !== 1) {
       return false;
     }
-    // Get the employee id from the insert
+
     const employee_id = rows.insertId;
-    // Insert the remaining data in to the employee_info, employee_pass, and employee_role tables
+
+    // Insert into employee_info table
     const query2 =
-      "INSERT INTO employee_info (employee_id, employee_first_name, employee_last_name, employee_phone) VALUES (?, ?, ?, ?)";
+      "INSERT INTO employee_info (employee_id, employee_first_name, employee_last_name, employee_phone, employee_image_path) VALUES (?, ?, ?, ?, ?)";
     const rows2 = await conn.query(query2, [
       employee_id,
       employee.employee_first_name,
       employee.employee_last_name,
       employee.employee_phone,
+      employee.employee_image_path || null, // Handle case where image path might not be provided
     ]);
+
+    // Insert into employee_pass table
     const query3 =
       "INSERT INTO employee_pass (employee_id, employee_password_hashed) VALUES (?, ?)";
     const rows3 = await conn.query(query3, [employee_id, hashedPassword]);
+
+    // Insert into employee_role table
     const query4 =
       "INSERT INTO employee_role (employee_id, company_role_id) VALUES (?, ?)";
     const rows4 = await conn.query(query4, [
       employee_id,
       employee.company_role_id,
     ]);
-    // construct to the employee object to return
-    createdEmployee = {
-      employee_id: employee_id,
-    };
+
+    createdEmployee = { employee_id: employee_id };
   } catch (err) {
     console.log(err);
   }
-  // Return the employee object
+
   return createdEmployee;
 }
+
 // A function to get employee by email
 async function getEmployeeByEmail(employee_email) {
   const query =
@@ -76,10 +80,17 @@ async function getAllEmployees() {
   const rows = await conn.query(query);
   return rows;
 }
+
+async function updateEmployeeImage(employee_id, image_path) {
+  const query = "UPDATE employee SET image_path = ? WHERE employee_id = ?";
+  const rows = await conn.query(query, [image_path, employee_id]);
+  return rows.affectedRows === 1;
+}
 // Export the functions for use in the controller
 module.exports = {
   checkIfEmployeeExists,
   createEmployee,
   getEmployeeByEmail,
   getAllEmployees,
+  updateEmployeeImage,
 };

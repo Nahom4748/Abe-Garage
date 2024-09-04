@@ -34,10 +34,21 @@ const getAllEmployees = async (token) => {
   );
   return response;
 };
-
+const updateEmployee = (employee_id, formData, token) => {
+  return fetch(`/api/employee/image/${employee_id}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      // Note: No need to set 'Content-Type': 'multipart/form-data'
+      // It will be set automatically by the browser
+    },
+    body: formData,
+  });
+};
 // Export all the functions
 const employeeService = {
   createEmployee,
   getAllEmployees,
+  updateEmployee,
 };
 export default employeeService;

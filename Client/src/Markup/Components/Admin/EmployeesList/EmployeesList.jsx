@@ -5,27 +5,22 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { useAuth } from "../../../../Contexts/AuthContext";
 import employeeService from "../../../../services/employee.service";
 
-// Create the EmployeesList component
 const EmployeesList = () => {
-  // State for storing employees data
   const [employees, setEmployees] = useState([]);
-  // State for API errors
   const [apiError, setApiError] = useState(false);
   const [apiErrorMessage, setApiErrorMessage] = useState(null);
-  // State for loading status
   const [loading, setLoading] = useState(true);
-  // State for modal visibility
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState(null);
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
+  const [image, setImage] = useState(null); // For image upload
+  const [imagePreview, setImagePreview] = useState(""); // For image preview
 
-  // Get logged-in employee token
   const { employee } = useAuth();
   const token = employee ? employee.employee_token : null;
 
   useEffect(() => {
-    // Fetch all employees
     const fetchEmployees = async () => {
       try {
         const res = await employeeService.getAllEmployees(token);
@@ -53,19 +48,17 @@ const EmployeesList = () => {
     fetchEmployees();
   }, [token]);
 
-  // Handle edit button click
   const handleEditClick = (employee) => {
     setCurrentEmployee(employee);
+    setImagePreview(employee.image_path || ""); // Set the current image preview
     setShowEditModal(true);
   };
 
-  // Handle delete button click
   const handleDeleteClick = (employee) => {
     setEmployeeToDelete(employee);
     setShowDeleteConfirm(true);
   };
 
-  // Confirm deletion of an employee
   const handleConfirmDelete = async () => {
     try {
       await employeeService.deleteEmployee(employeeToDelete.employee_id, token);
@@ -81,14 +74,30 @@ const EmployeesList = () => {
     }
   };
 
-  // Save changes made in the edit modal
   const handleSaveChanges = async () => {
     try {
-      await employeeService.updateEmployee(currentEmployee, token);
+      const formData = new FormData();
+      formData.append(
+        "employee_first_name",
+        currentEmployee.employee_first_name
+      );
+      formData.append("employee_last_name", currentEmployee.employee_last_name);
+      formData.append("employee_phone", currentEmployee.employee_phone);
+      formData.append("active_employee", currentEmployee.active_employee);
+      formData.append("company_role_id", currentEmployee.company_role_id);
+      if (image) {
+        formData.append("employee_image", image);
+      }
+
+      await employeeService.updateEmployee(
+        currentEmployee.employee_id,
+        formData,
+        token
+      );
       setEmployees(
         employees.map((emp) =>
           emp.employee_id === currentEmployee.employee_id
-            ? currentEmployee
+            ? { ...currentEmployee, image_path: imagePreview }
             : emp
         )
       );
@@ -98,7 +107,14 @@ const EmployeesList = () => {
     }
   };
 
-  // Static role options
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file)); // Create a URL for image preview
+    }
+  };
+
   const roleOptions = [
     { id: 1, name: "Admin" },
     { id: 2, name: "Manager" },
@@ -251,6 +267,25 @@ const EmployeesList = () => {
                     </option>
                   ))}
                 </Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formImage">
+                <Form.Label>Upload Image</Form.Label>
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+                {imagePreview && (
+                  <img
+                    src={imagePreview}
+                    alt="Employee Preview"
+                    style={{
+                      marginTop: "10px",
+                      width: "100px",
+                      height: "auto",
+                    }}
+                  />
+                )}
               </Form.Group>
             </Form>
           )}

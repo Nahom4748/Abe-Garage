@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `customer_info` (
   `customer_first_name` varchar(255) NOT NULL,
   `customer_last_name` varchar(255) NOT NULL,
   `active_customer_status` int(11) NOT NULL,
+
   PRIMARY KEY (customer_info_id),
   FOREIGN KEY (customer_id) REFERENCES customer_identifier(customer_id)
 ) ENGINE=InnoDB;
@@ -67,6 +68,8 @@ CREATE TABLE IF NOT EXISTS `employee_info` (
   `employee_first_name` varchar(255) NOT NULL,
   `employee_last_name` varchar(255) NOT NULL,
   `employee_phone` varchar(255) NOT NULL,
+      `employee_image` varchar(255) NOT NULL,
+
   PRIMARY KEY (employee_info_id),
   FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
 ) ENGINE=InnoDB;
