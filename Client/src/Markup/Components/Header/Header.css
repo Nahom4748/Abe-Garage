@@ -1,0 +1,29 @@
+.top-bar {
+  background-color: #007bff;
+}
+
+.top-bar .left-column .text,
+.top-bar .left-column .office-hour,
+.top-bar .right-column .phone-number {
+  color: #ffffff;
+}
+
+.site-header {
+  background-color: #343a40;
+}
+
+.nav-link {
+  color: #ffffff !important;
+}
+
+.nav-link:hover {
+  color: #adb5bd !important;
+}
+
+.custom-dropdown .dropdown-item {
+  color: #ffffff;
+}
+
+.custom-dropdown .dropdown-item:hover {
+  background-color: #007bff;
+}

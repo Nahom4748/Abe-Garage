@@ -1,0 +1,48 @@
+/* AddEmployeeForm.css */
+
+.add-employee-form-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4; /* Light background color for contrast */
+}
+
+.add-employee-form-container {
+  padding: 2rem;
+  background-color: #fff; /* White background for the form */
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  width: 100%;
+  max-width: 600px; /* Fixed max width for better layout */
+}
+
+.add-employee-form .form-control,
+.add-employee-form .form-select {
+  font-size: 1rem; /* Larger font size for readability */
+  border-radius: 0.25rem; /* Rounded corners for input fields */
+}
+
+.add-employee-form .btn-danger {
+  background-color: #dc3545; /* Red color for the button */
+  border-color: #dc3545; /* Red border color for the button */
+  font-size: 1rem; /* Larger font size for the button */
+  padding: 0.75rem; /* Extra padding for a larger button */
+  border-radius: 0.25rem; /* Rounded corners for the button */
+}
+
+.add-employee-form .form-group {
+  margin-bottom: 1rem; /* Space between form fields */
+}
+
+.add-employee-form .btn-danger:hover {
+  background-color: #c82333; /* Darker red for button hover */
+  border-color: #bd2130; /* Darker red for button border on hover */
+}
+
+@media (max-width: 576px) {
+  .add-employee-form-container {
+    width: 90%;
+    padding: 1rem; /* Adjust padding for smaller screens */
+  }
+}
