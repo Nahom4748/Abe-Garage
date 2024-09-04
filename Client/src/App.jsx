@@ -37,23 +37,7 @@ import News from "./Markup/pages/Manager/News";
 import HomePage from "./Markup/pages/HomePage";
 
 function App() {
-  const { isLogged, employee } = useAuth();
-
-  useEffect(() => {
-    // This hook ensures that the state is updated when component mounts
-    const employeeData = JSON.parse(localStorage.getItem("employee"));
-    if (employeeData) {
-      setUserType(employeeData.roles);
-    }
-  }, [employee]);
-
-  const [userType, setUserType] = React.useState(null);
-
-  useEffect(() => {
-    if (employee && employee.roles) {
-      setUserType(employee.roles);
-    }
-  }, [employee]);
+  const { isLogged, employee, userType } = useAuth();
 
   return (
     <>

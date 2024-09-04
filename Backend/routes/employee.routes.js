@@ -18,6 +18,5 @@ router.get(
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
   employeeController.getAllEmployees
 );
-
 // Export the router
 module.exports = router;
