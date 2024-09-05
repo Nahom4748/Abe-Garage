@@ -8,6 +8,7 @@ import WhyChooComp from "../Components/WhyChooseUs/WhyChooComp";
 function HomePage() {
   return (
     <>
+      <Header />
       <HeroPage />
       <AboutUs />
       <WhyChooComp />

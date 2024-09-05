@@ -37,6 +37,7 @@ import AddServiceManager from "./Markup/pages/Manager/AddServiceManager";
 import News from "./Markup/pages/Manager/News";
 import HomePage from "./Markup/pages/HomePage";
 import AboutUsPage from "./Markup/pages/AboutUsPage/AboutUsPage";
+import ContactUs from "./Markup/pages/Contact";
 
 function App() {
   const { isLogged, employee } = useAuth();
@@ -66,6 +67,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<HomePage />} />
             <Route path="/aboutus" element={<AboutUsPage />} />
+            <Route path="/contactus" element={<ContactUs/>} />
           </>
         ) : (
           <Route element={<PrivateAuthRoute />}>
