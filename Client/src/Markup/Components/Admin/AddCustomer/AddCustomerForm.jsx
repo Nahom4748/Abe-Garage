@@ -1,6 +1,8 @@
+
+
 import React, { useState } from "react";
 import { Form, Button, InputGroup, Col, Row, Alert } from "react-bootstrap";
-import { Envelope, Person, Phone, Lock, People } from "react-bootstrap-icons";
+import { Envelope, Person, Phone } from "react-bootstrap-icons";
 import customerService from "../../../../services/customer.service";
 
 function AddCustomerForm(props) {
@@ -8,24 +10,24 @@ function AddCustomerForm(props) {
   const [customer_first_name, setFirstName] = useState("");
   const [customer_last_name, setLastName] = useState("");
   const [customer_phone_number, setPhone] = useState("");
-  // const [active_customer_status, setActiveCustomer] = useState(1);
-  // Errors
+
   const [emailError, setEmailError] = useState("");
   const [firstNameRequired, setFirstNameRequired] = useState("");
-  // const [passwordError, setPasswordError] = useState("");
   const [success, setSuccess] = useState(false);
   const [serverError, setServerError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     let valid = true;
+
     if (!customer_first_name) {
       setFirstNameRequired("First name is required");
       valid = false;
     } else {
       setFirstNameRequired("");
     }
-    // Email is requires
+
+    // Email validation
     if (!customer_email) {
       setEmailError("Email is required");
       valid = false;
@@ -40,6 +42,7 @@ function AddCustomerForm(props) {
         setEmailError("");
       }
     }
+
     if (!valid) {
       return;
     }
@@ -51,27 +54,19 @@ function AddCustomerForm(props) {
       customer_phone_number,
     };
 
-    // pass the form data to the service
-    const newCustomer = customerService.createCustomer(formData);
-
-    newCustomer
-      .then((response) => response.json())
+    customerService
+      .createCustomer(formData)
       .then((data) => {
         if (data.error) {
           setServerError(data.error);
         } else {
-          // Handle successful response
           setSuccess(true);
           setServerError("");
-          // Redirect to the employees page after 2 seconds
-          // For now, just redirect to the home page
           setTimeout(() => {
-            // window.location.href = '/admin/employees';
             window.location.href = "/";
           }, 2000);
         }
       })
-      // handle catch
       .catch((error) => {
         const resMessage =
           (error.response &&
@@ -86,7 +81,7 @@ function AddCustomerForm(props) {
   return (
     <section
       className="d-flex justify-content-center align-items-center"
-      style={{ height: "60vh", margin: "90px 0" }} // Added margin top and bottom
+      style={{ height: "60vh", margin: "90px 0" }}
     >
       <div
         className="p-4 bg-light rounded shadow"
@@ -165,51 +160,13 @@ function AddCustomerForm(props) {
                   <Form.Control
                     type="text"
                     placeholder="customer phone (555-555-5555)"
-                    value={customer_phone}
+                    value={customer_phone_number}
                     onChange={(event) => setPhone(event.target.value)}
                     required
                   />
                 </InputGroup>
               </Form.Group>
             </Col>
-
-            {/* <Col md={12}>
-              <Form.Group className="mb-3">
-                <InputGroup>
-                  <InputGroup.Text>
-                    <People />
-                  </InputGroup.Text>
-                  <Form.Select
-                    value={company_role_id}
-                    onChange={(event) => setCompany_role_id(event.target.value)}
-                  >
-                    <option value="1">Employee</option>
-                    <option value="2">Manager</option>
-                    <option value="3">Admin</option>
-                  </Form.Select>
-                </InputGroup>
-              </Form.Group>
-            </Col> */}
-
-            {/* <Col md={12}>
-              <Form.Group className="mb-3">
-                <InputGroup>
-                  <InputGroup.Text>
-                    <Lock />
-                  </InputGroup.Text>
-                  <Form.Control
-                    type="password"
-                    placeholder="Employee password"
-                    value={employee_password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    isInvalid={!!passwordError}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {passwordError}
-                  </Form.Control.Feedback>
-                </InputGroup>
-              </Form.Group>
-            </Col> */}
 
             <Col md={12}>
               <Button variant="primary" type="submit" className="w-100">
