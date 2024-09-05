@@ -24,10 +24,9 @@ const EmployeesList = () => {
   const [currentEmployee, setCurrentEmployee] = useState(null);
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
 
-  // State for Toast notifications
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [toastVariant, setToastVariant] = useState("success"); // 'success' or 'danger'
+  const [toastVariant, setToastVariant] = useState("success");
 
   const { employee } = useAuth();
   const token = employee ? employee.employee_token : null;
@@ -78,19 +77,15 @@ const EmployeesList = () => {
           (emp) => emp.employee_id !== employeeToDelete.employee_id
         )
       );
-      // Show success toast
       setToastMessage("Employee deleted successfully");
       setToastVariant("success");
       setShowToast(true);
     } catch (err) {
-      console.error(err);
-      // Show error toast
       setToastMessage("Failed to delete employee");
       setToastVariant("danger");
       setShowToast(true);
     } finally {
       setShowDeleteConfirm(false);
-      // Hide toast after 2 seconds
       setTimeout(() => setShowToast(false), 2000);
     }
   };
@@ -101,13 +96,10 @@ const EmployeesList = () => {
       if (!res.ok) {
         throw new Error(res.status);
       }
-      // Show success toast
       setToastMessage("Employee updated successfully");
       setToastVariant("success");
       setShowToast(true);
     } catch (err) {
-      console.error(err);
-      // Show error toast
       setToastMessage("Failed to update employee");
       setToastVariant("danger");
       setShowToast(true);
@@ -120,7 +112,6 @@ const EmployeesList = () => {
         )
       );
       setShowEditModal(false);
-      // Hide toast after 2 seconds
       setTimeout(() => setShowToast(false), 2000);
     }
   };
@@ -132,8 +123,8 @@ const EmployeesList = () => {
   ];
 
   return (
-    <section className="employees-list-section employee-table">
-      <div className="auto-container employee-table">
+    <section className="employees-list-section">
+      <div className="container-fluid">
         {loading ? (
           <div className="text-center my-4">
             <Spinner animation="border" variant="primary" />
@@ -143,7 +134,7 @@ const EmployeesList = () => {
           <Alert variant="danger">{apiErrorMessage}</Alert>
         ) : (
           <>
-            <div className="contact-title mb-4 ">
+            <div className="contact-title mb-4">
               <h2>Employees List</h2>
             </div>
             <div className="table-container">
@@ -188,14 +179,14 @@ const EmployeesList = () => {
                           className="me-2"
                           onClick={() => handleEditClick(employee)}
                         >
-                          <FaEdit className="icon-edit" /> Edit
+                          <FaEdit /> Edit
                         </Button>
                         <Button
                           variant="danger"
                           size="sm"
                           onClick={() => handleDeleteClick(employee)}
                         >
-                          <FaTrash className="icon-delete" /> Delete
+                          <FaTrash /> Delete
                         </Button>
                       </td>
                     </tr>
@@ -280,7 +271,6 @@ const EmployeesList = () => {
                   }
                 />
               </Form.Group>
-
               <Form.Group controlId="formRole">
                 <Form.Label>Role</Form.Label>
                 <Form.Control
@@ -339,9 +329,9 @@ const EmployeesList = () => {
       <Toast
         show={showToast}
         onClose={() => setShowToast(false)}
-        bg={toastVariant} // 'success' or 'danger'
+        bg={toastVariant}
         className="position-fixed top-0 start-50 translate-middle-x m-3"
-        style={{ zIndex: 1050 }} // Make sure it appears above other elements
+        style={{ zIndex: 1050 }}
       >
         <Toast.Body>{toastMessage}</Toast.Body>
       </Toast>

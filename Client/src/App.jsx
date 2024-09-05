@@ -40,7 +40,7 @@ import AboutUsPage from "./Markup/pages/AboutUsPage/AboutUsPage";
 import ServicePage from "./Markup/pages/ServicePage/ServicePage";
 
 function App() {
-  const { isLogged, employee, userType } = useAuth();
+  const { isLogged, userType } = useAuth();
 
   return (
     <>
