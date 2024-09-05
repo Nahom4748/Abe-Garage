@@ -1,31 +1,38 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Modal, Form, Spinner, Alert } from "react-bootstrap";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Spinner,
+  Alert,
+  Toast,
+} from "react-bootstrap";
 import { format } from "date-fns";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useAuth } from "../../../../Contexts/AuthContext";
 import employeeService from "../../../../services/employee.service";
+import "./EmployeesList.css";
 
-// Create the EmployeesList component
 const EmployeesList = () => {
-  // State for storing employees data
   const [employees, setEmployees] = useState([]);
-  // State for API errors
   const [apiError, setApiError] = useState(false);
   const [apiErrorMessage, setApiErrorMessage] = useState(null);
-  // State for loading status
   const [loading, setLoading] = useState(true);
-  // State for modal visibility
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState(null);
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
 
-  // Get logged-in employee token
+  // State for Toast notifications
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastVariant, setToastVariant] = useState("success"); // 'success' or 'danger'
+
   const { employee } = useAuth();
   const token = employee ? employee.employee_token : null;
 
   useEffect(() => {
-    // Fetch all employees
     const fetchEmployees = async () => {
       try {
         const res = await employeeService.getAllEmployees(token);
@@ -53,19 +60,16 @@ const EmployeesList = () => {
     fetchEmployees();
   }, [token]);
 
-  // Handle edit button click
   const handleEditClick = (employee) => {
     setCurrentEmployee(employee);
     setShowEditModal(true);
   };
 
-  // Handle delete button click
   const handleDeleteClick = (employee) => {
     setEmployeeToDelete(employee);
     setShowDeleteConfirm(true);
   };
 
-  // Confirm deletion of an employee
   const handleConfirmDelete = async () => {
     try {
       await employeeService.deleteEmployee(employeeToDelete.employee_id, token);
@@ -74,17 +78,40 @@ const EmployeesList = () => {
           (emp) => emp.employee_id !== employeeToDelete.employee_id
         )
       );
+      // Show success toast
+      setToastMessage("Employee deleted successfully");
+      setToastVariant("success");
+      setShowToast(true);
     } catch (err) {
       console.error(err);
+      // Show error toast
+      setToastMessage("Failed to delete employee");
+      setToastVariant("danger");
+      setShowToast(true);
     } finally {
       setShowDeleteConfirm(false);
+      // Hide toast after 2 seconds
+      setTimeout(() => setShowToast(false), 2000);
     }
   };
 
-  // Save changes made in the edit modal
   const handleSaveChanges = async () => {
     try {
-      await employeeService.updateEmployee(currentEmployee, token);
+      const res = await employeeService.updateEmployee(currentEmployee, token);
+      if (!res.ok) {
+        throw new Error(res.status);
+      }
+      // Show success toast
+      setToastMessage("Employee updated successfully");
+      setToastVariant("success");
+      setShowToast(true);
+    } catch (err) {
+      console.error(err);
+      // Show error toast
+      setToastMessage("Failed to update employee");
+      setToastVariant("danger");
+      setShowToast(true);
+    } finally {
       setEmployees(
         employees.map((emp) =>
           emp.employee_id === currentEmployee.employee_id
@@ -93,12 +120,11 @@ const EmployeesList = () => {
         )
       );
       setShowEditModal(false);
-    } catch (err) {
-      console.error(err);
+      // Hide toast after 2 seconds
+      setTimeout(() => setShowToast(false), 2000);
     }
   };
 
-  // Static role options
   const roleOptions = [
     { id: 1, name: "Admin" },
     { id: 2, name: "Manager" },
@@ -106,8 +132,8 @@ const EmployeesList = () => {
   ];
 
   return (
-    <section className="contact-section">
-      <div className="auto-container">
+    <section className="employees-list-section employee-table">
+      <div className="auto-container employee-table">
         {loading ? (
           <div className="text-center my-4">
             <Spinner animation="border" variant="primary" />
@@ -117,58 +143,66 @@ const EmployeesList = () => {
           <Alert variant="danger">{apiErrorMessage}</Alert>
         ) : (
           <>
-            <div className="contact-title mb-4">
+            <div className="contact-title mb-4 ">
               <h2>Employees List</h2>
             </div>
-            <Table striped bordered hover responsive>
-              <thead>
-                <tr>
-                  <th>Active</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Added Date</th>
-                  <th>Role</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {employees.map((employee) => (
-                  <tr key={employee.employee_id}>
-                    <td>{employee.active_employee ? "Yes" : "No"}</td>
-                    <td>{employee.employee_first_name}</td>
-                    <td>{employee.employee_last_name}</td>
-                    <td>{employee.employee_email}</td>
-                    <td>{employee.employee_phone}</td>
-                    <td>
-                      {format(
-                        new Date(employee.added_date),
-                        "MM-dd-yyyy | HH:mm"
-                      )}
-                    </td>
-                    <td>{employee.company_role_name}</td>
-                    <td>
-                      <Button
-                        variant="warning"
-                        size="sm"
-                        className="me-2"
-                        onClick={() => handleEditClick(employee)}
-                      >
-                        <FaEdit /> Edit
-                      </Button>
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={() => handleDeleteClick(employee)}
-                      >
-                        <FaTrash /> Delete
-                      </Button>
-                    </td>
+            <div className="table-container">
+              <Table
+                striped
+                bordered
+                hover
+                responsive
+                className="employee-table"
+              >
+                <thead>
+                  <tr>
+                    <th>Active</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Added Date</th>
+                    <th>Role</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
+                </thead>
+                <tbody>
+                  {employees.map((employee) => (
+                    <tr key={employee.employee_id}>
+                      <td>{employee.active_employee ? "Yes" : "No"}</td>
+                      <td>{employee.employee_first_name}</td>
+                      <td>{employee.employee_last_name}</td>
+                      <td>{employee.employee_email}</td>
+                      <td>{employee.employee_phone}</td>
+                      <td>
+                        {format(
+                          new Date(employee.added_date),
+                          "MM-dd-yyyy | HH:mm"
+                        )}
+                      </td>
+                      <td>{employee.company_role_name}</td>
+                      <td>
+                        <Button
+                          variant="warning"
+                          size="sm"
+                          className="me-2"
+                          onClick={() => handleEditClick(employee)}
+                        >
+                          <FaEdit className="icon-edit" /> Edit
+                        </Button>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={() => handleDeleteClick(employee)}
+                        >
+                          <FaTrash className="icon-delete" /> Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
           </>
         )}
       </div>
@@ -207,6 +241,19 @@ const EmployeesList = () => {
                   }
                 />
               </Form.Group>
+              <Form.Group controlId="formEmail">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  value={currentEmployee.employee_email}
+                  onChange={(e) =>
+                    setCurrentEmployee({
+                      ...currentEmployee,
+                      employee_email: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
               <Form.Group controlId="formPhone">
                 <Form.Label>Phone Number</Form.Label>
                 <Form.Control
@@ -220,19 +267,20 @@ const EmployeesList = () => {
                   }
                 />
               </Form.Group>
-              <Form.Group controlId="formActive">
-                <Form.Check
-                  type="checkbox"
-                  label="Active"
-                  checked={currentEmployee.active_employee}
+              <Form.Group controlId="formPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  value={currentEmployee.employee_password}
                   onChange={(e) =>
                     setCurrentEmployee({
                       ...currentEmployee,
-                      active_employee: e.target.checked,
+                      employee_password: e.target.value,
                     })
                   }
                 />
               </Form.Group>
+
               <Form.Group controlId="formRole">
                 <Form.Label>Role</Form.Label>
                 <Form.Control
@@ -286,6 +334,17 @@ const EmployeesList = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {/* Toast Notifications */}
+      <Toast
+        show={showToast}
+        onClose={() => setShowToast(false)}
+        bg={toastVariant} // 'success' or 'danger'
+        className="position-fixed top-0 start-50 translate-middle-x m-3"
+        style={{ zIndex: 1050 }} // Make sure it appears above other elements
+      >
+        <Toast.Body>{toastMessage}</Toast.Body>
+      </Toast>
     </section>
   );
 };

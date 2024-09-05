@@ -76,50 +76,41 @@ async function getAllEmployees() {
   const rows = await conn.query(query);
   return rows;
 }
+// delete employee
+async function deleteEmployee(employee_id) {
+  console.log(employee_id);
+  //check if employee id not null
+  if (!employee_id) {
+    return false;
+  }
 
+  // Delete from employee_role table
+  const query2 = "DELETE FROM employee_role WHERE employee_id = ?";
+  const rows2 = await conn.query(query2, [employee_id]);
 
-// async function updateEmployee(employee) {
-//   try {
-//     let hashedPassword = null;
-//     if (employee.employee_password) {
-//       const salt = await bcrypt.genSalt(10);
-//       hashedPassword = await bcrypt.hash(employee.employee_password, salt);
-//     }
+  // Delete from employee_pass table
+  const query3 = "DELETE FROM employee_pass WHERE employee_id = ?";
+  const rows3 = await conn.query(query3, [employee_id]);
 
-//     // Begin a transaction
-//     await conn.query("START TRANSACTION");
+  // Delete from employee_info table
+  const query4 = "DELETE FROM employee_info WHERE employee_id = ?";
+  const rows4 = await conn.query(query4, [employee_id]);
+  // Delete from employee table
+  const query = "DELETE FROM employee WHERE employee_id = ?";
+  const rows = await conn.query(query, [employee_id]);
 
-//     // Update employee email
-//     const query1 =
-//       "UPDATE employee SET employee_email = ? WHERE employee_id = ?";
-//     await conn.query(query1, [employee.employee_email, employee.employee_id]);
-
-//     // Update employee info
-//     const query2 =
-//       "UPDATE employee_info SET employee_first_name = ?, employee_last_name = ?, employee_phone = ? WHERE employee_id = ?";
-//     await conn.query(query2, [
-//       employee.employee_first_name,
-//       employee.employee_last_name,
-//       employee.employee_phone,
-//       employee.employee_id,
-//     ]);
-
-//     // Update employee password if provided
-//     if (hashedPassword) {
-//       const query3 =
-//         "UPDATE employee_pass SET employee_password_hashed = ? WHERE employee_id = ?";
-//       await conn.query(query3, [hashedPassword, employee.employee_id]);
-//     }
-
-//     // Commit the transaction
-//     await conn.query("COMMIT");
-//     return true;
-//   } catch (error) {
-//     console.error(error);
-//     await conn.query("ROLLBACK");
-//     return false;
-//   }
-// }
+  // Check if the deletion was successful
+  if (
+    rows.affectedRows === 1 &&
+    rows2.affectedRows === 1 &&
+    rows3.affectedRows === 1 &&
+    rows4.affectedRows === 1
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
 async function updateEmployee(updatedEmployeeData) {
   let hashedPassword = null;
   const {
@@ -136,7 +127,6 @@ async function updateEmployee(updatedEmployeeData) {
     const salt = await bcrypt.genSalt(10);
     hashedPassword = await bcrypt.hash(employee_password, salt);
   }
-
 
   try {
     // Update employee email
@@ -182,7 +172,6 @@ async function updateEmployee(updatedEmployeeData) {
       }
     }
 
-
     console.log("Employee updated successfully:", employee_id);
     return true; // Success
   } catch (error) {
@@ -192,8 +181,6 @@ async function updateEmployee(updatedEmployeeData) {
   }
 }
 
-
-
 // Export the functions for use in the controller
 module.exports = {
   checkIfEmployeeExists,
@@ -201,4 +188,5 @@ module.exports = {
   getEmployeeByEmail,
   getAllEmployees,
   updateEmployee,
+  deleteEmployee,
 };

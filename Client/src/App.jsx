@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -36,7 +36,7 @@ import CustomersManager from "./Markup/pages/Manager/CustomersManager";
 import AddServiceManager from "./Markup/pages/Manager/AddServiceManager";
 import News from "./Markup/pages/Manager/News";
 import HomePage from "./Markup/pages/HomePage";
-
+import AboutUsPage from "./Markup/pages/AboutUsPage/AboutUsPage";
 import ServicePage from "./Markup/pages/ServicePage/ServicePage";
 
 function App() {
