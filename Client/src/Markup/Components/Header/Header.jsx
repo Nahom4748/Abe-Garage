@@ -220,7 +220,7 @@ function Header() {
                 <Link to="/" className="nav-link text-white fw-bold">
                   Home
                 </Link>
-                <Link to="/about" className="nav-link text-white fw-bold">
+                <Link to="/aboutus" className="nav-link text-white fw-bold">
                   About Us
                 </Link>
                 <Link to="/services" className="nav-link text-white fw-bold">

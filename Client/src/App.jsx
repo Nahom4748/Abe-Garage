@@ -4,6 +4,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import "./Assets/css/font-icons.css";
 import "./Assets/sass/style.scss";
+// import "./Assets/sass/elements/_global.scss";
 
 import "./Assets/sass/elements/_button.scss";
 
@@ -35,6 +36,7 @@ import CustomersManager from "./Markup/pages/Manager/CustomersManager";
 import AddServiceManager from "./Markup/pages/Manager/AddServiceManager";
 import News from "./Markup/pages/Manager/News";
 import HomePage from "./Markup/pages/HomePage";
+import AboutUsPage from "./Markup/pages/AboutUsPage/AboutUsPage";
 
 function App() {
   const { isLogged, employee } = useAuth();
@@ -63,6 +65,7 @@ function App() {
           <>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<HomePage />} />
+            <Route path="/aboutus" element={<AboutUsPage />} />
           </>
         ) : (
           <Route element={<PrivateAuthRoute />}>
