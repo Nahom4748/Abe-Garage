@@ -1,5 +1,6 @@
 import React from "react";
 import AdminMenu from "../../Components/Admin/AdminMenu/AdminMenu";
+import AddCustomerForm from "../../Components/Admin/AddCustomer/AddCustomerForm";
 
 function Addcustomer() {
   return (
@@ -10,7 +11,7 @@ function Addcustomer() {
             <AdminMenu />
           </div>
           <div className="col-md-9 admin-right-side">
-            <h1>Add Customer</h1>{" "}
+            <AddCustomerForm />
           </div>
         </div>
       </div>
