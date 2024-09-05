@@ -1,4 +1,12 @@
 import React, { useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
+import "./Assets/css/font-icons.css";
+import "./Assets/sass/style.scss";
+
+import "./Assets/sass/elements/_button.scss";
+
 import Footer from "./Markup/Components/Footer/Footer";
 import Header from "./Markup/Components/Header/Header";
 import Register from "./Markup/Components/Register/Register";
@@ -29,23 +37,7 @@ import News from "./Markup/pages/Manager/News";
 import HomePage from "./Markup/pages/HomePage";
 
 function App() {
-  const { isLogged, employee } = useAuth();
-
-  useEffect(() => {
-    // This hook ensures that the state is updated when component mounts
-    const employeeData = JSON.parse(localStorage.getItem("employee"));
-    if (employeeData) {
-      setUserType(employeeData.roles);
-    }
-  }, [employee]);
-
-  const [userType, setUserType] = React.useState(null);
-
-  useEffect(() => {
-    if (employee && employee.roles) {
-      setUserType(employee.roles);
-    }
-  }, [employee]);
+  const { isLogged, employee, userType } = useAuth();
 
   return (
     <>

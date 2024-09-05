@@ -1,5 +1,6 @@
 import React from "react";
 import ManagerMenu from "../../Components/Manager/ManagerMenu/ManagerMenu";
+import AddService from "../../Components/Admin/AddService/AddServices";
 
 function AddServiceManager() {
   return (
@@ -10,7 +11,7 @@ function AddServiceManager() {
             <ManagerMenu />
           </div>
           <div className="col-md-9 admin-right-side">
-            <h1>Add Service</h1>{" "}
+            <AddService />
           </div>
         </div>
       </div>
