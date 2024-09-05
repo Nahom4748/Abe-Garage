@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { Spinner } from "react-bootstrap";
 import employeeService from "../../../../services/employee.service";
 import { useAuth } from "../../../../Contexts/AuthContext";
 import "./AddCustomer.css";
-function AddEmployeeForm(props) {
+import { useNavigate } from "react-router";
+
+function AddEmployeeForm() {
   const [employee_email, setEmail] = useState("");
   const [employee_first_name, setFirstName] = useState("");
   const [employee_last_name, setLastName] = useState("");
@@ -16,13 +19,14 @@ function AddEmployeeForm(props) {
   const [passwordError, setPasswordError] = useState("");
   const [success, setSuccess] = useState(false);
   const [serverError, setServerError] = useState("");
+  const [loading, setLoading] = useState(false); // Add loading state
 
   let loggedInEmployeeToken = "";
   const { employee } = useAuth();
   if (employee && employee.employee_token) {
     loggedInEmployeeToken = employee.employee_token;
   }
-
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     let valid = true;
@@ -55,6 +59,7 @@ function AddEmployeeForm(props) {
     if (!valid) {
       return;
     }
+    setLoading(true); // Show spinner
     const formData = {
       employee_email,
       employee_first_name,
@@ -74,7 +79,8 @@ function AddEmployeeForm(props) {
           setSuccess(true);
           setServerError("");
           setTimeout(() => {
-            // window.location.href = '/admin/employees';
+            setLoading(false); // Hide spinner
+            navigate("/admin/employees");
             // window.location.href = "/";
           }, 2000);
         }
@@ -87,6 +93,7 @@ function AddEmployeeForm(props) {
           error.message ||
           error.toString();
         setServerError(resMessage);
+        setLoading(false);
       });
   };
 
@@ -211,8 +218,16 @@ function AddEmployeeForm(props) {
                 className="theme-btn btn-style-one"
                 type="submit"
                 data-loading-text="Please wait..."
+                disabled={loading}
               >
-                <span>Add employee</span>
+                {loading ? (
+                  <>
+                    <Spinner animation="border" size="sm" />{" "}
+                    <span>Adding...</span>
+                  </>
+                ) : (
+                  <span>Add employee</span>
+                )}
               </button>
             </div>
           </form>

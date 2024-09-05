@@ -1,5 +1,6 @@
 import React from "react";
 import AdminMenu from "../../Components/Admin/AdminMenu/AdminMenu";
+import AdminDashboard from "../../Components/Admin/AdminDashboard/AdminDashboard";
 
 function AdminDashbord() {
   return (
@@ -10,7 +11,7 @@ function AdminDashbord() {
             <AdminMenu />
           </div>
           <div className="col-md-9 admin-right-side">
-            <h1>Hello</h1>{" "}
+            <AdminDashboard />
           </div>
         </div>
       </div>
