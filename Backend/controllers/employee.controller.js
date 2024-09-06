@@ -2,6 +2,8 @@
 const employeeService = require("../services/employee.service");
 // Create the add employee controller
 async function createEmployee(req, res, next) {
+  // console.log(req.headers);
+
   // Check if employee email already exists in the database
   const employeeExists = await employeeService.checkIfEmployeeExists(
     req.body.employee_email
@@ -33,6 +35,7 @@ async function createEmployee(req, res, next) {
     }
   }
 }
+
 // Create the getAllEmployees controller
 async function getAllEmployees(req, res, next) {
   // Call the getAllEmployees method from the employee service
@@ -49,9 +52,54 @@ async function getAllEmployees(req, res, next) {
     });
   }
 }
-
+async function updateEmployee(req, res, next) {
+  const updatedEmployeeData = req.body;
+  console.log(updatedEmployeeData);
+  try {
+    const result = await employeeService.updateEmployee(updatedEmployeeData);
+    if (!result) {
+      return res.status(400).json({
+        error: "Failed to update employee!",
+      });
+    }
+    res.status(200).json({
+      success: "true",
+      message: "Employee updated successfully",
+    });
+  } catch (error) {
+    console.log("Controller Error:", error.message);
+    res.status(500).json({
+      error: "Internal Server Error",
+    });
+    // console.log("controller error",error)
+  }
+}
+//create the delete employee controller
+async function deleteEmployee(req, res, next) {
+  const employeeId = req.params.employeeId;
+  try {
+    const result = await employeeService.deleteEmployee(employeeId);
+    if (!result) {
+      return res.status(400).json({
+        error: "Failed to delete employee!",
+      });
+    }
+    res.status(200).json({
+      success: "true",
+      message: "Employee deleted successfully",
+    });
+  } catch (error) {
+    console.log("Controller Error:", error.message);
+    res.status(500).json({
+      error: "Internal Server Error",
+    });
+    // console.log("controller error",error)
+  }
+}
 // Export the createEmployee controller
 module.exports = {
   createEmployee,
   getAllEmployees,
+  updateEmployee,
+  deleteEmployee,
 };

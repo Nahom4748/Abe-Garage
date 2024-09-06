@@ -18,6 +18,17 @@ router.get(
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
   employeeController.getAllEmployees
 );
-
+// Create a route to handle the update employee request on put
+router.put(
+  "/api/employee",
+  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  employeeController.updateEmployee
+);
+//delete employee
+router.delete(
+  "/api/employee/:employeeId",
+  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  employeeController.deleteEmployee
+);
 // Export the router
 module.exports = router;

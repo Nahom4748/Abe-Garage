@@ -1,23 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Parallax } from "react-parallax";
 import "./aboutUsPage.css";
-// import "../../Pages/AboutUsPage/aboutUsPage.css";
-// import bootstrap from "bootstrap/dist/css/bootstrap.min.css";
-// import img1 from "../../../Assets/img/effect/1.png";
-// import img2 from "../../../Assets/img/effect/2.png";
-// import img3 from "../../../Assets/img/effect/3.png";
-// import img4 from "../../../Assets/img/effect/4.png";
-// import img5 from "../../../Assets/img/effect/5.png";
-// import img6 from "../../../Assets/img/effect/6.png";
-// import img7 from "../../../Assets/img/icons/7.png";
-// import img9 from "../../../Assets/img/bg/9.jpg";
-// import Header from "../../components/Header/Header";
-// import HeaderPage from "../HeaderPage/HeaderPage";
-// import imgT4 from "../../../Assets/img/AboutUs/4.jpg";
-// import imgAbe from "../../../Assets/abe/240-g.jpg"
 
 function AboutUsPage() {
- 
   return (
     <>
       {/* <HeaderPage /> */}
@@ -63,9 +47,7 @@ function AboutUsPage() {
                   className="afex__about-us about-us-img-info-2"
                   style={{ marginLeft: "-183px", marginTop: "413px" }}
                 >
-                  <div
-                    className="about-us-img-info-inner"
-                  >
+                  <div className="about-us-img-info-inner">
                     <h1>
                       25<span>+</span>
                     </h1>

@@ -76,10 +76,117 @@ async function getAllEmployees() {
   const rows = await conn.query(query);
   return rows;
 }
+// delete employee
+async function deleteEmployee(employee_id) {
+  console.log(employee_id);
+  //check if employee id not null
+  if (!employee_id) {
+    return false;
+  }
+
+  // Delete from employee_role table
+  const query2 = "DELETE FROM employee_role WHERE employee_id = ?";
+  const rows2 = await conn.query(query2, [employee_id]);
+
+  // Delete from employee_pass table
+  const query3 = "DELETE FROM employee_pass WHERE employee_id = ?";
+  const rows3 = await conn.query(query3, [employee_id]);
+
+  // Delete from employee_info table
+  const query4 = "DELETE FROM employee_info WHERE employee_id = ?";
+  const rows4 = await conn.query(query4, [employee_id]);
+  // Delete from employee table
+  const query = "DELETE FROM employee WHERE employee_id = ?";
+  const rows = await conn.query(query, [employee_id]);
+
+  // Check if the deletion was successful
+  if (
+    rows.affectedRows === 1 &&
+    rows2.affectedRows === 1 &&
+    rows3.affectedRows === 1 &&
+    rows4.affectedRows === 1
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+async function updateEmployee(updatedEmployeeData) {
+  let hashedPassword = null;
+  const {
+    employee_id,
+    employee_first_name,
+    employee_last_name,
+    employee_phone,
+    employee_email,
+    employee_password,
+  } = updatedEmployeeData;
+
+  // If a new password is provided, hash it
+  if (employee_password) {
+    const salt = await bcrypt.genSalt(10);
+    hashedPassword = await bcrypt.hash(employee_password, salt);
+  }
+
+  try {
+    // Update employee email
+    const query1 = `UPDATE employee SET employee_email = ? WHERE employee_id = ?`;
+    const result1 = await conn.query(query1, [employee_email, employee_id]);
+
+    if (result1.affectedRows === 0) {
+      console.error("No employee found with employee_id:", employee_id);
+      throw new Error("No employee found with the provided employee_id");
+    }
+
+    // Update employee info
+    const query2 = `
+            UPDATE employee_info 
+            SET employee_first_name = ?, employee_last_name = ?, employee_phone = ? 
+            WHERE employee_id = ?`;
+    const result2 = await conn.query(query2, [
+      employee_first_name,
+      employee_last_name,
+      employee_phone,
+      employee_id,
+    ]);
+
+    if (result2.affectedRows === 0) {
+      console.error(
+        "Failed to update employee info for employee_id:",
+        employee_id
+      );
+      throw new Error("Failed to update employee info");
+    }
+
+    // Update employee password if provided
+    if (hashedPassword) {
+      const query3 = `UPDATE employee_pass SET employee_password_hashed = ? WHERE employee_id = ?`;
+      const result3 = await conn.query(query3, [hashedPassword, employee_id]);
+
+      if (result3.affectedRows === 0) {
+        console.error(
+          "Failed to update employee password for employee_id:",
+          employee_id
+        );
+        throw new Error("Failed to update employee password");
+      }
+    }
+
+    console.log("Employee updated successfully:", employee_id);
+    return true; // Success
+  } catch (error) {
+    console.error("Service Error:", error.message);
+
+    return false; // Fail
+  }
+}
+
 // Export the functions for use in the controller
 module.exports = {
   checkIfEmployeeExists,
   createEmployee,
   getEmployeeByEmail,
   getAllEmployees,
+  updateEmployee,
+  deleteEmployee,
 };

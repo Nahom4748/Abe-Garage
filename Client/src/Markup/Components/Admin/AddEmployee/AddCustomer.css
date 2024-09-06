@@ -1,48 +1,69 @@
-/* AddEmployeeForm.css */
-
-.add-employee-form-section {
+.contact-section {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f4f4f4; /* Light background color for contrast */
+  min-height: 100vh;
+  background-color: #f4f4f4;
+  padding: 20px;
 }
 
-.add-employee-form-container {
-  padding: 2rem;
-  background-color: #fff; /* White background for the form */
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+.auto-container {
+  max-width: 800px;
   width: 100%;
-  max-width: 600px; /* Fixed max width for better layout */
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.add-employee-form .form-control,
-.add-employee-form .form-select {
-  font-size: 1rem; /* Larger font size for readability */
-  border-radius: 0.25rem; /* Rounded corners for input fields */
+.contact-title {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.add-employee-form .btn-danger {
-  background-color: #dc3545; /* Red color for the button */
-  border-color: #dc3545; /* Red border color for the button */
-  font-size: 1rem; /* Larger font size for the button */
-  padding: 0.75rem; /* Extra padding for a larger button */
-  border-radius: 0.25rem; /* Rounded corners for the button */
+.contact-form {
+  display: flex;
+  flex-direction: column;
 }
 
-.add-employee-form .form-group {
-  margin-bottom: 1rem; /* Space between form fields */
+.form-group {
+  margin-bottom: 15px;
 }
 
-.add-employee-form .btn-danger:hover {
-  background-color: #c82333; /* Darker red for button hover */
-  border-color: #bd2130; /* Darker red for button border on hover */
+input[type="email"],
+input[type="text"],
+input[type="password"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-@media (max-width: 576px) {
-  .add-employee-form-container {
-    width: 90%;
-    padding: 1rem; /* Adjust padding for smaller screens */
-  }
+input[type="email"]:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.validation-error {
+  color: #dc3545;
+  font-size: 0.875em;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
 }

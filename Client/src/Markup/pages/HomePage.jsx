@@ -4,6 +4,7 @@ import Services from "../Components/Services/Services";
 import Location from "../Components/Location/Location";
 import AboutUs from "../Components/About_us/AboutUs";
 import WhyChooComp from "../Components/WhyChooseUs/WhyChooComp";
+import ServicePage from './ServicePage/ServicePage';
 
 function HomePage() {
   return (
@@ -12,7 +13,7 @@ function HomePage() {
       <HeroPage />
       <AboutUs />
       <WhyChooComp />
-      <Services />
+<ServicePage/>
       <Location />
     </>
   );
