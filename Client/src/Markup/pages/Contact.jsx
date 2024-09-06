@@ -1,7 +1,7 @@
 // import AppointmentForm from "../Components/AppointmentForm/AppointmentForm";
 import React, { useEffect, useState } from "react";
 import HeaderPage from "../pages/HeaderPage";
-import img9 from "../../Assets/img/bg/9.jpg";
+import img9 from "../../Assets/abe/1920X500.png";
 import img10 from "../../Assets/img/icons/10.png";
 import img11 from "../../Assets/img/icons/11.png";
 import img12 from "../../Assets/img/icons/12.png";
@@ -11,7 +11,7 @@ function ContactUs() {
     <div>
       {/* <HeaderPage /> */}
       <div
-        className="ltn__breadcrumb-area ltn__breadcrumb-area-2 ltn__breadcrumb-color-white bg-overlay-theme-black-90 bg-image"
+        className="ltn__breadcrumb-area ltn__breadcrumb-area-2 ltn__breadcrumb-color-white  "
         style={{ backgroundImage: `url(${img9})` }}
       >
         <div className="container">

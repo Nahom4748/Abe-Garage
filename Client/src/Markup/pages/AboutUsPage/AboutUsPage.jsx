@@ -10,10 +10,10 @@ import "./aboutUsPage.css";
 // import img5 from "../../../Assets/img/effect/5.png";
 // import img6 from "../../../Assets/img/effect/6.png";
 // import img7 from "../../../Assets/img/icons/7.png";
-// import img9 from "../../../Assets/img/bg/9.jpg";
+import img9 from "../../../Assets/abe/banner1.jpg";
 // import Header from "../../components/Header/Header";
 // import HeaderPage from "../HeaderPage/HeaderPage";
-// import imgT4 from "../../../Assets/img/AboutUs/4.jpg";
+import imgT4 from "../../../Assets/img/bg/10.png";
 // import imgAbe from "../../../Assets/abe/240-g.jpg"
 
 function AboutUsPage() {
@@ -22,8 +22,8 @@ function AboutUsPage() {
     <>
       {/* <HeaderPage /> */}
       <div
-        className="ltn__breadcrumb-area ltn__breadcrumb-area-2 ltn__breadcrumb-color-white bg-overlay-theme-black-90 bg-image"
-        // style={{ backgroundImage: `url(${img9})` }}
+        className="ltn__breadcrumb-area ltn__breadcrumb-area-2 ltn__breadcrumb-color-white "
+        style={{ backgroundImage: `url(${img9})` }}
       >
         <div className="container">
           <div className="row">
@@ -58,7 +58,7 @@ function AboutUsPage() {
           <div className="row">
             <div className="col-lg-6 align-self-center">
               <div className="afex__about-us-wrap" style={{ display: "flex" }}>
-                <img src="{imgT4}" alt="About Us Image" />
+                <img src={imgT4} alt="About Us Image" />
                 <div
                   className="afex__about-us about-us-img-info-2"
                   style={{ marginLeft: "-183px", marginTop: "413px" }}
