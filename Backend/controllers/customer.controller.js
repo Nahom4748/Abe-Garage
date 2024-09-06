@@ -13,7 +13,7 @@ async function createCustomer(req, res, next) {
       //get the customer data from the request body
       const customerData = req.body;
       //call the createCustomer method from the customer service
-      const customer = await customerService.createCustomer(customerData);
+      const customer = await customerService.addCustomerInfo(customerData);
       if (!customer) {
         return res.status(400).json({ error: "Customer not created" });
       } else {

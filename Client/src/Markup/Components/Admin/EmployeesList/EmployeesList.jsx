@@ -7,22 +7,28 @@ import {
   Spinner,
   Alert,
   Toast,
+  InputGroup,
+  FormControl,
 } from "react-bootstrap";
 import { format } from "date-fns";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash, FaPrint } from "react-icons/fa";
 import { useAuth } from "../../../../Contexts/AuthContext";
 import employeeService from "../../../../services/employee.service";
 import "./EmployeesList.css";
 
 const EmployeesList = () => {
   const [employees, setEmployees] = useState([]);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [apiError, setApiError] = useState(false);
   const [apiErrorMessage, setApiErrorMessage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showPrintModal, setShowPrintModal] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState(null);
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [employeeIdToPrint, setEmployeeIdToPrint] = useState(null);
 
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -41,6 +47,7 @@ const EmployeesList = () => {
         const data = await res.json();
         if (data.data.length !== 0) {
           setEmployees(data.data);
+          setFilteredEmployees(data.data); // Initialize filteredEmployees with all employees
         }
       } catch (err) {
         setApiError(true);
@@ -59,6 +66,70 @@ const EmployeesList = () => {
     fetchEmployees();
   }, [token]);
 
+  useEffect(() => {
+    const filterEmployees = () => {
+      if (searchQuery === "") {
+        setFilteredEmployees(employees);
+      } else {
+        setFilteredEmployees(
+          employees.filter((emp) =>
+            [
+              emp.employee_first_name,
+              emp.employee_last_name,
+              emp.employee_email,
+              emp.employee_phone,
+              format(new Date(emp.added_date), "MM-dd-yyyy | HH:mm"),
+              emp.company_role_name,
+            ]
+              .join(" ")
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase())
+          )
+        );
+      }
+    };
+
+    filterEmployees();
+  }, [searchQuery, employees]);
+
+  const generateEmployeeId = (employee) => {
+    // Generate a unique ID for the employee (you can customize this)
+    return `${employee.employee_id}-${Date.now()}`;
+  };
+
+  const handlePrintId = (employee) => {
+    const id = generateEmployeeId(employee);
+    setEmployeeIdToPrint(id);
+    setShowPrintModal(true);
+  };
+
+  const handleConfirmPrint = () => {
+    // Print the ID with placeholder
+    const printWindow = window.open("", "", "height=600,width=800");
+    printWindow.document.write(
+      "<html><head><title>Employee ID</title></head><body>"
+    );
+    printWindow.document.write(
+      `<h1>Employee ID</h1>
+      <p><strong>Full Name:</strong> ${currentEmployee.employee_first_name} ${
+        currentEmployee.employee_last_name
+      }</p>
+      <p><strong>Email:</strong> ${currentEmployee.employee_email}</p>
+      <p><strong>Role:</strong> ${currentEmployee.company_role_name}</p>
+      <p><strong>Phone Number:</strong> ${currentEmployee.employee_phone}</p>
+      <p><strong>Added Date:</strong> ${format(
+        new Date(currentEmployee.added_date),
+        "MM-dd-yyyy | HH:mm"
+      )}</p>
+      <img src="https://via.placeholder.com/150" alt="Employee" style="width:150px;height:auto;" />
+      <p>${employeeIdToPrint}</p>`
+    );
+    printWindow.document.write("</body></html>");
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+  };
+
   const handleEditClick = (employee) => {
     setCurrentEmployee(employee);
     setShowEditModal(true);
@@ -74,6 +145,11 @@ const EmployeesList = () => {
       await employeeService.deleteEmployee(employeeToDelete.employee_id, token);
       setEmployees(
         employees.filter(
+          (emp) => emp.employee_id !== employeeToDelete.employee_id
+        )
+      );
+      setFilteredEmployees(
+        filteredEmployees.filter(
           (emp) => emp.employee_id !== employeeToDelete.employee_id
         )
       );
@@ -111,6 +187,13 @@ const EmployeesList = () => {
             : emp
         )
       );
+      setFilteredEmployees(
+        filteredEmployees.map((emp) =>
+          emp.employee_id === currentEmployee.employee_id
+            ? currentEmployee
+            : emp
+        )
+      );
       setShowEditModal(false);
       setTimeout(() => setShowToast(false), 2000);
     }
@@ -137,6 +220,21 @@ const EmployeesList = () => {
             <div className="contact-title mb-4">
               <h2>Employees List</h2>
             </div>
+            <div className="mb-3">
+              <InputGroup>
+                <FormControl
+                  placeholder="Search employees by all fields"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault(); // Prevent form submission
+                      setSearchQuery(e.target.value); // Trigger the search
+                    }
+                  }}
+                />
+              </InputGroup>
+            </div>
             <div className="table-container">
               <Table
                 striped
@@ -158,7 +256,7 @@ const EmployeesList = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {employees.map((employee) => (
+                  {filteredEmployees.map((employee) => (
                     <tr key={employee.employee_id}>
                       <td>{employee.active_employee ? "Yes" : "No"}</td>
                       <td>{employee.employee_first_name}</td>
@@ -184,9 +282,20 @@ const EmployeesList = () => {
                         <Button
                           variant="danger"
                           size="sm"
+                          className="me-2"
                           onClick={() => handleDeleteClick(employee)}
                         >
                           <FaTrash /> Delete
+                        </Button>
+                        <Button
+                          variant="info"
+                          size="sm"
+                          onClick={() => {
+                            setCurrentEmployee(employee);
+                            handlePrintId(employee);
+                          }}
+                        >
+                          <FaPrint /> Print ID
                         </Button>
                       </td>
                     </tr>
@@ -311,7 +420,37 @@ const EmployeesList = () => {
         <Modal.Header closeButton>
           <Modal.Title>Confirm Deletion</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want to delete this employee?</Modal.Body>
+        <Modal.Body>
+          {employeeToDelete && (
+            <>
+              <p>
+                <strong>First Name:</strong>{" "}
+                {employeeToDelete.employee_first_name}
+              </p>
+              <p>
+                <strong>Last Name:</strong>{" "}
+                {employeeToDelete.employee_last_name}
+              </p>
+              <p>
+                <strong>Email:</strong> {employeeToDelete.employee_email}
+              </p>
+              <p>
+                <strong>Phone:</strong> {employeeToDelete.employee_phone}
+              </p>
+              <p>
+                <strong>Added Date:</strong>{" "}
+                {format(
+                  new Date(employeeToDelete.added_date),
+                  "MM-dd-yyyy | HH:mm"
+                )}
+              </p>
+              <p>
+                <strong>Role:</strong> {employeeToDelete.company_role_name}
+              </p>
+              <p>Are you sure you want to delete this employee?</p>
+            </>
+          )}
+        </Modal.Body>
         <Modal.Footer>
           <Button
             variant="secondary"
@@ -321,6 +460,55 @@ const EmployeesList = () => {
           </Button>
           <Button variant="danger" onClick={handleConfirmDelete}>
             Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Print Employee ID Modal */}
+      <Modal show={showPrintModal} onHide={() => setShowPrintModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Print Employee ID</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {currentEmployee && (
+            <div>
+              <h3>Abe-Gerage Employee ID</h3>
+              <p>
+                <strong>Full Name:</strong>{" "}
+                {`${currentEmployee.employee_first_name} ${currentEmployee.employee_last_name}`}
+              </p>
+              <p>
+                <strong>Email:</strong> {currentEmployee.employee_email}
+              </p>
+              <p>
+                <strong>Role:</strong> {currentEmployee.company_role_name}
+              </p>
+              <p>
+                <strong>Phone Number:</strong> {currentEmployee.employee_phone}
+              </p>
+              <p>
+                <strong>Added Date:</strong>{" "}
+                {format(
+                  new Date(currentEmployee.added_date),
+                  "MM-dd-yyyy | HH:mm"
+                )}
+              </p>
+              <div className="my-3">
+                <img
+                  src="https://via.placeholder.com/150" // Placeholder image URL
+                  alt="Employee"
+                  className="img-fluid"
+                />
+              </div>
+              <Button variant="primary" onClick={handleConfirmPrint}>
+                Print ID
+              </Button>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowPrintModal(false)}>
+            Close
           </Button>
         </Modal.Footer>
       </Modal>
