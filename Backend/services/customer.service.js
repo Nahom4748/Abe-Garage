@@ -13,7 +13,40 @@ async function checkIfCustomerExists(email) {
     return false;
   }
 }
+// a function to create a customer
+// A function to add customer information to customer_info table and customer_pass table
+async function addCustomerInfo(customer) {
+  try {
+    //hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(customer.customer_password, salt);
+    // Insert into customer_info table
+    const query2 = `
+      INSERT INTO customer_info (customer_id, customer_first_name, customer_last_name,customer_email, active_customer_status) 
+      VALUES (?, ?, ?, ?)
+    `;
+    const rows2 = await db.query(query2, [
+      customer.customer_id,
+      customer.customer_first_name,
+      customer.customer_last_name,
+      customer.customer_email,
+      customer.active_customer_status,
+    ]);
 
+    // Insert into customer_pass table
+    const query3 = `
+      INSERT INTO customer_pass (customer_id, customer_password_hashed) 
+      VALUES (?, ?)
+    `;
+    const rows3 = await db.query(query3, [rows2.insertId, hashedPassword]);
+    if (rows2.affectedRows !== 1 || rows3.affectedRows !== 1) {
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error("Error adding customer info:", error);
+  }
+}
 // A function to create a customer
 async function createCustomer(customer) {
   let createdCustomer = {};
@@ -133,4 +166,5 @@ module.exports = {
   createCustomer,
   getAllCustomers,
   getCustomerById,
+  addCustomerInfo,
 };
