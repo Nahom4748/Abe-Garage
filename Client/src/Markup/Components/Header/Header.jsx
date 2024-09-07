@@ -77,7 +77,7 @@ function Header() {
                     <Link to="/" className="nav-link text-white fw-bold">
                       Home
                     </Link>
-                    <Link to="/aboutus" className="nav-link text-white fw-bold">
+                    <Link to="/about" className="nav-link text-white fw-bold">
                       About Us
                     </Link>
                     <Link
