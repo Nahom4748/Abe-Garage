@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import img9 from "../../../Assets/abe/banner1.jpg";
+import imgT4 from "../../../Assets/img/bg/10.png";
 import "./aboutUsPage.css";
 
 function AboutUsPage() {
@@ -6,8 +8,8 @@ function AboutUsPage() {
     <>
       {/* <HeaderPage /> */}
       <div
-        className="ltn__breadcrumb-area ltn__breadcrumb-area-2 ltn__breadcrumb-color-white bg-overlay-theme-black-90 bg-image"
-        // style={{ backgroundImage: `url(${img9})` }}
+        className="ltn__breadcrumb-area ltn__breadcrumb-area-2 ltn__breadcrumb-color-white "
+        style={{ backgroundImage: `url(${img9})` }}
       >
         <div className="container">
           <div className="row">
@@ -42,7 +44,7 @@ function AboutUsPage() {
           <div className="row">
             <div className="col-lg-6 align-self-center">
               <div className="afex__about-us-wrap" style={{ display: "flex" }}>
-                <img src="{imgT4}" alt="About Us Image" />
+                <img src={imgT4} alt="About Us Image" />
                 <div
                   className="afex__about-us about-us-img-info-2"
                   style={{ marginLeft: "-183px", marginTop: "413px" }}
