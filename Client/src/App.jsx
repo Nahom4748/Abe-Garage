@@ -38,6 +38,7 @@ import News from "./Markup/pages/Manager/News";
 import HomePage from "./Markup/pages/HomePage";
 import AboutUsPage from "./Markup/pages/AboutUsPage/AboutUsPage";
 import ServicePage from "./Markup/pages/ServicePage/ServicePage";
+import About from "./Markup/pages/About";
 
 function App() {
   const { isLogged, userType } = useAuth();
@@ -99,7 +100,7 @@ function App() {
         )}
         <Route path="/register" element={<Register />} />
         <Route path="/services" element={<ServicePage />} />
-        <Route path="/about" element={<Register />} />
+        <Route path="/about" element={<About />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <Footer />
