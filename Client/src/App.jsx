@@ -4,7 +4,6 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import "./Assets/css/font-icons.css";
 import "./Assets/sass/style.scss";
-// import "./Assets/sass/elements/_global.scss";
 
 import "./Assets/sass/elements/_button.scss";
 
@@ -17,16 +16,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import LoginPage from "./Markup/pages/LoginPage";
 import AddEmployee from "./Markup/pages/admin/AddEmployee";
 import PrivateAuthRoute from "./Markup/Components/Auth/PrivateAuthRoute";
-import Unauthorized from "./Markup/pages/Unauthorized";
 import AdminDashbord from "./Markup/pages/admin/AdminDashbord";
 import { useAuth } from "./Contexts/AuthContext";
 import AddService from "./Markup/pages/admin/AddService";
 import Customers from "./Markup/pages/admin/customers";
-import Addcustomer from "./Markup/pages/admin/addcustomer";
 import Employees from "./Markup/pages/admin/Employees";
 import NewOrder from "./Markup/pages/admin/NewOrder";
 import Orders from "./Markup/pages/admin/Orders";
-import HeroPage from "./Markup/Components/HeroPage/HeroPage";
 import ManagerDashbord from "./Markup/pages/Manager/ManagerDashbord";
 import OrdersManager from "./Markup/pages/Manager/OrdersManager";
 import NewOrderManager from "./Markup/pages/Manager/NewOrderManager";
@@ -38,6 +34,8 @@ import News from "./Markup/pages/Manager/News";
 import HomePage from "./Markup/pages/HomePage";
 import AboutUsPage from "./Markup/pages/AboutUsPage/AboutUsPage";
 import ServicePage from "./Markup/pages/ServicePage/ServicePage";
+import ViewServices from "./Markup/pages/admin/ViewServices";
+import Addcustomer from "./Markup/pages/admin/Addcustomer";
 
 function App() {
   const { isLogged, userType } = useAuth();
@@ -60,8 +58,9 @@ function App() {
                 <Route path="/admin/add-employee" element={<AddEmployee />} />
                 <Route path="/admin/orders" element={<Orders />} />
                 <Route path="/admin/new-order" element={<NewOrder />} />
-                <Route path="/admin/services" element={<AddService />} />
+                <Route path="/admin/services/add" element={<AddService />} />
                 <Route path="/admin/employees" element={<Employees />} />
+                <Route path="/admin/services/view" element={<ViewServices />} />
                 <Route path="/admin/add-customer" element={<Addcustomer />} />
                 <Route path="/admin/customers" element={<Customers />} />
                 <Route path="/admin-dashboard" element={<AdminDashbord />} />

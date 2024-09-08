@@ -1,19 +1,19 @@
 import React from "react";
+import { Container, Row, Col } from "react-bootstrap";
 import ManagerMenu from "../../Components/Manager/ManagerMenu/ManagerMenu";
+
 function ManagerDashbord() {
   return (
-    <div>
-      <div className="container-fluid admin-pages">
-        <div className="row">
-          <div className="col-md-3 admin-left-side">
-            <ManagerMenu />
-          </div>
-          <div className="col-md-9 admin-right-side">
-            <h1>Manager Dashbord</h1>{" "}
-          </div>
-        </div>
-      </div>
-    </div>
+    <Container fluid className="admin-pages">
+      <Row>
+        <Col md={3} className="bg-dark text-white">
+          <ManagerMenu />
+        </Col>
+        <Col md={9}>
+          <h1>Manager Dashboard</h1>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

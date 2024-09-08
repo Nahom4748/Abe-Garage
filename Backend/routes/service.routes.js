@@ -6,6 +6,9 @@ const router = express.Router();
 const serviceController = require("../controllers/service.controller");
 // Import middleware
 const authMiddleware = require("../middlewares/auth.middleware");
+//create a get all services route
+// router.get("/api/services", serviceController.getAllServices);
+
 router.get(
   "/api/services",
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
@@ -16,15 +19,16 @@ router.get(
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
   serviceController.getServiceById
 );
+
 router.post(
   "/api/service",
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
   serviceController.createService
 );
 router.put(
-  "/api/service/",
+  "/api/service/:service_id",
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
-  serviceController.updateService
+  serviceController.updateServiceController
 );
 router.delete(
   "/api/service/:id",

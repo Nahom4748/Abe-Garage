@@ -54,7 +54,6 @@ async function getAllEmployees(req, res, next) {
 }
 async function updateEmployee(req, res, next) {
   const updatedEmployeeData = req.body;
-  console.log(updatedEmployeeData);
   try {
     const result = await employeeService.updateEmployee(updatedEmployeeData);
     if (!result) {

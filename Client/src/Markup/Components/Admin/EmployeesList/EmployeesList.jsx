@@ -9,6 +9,7 @@ import {
   Toast,
   InputGroup,
   FormControl,
+  Pagination,
 } from "react-bootstrap";
 import { format } from "date-fns";
 import { FaEdit, FaTrash, FaPrint } from "react-icons/fa";
@@ -34,6 +35,10 @@ const EmployeesList = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [toastVariant, setToastVariant] = useState("success");
 
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [employeesPerPage] = useState(5);
+
   const { employee } = useAuth();
   const token = employee ? employee.employee_token : null;
 
@@ -47,7 +52,6 @@ const EmployeesList = () => {
         const data = await res.json();
         if (data.data.length !== 0) {
           setEmployees(data.data);
-          setFilteredEmployees(data.data); // Initialize filteredEmployees with all employees
         }
       } catch (err) {
         setApiError(true);
@@ -92,19 +96,32 @@ const EmployeesList = () => {
     filterEmployees();
   }, [searchQuery, employees]);
 
+  // Pagination logic
+  const indexOfLastEmployee = currentPage * employeesPerPage;
+  const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
+  const currentEmployees = filteredEmployees.slice(
+    indexOfFirstEmployee,
+    indexOfLastEmployee
+  );
+
+  const totalPages = Math.ceil(filteredEmployees.length / employeesPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   const generateEmployeeId = (employee) => {
-    // Generate a unique ID for the employee (you can customize this)
     return `${employee.employee_id}-${Date.now()}`;
   };
 
   const handlePrintId = (employee) => {
     const id = generateEmployeeId(employee);
     setEmployeeIdToPrint(id);
+    setCurrentEmployee(employee);
     setShowPrintModal(true);
   };
 
   const handleConfirmPrint = () => {
-    // Print the ID with placeholder
     const printWindow = window.open("", "", "height=600,width=800");
     printWindow.document.write(
       "<html><head><title>Employee ID</title></head><body>"
@@ -121,7 +138,6 @@ const EmployeesList = () => {
         new Date(currentEmployee.added_date),
         "MM-dd-yyyy | HH:mm"
       )}</p>
-      <img src="https://via.placeholder.com/150" alt="Employee" style="width:150px;height:auto;" />
       <p>${employeeIdToPrint}</p>`
     );
     printWindow.document.write("</body></html>");
@@ -228,8 +244,8 @@ const EmployeesList = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
-                      e.preventDefault(); // Prevent form submission
-                      setSearchQuery(e.target.value); // Trigger the search
+                      e.preventDefault();
+                      setSearchQuery(e.target.value);
                     }
                   }}
                 />
@@ -256,7 +272,7 @@ const EmployeesList = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredEmployees.map((employee) => (
+                  {currentEmployees.map((employee) => (
                     <tr key={employee.employee_id}>
                       <td>{employee.active_employee ? "Yes" : "No"}</td>
                       <td>{employee.employee_first_name}</td>
@@ -272,36 +288,58 @@ const EmployeesList = () => {
                       <td>{employee.company_role_name}</td>
                       <td>
                         <Button
-                          variant="warning"
+                          variant="link"
                           size="sm"
-                          className="me-2"
+                          className="me-2 p-0"
                           onClick={() => handleEditClick(employee)}
                         >
-                          <FaEdit /> Edit
+                          <FaEdit />
                         </Button>
                         <Button
-                          variant="danger"
+                          variant="link"
                           size="sm"
-                          className="me-2"
+                          className="me-2 p-0"
                           onClick={() => handleDeleteClick(employee)}
                         >
-                          <FaTrash /> Delete
+                          <FaTrash />
                         </Button>
                         <Button
-                          variant="info"
+                          variant="link"
                           size="sm"
+                          className="p-0"
                           onClick={() => {
-                            setCurrentEmployee(employee);
                             handlePrintId(employee);
                           }}
                         >
-                          <FaPrint /> Print ID
+                          <FaPrint />
                         </Button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </Table>
+            </div>
+            {/* Pagination Controls */}
+            <div className="d-flex justify-content-center mt-4">
+              <Pagination>
+                <Pagination.Prev
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                />
+                {[...Array(totalPages)].map((_, index) => (
+                  <Pagination.Item
+                    key={index + 1}
+                    active={index + 1 === currentPage}
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                />
+              </Pagination>
             </div>
           </>
         )}
@@ -471,7 +509,7 @@ const EmployeesList = () => {
         </Modal.Header>
         <Modal.Body>
           {currentEmployee && (
-            <div>
+            <div className="d-flex flex-column align-items-center">
               <h3>Abe-Gerage Employee ID</h3>
               <p>
                 <strong>Full Name:</strong>{" "}
@@ -495,7 +533,7 @@ const EmployeesList = () => {
               </p>
               <div className="my-3">
                 <img
-                  src="https://via.placeholder.com/150" // Placeholder image URL
+                  src="https://via.placeholder.com/150"
                   alt="Employee"
                   className="img-fluid"
                 />
