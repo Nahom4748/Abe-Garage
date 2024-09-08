@@ -1,5 +1,6 @@
 // Import the database connection
-const db = require("../config/dbConfig");
+// const db = require("../config/dbConfig");
+const conn = require("../config/db.config");
 
 // A function to create a vehicle
 async function createVehicle(vehicle) {
@@ -10,7 +11,7 @@ async function createVehicle(vehicle) {
       (customer_id, vehicle_make, vehicle_model, vehicle_year, vehicle_tag, vehicle_mileage, vehicle_color, vehicle_type, vehicle_serial) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    const rows = await db.query(query, [
+    const rows = await conn.query(query, [
       vehicle.customer_id, // Use correct parameter from vehicle object
       vehicle.vehicle_make,
       vehicle.vehicle_model,
@@ -47,7 +48,7 @@ async function getAllVehicles(customer_id) {
     const query = `
       SELECT * FROM customer_vehicle_info WHERE customer_id = ?`;
 
-    const vehicles = await db.query(query, [customer_id]);
+    const vehicles = await conn.query(query, [customer_id]);
 
     // If no vehicles are found
     if (!vehicles || vehicles.length === 0) {
@@ -68,7 +69,7 @@ async function getVehicleById(id) {
     const query = `
       SELECT * FROM customer_vehicle_info WHERE vehicle_id = ?`;
 
-    const vehicle = await db.query(query, [id]);
+    const vehicle = await conn.query(query, [id]);
 
     // If no vehicle is found
     if (!vehicle || vehicle.length === 0) {
@@ -91,7 +92,7 @@ async function updateVehicle(vehicle) {
       SET vehicle_make = ?, vehicle_model = ?, vehicle_year = ?, vehicle_tag = ?, vehicle_mileage = ?, vehicle_color = ?, vehicle_type = ?, vehicle_serial = ?
       WHERE vehicle_id = ?`;
 
-    const rows = await db.query(query, [
+    const rows = await conn.query(query, [
       vehicle.vehicle_make,
       vehicle.vehicle_model,
       vehicle.vehicle_year,

@@ -1,11 +1,12 @@
-const db = require("../config/dbConfig");
+// const db = require("../config/dbConfig");
+const conn = require("../config/db.config");
 const bcrypt = require("bcrypt");
 
 // A function to check if a customer exists
 async function checkIfCustomerExists(email) {
   //check if customer email already exists in the database
   const query = `SELECT * FROM customer_identifier WHERE customer_email = ?`;
-  const rows = await db.query(query, [email]);
+  const rows = await conn.query(query, [email]);
   console.log(rows);
   if (rows.length > 0) {
     return true;
@@ -25,7 +26,7 @@ async function addCustomerInfo(customer) {
       INSERT INTO customer_info (customer_id, customer_first_name, customer_last_name,customer_email, active_customer_status) 
       VALUES (?, ?, ?, ?)
     `;
-    const rows2 = await db.query(query2, [
+    const rows2 = await conn.query(query2, [
       customer.customer_id,
       customer.customer_first_name,
       customer.customer_last_name,
@@ -38,7 +39,7 @@ async function addCustomerInfo(customer) {
       INSERT INTO customer_pass (customer_id, customer_password_hashed) 
       VALUES (?, ?)
     `;
-    const rows3 = await db.query(query3, [rows2.insertId, hashedPassword]);
+    const rows3 = await conn.query(query3, [rows2.insertId, hashedPassword]);
     if (rows2.affectedRows !== 1 || rows3.affectedRows !== 1) {
       return false;
     }
@@ -59,7 +60,7 @@ async function createCustomer(customer) {
     const query = `
       INSERT INTO customer_identifier (customer_email, customer_phone_number, customer_hash) 
       VALUES (?, ?, ?)`;
-    const rows = await db.query(query, [
+    const rows = await conn.query(query, [
       customer.customer_email,
       customer.customer_phone_number,
       hashedCustomer,
@@ -74,7 +75,7 @@ async function createCustomer(customer) {
     const query2 = `
       INSERT INTO customer_info (customer_id, customer_first_name, customer_last_name, active_customer_status) 
       VALUES (?, ?, ?, ?)`;
-    const rows2 = await db.query(query2, [
+    const rows2 = await conn.query(query2, [
       customer_id,
       customer.customer_first_name,
       customer.customer_last_name,
@@ -87,7 +88,7 @@ async function createCustomer(customer) {
     const query3 = `
       INSERT INTO customer_vehicle_info (customer_id, vehicle_make, vehicle_model, vehicle_year, vehicle_tag, vehicle_mileage, vehicle_color, vehicle_type, vehicle_serial) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    const rows3 = await db.query(query3, [
+    const rows3 = await conn.query(query3, [
       customer_id,
       customer.vehicle_make,
       customer.vehicle_model,
@@ -128,7 +129,7 @@ async function getAllCustomers() {
     ORDER BY customer_identifier.customer_id DESC`;
 
   try {
-    const rows = await db.query(query);
+    const rows = await conn.query(query);
     console.log("Query result (rows):", rows); // Ensure it logs an array of objects
     return rows;
     if (rows.length === 0) {
@@ -151,7 +152,7 @@ async function getCustomerById(customer_id) {
     INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id
     WHERE customer_identifier.customer_id = ?`;
   try {
-    const [rows] = await db.query(query, [customer_id]);
+    const [rows] = await conn.query(query, [customer_id]);
     console.log("Query Results:", rows); // Log the raw query results
     return rows;
   } catch (error) {
