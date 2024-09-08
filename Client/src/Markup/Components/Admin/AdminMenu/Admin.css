@@ -1,41 +1,43 @@
-/* src/Components/AdminMenu/AdminMenu.css */
-
+/* Ensure the admin menu container takes up the full width */
 .admin-menu {
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 250px; /* Adjust width as needed */
+  font-family: Arial, sans-serif;
 }
 
-.admin-menu h2 {
-  margin-bottom: 20px;
-  color: #343a40;
-}
-
-.list-group {
-  list-style: none;
-  padding: 0;
-}
-
+/* Style for the list group items */
 .list-group-item {
+  padding: 10px 15px;
+  margin: 5px 0;
   display: flex;
   align-items: center;
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  background-color: #ffffff;
-  border: 1px solid #dee2e6;
+  justify-content: space-between;
+  cursor: pointer;
   border-radius: 5px;
-  color: #495057;
-  text-decoration: none;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s;
 }
 
 .list-group-item:hover {
-  background-color: #e9ecef;
-  color: #007bff;
+  background-color: #f0f0f0; /* Hover effect */
 }
 
+/* Style for the icons */
 .icon {
   margin-right: 10px;
-  font-size: 18px;
+}
+
+/* Style for the sub-menu container */
+.sub-menu {
+  padding-left: 15px;
+}
+
+/* Ensure sub-menu items have a smaller width and are centered */
+.sub-menu .list-group-item {
+  width: 100%;
+  text-align: center; /* Center text */
+}
+
+/* Style for the expand/collapse icons */
+.expand-icon {
+  font-size: 12px;
+  margin-left: auto;
 }

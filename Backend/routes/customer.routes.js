@@ -8,7 +8,7 @@ const authMiddleware = require("../middlewares/auth.middleware");
 //create a route for the customer controller request a post request
 router.post(
   "/api/customer",
-  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+
   customerController.createCustomer
 );
 //create a route for the customer controller request a get all customers request
