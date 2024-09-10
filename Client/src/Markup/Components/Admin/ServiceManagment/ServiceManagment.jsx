@@ -11,10 +11,11 @@ import {
   Button,
   Pagination,
 } from "react-bootstrap";
-import { FaEdit, FaTrash } from "react-icons/fa"; // Import icons for edit and delete
+import { FaEdit, FaTrash } from "react-icons/fa";
 import { useAuth } from "../../../../Contexts/AuthContext";
 import serviceService from "../../../../services/service.service";
-import { CSSTransition } from "react-transition-group"; // For animation
+import { CSSTransition } from "react-transition-group";
+import "./ServiceList.css";
 
 const ServiceList = () => {
   const [services, setServices] = useState([]);
@@ -24,9 +25,9 @@ const ServiceList = () => {
   const [selectedService, setSelectedService] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [isEdit, setIsEdit] = useState(false); // Track if in edit mode
+  const [isEdit, setIsEdit] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [servicesPerPage] = useState(5); // Number of services per page
+  const [servicesPerPage] = useState(5);
   const { employee } = useAuth();
   const loggedInEmployeeToken = employee?.employee_token || "";
 
@@ -36,7 +37,6 @@ const ServiceList = () => {
         const response = await serviceService.getAllServices(
           loggedInEmployeeToken
         );
-
         if (response.status === "success") {
           setServices(response.data || []);
         } else {
@@ -48,13 +48,12 @@ const ServiceList = () => {
         setLoading(false);
       }
     };
-
     fetchServices();
   }, [loggedInEmployeeToken]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value.toLowerCase());
-    setCurrentPage(1); // Reset to first page when search query changes
+    setCurrentPage(1);
   };
 
   const handleShowModal = (service, isEditMode) => {
@@ -88,7 +87,6 @@ const ServiceList = () => {
         service_price: e.target.service_price.value,
       };
 
-      // Adjust this line if `updateService` needs the service_id separately
       const response = await serviceService.updateService(
         selectedService.service_id,
         updatedService,
@@ -138,7 +136,6 @@ const ServiceList = () => {
     service.service_name.toLowerCase().includes(searchQuery)
   );
 
-  // Pagination logic
   const indexOfLastService = currentPage * servicesPerPage;
   const indexOfFirstService = indexOfLastService - servicesPerPage;
   const currentServices = filteredServices.slice(
@@ -188,14 +185,24 @@ const ServiceList = () => {
                 <Col>
                   <Card
                     className="shadow-sm border-0 rounded-lg service-card"
-                    style={{ backgroundColor: "#f8f9fa" }}
+                    style={{
+                      backgroundColor: "#f8f9fa",
+                      minHeight: "150px",
+                    }}
                   >
-                    <Card.Body className="d-flex justify-content-between align-items-center">
+                    <Card.Body className="d-flex justify-content-between align-items-start p-3">
                       <div>
                         <Card.Title className="font-weight-bold card-title">
                           {service.service_name}
                         </Card.Title>
-                        <Card.Text>{service.service_description}</Card.Text>
+                        <Card.Text>
+                          {service.service_description.length > 100
+                            ? `${service.service_description.substring(
+                                0,
+                                100
+                              )}...`
+                            : service.service_description}
+                        </Card.Text>
                         <Card.Subtitle className="mb-2 text-success">
                           Price: ${service.service_price}
                         </Card.Subtitle>

@@ -22,13 +22,15 @@ async function getServiceById(serviceId) {
   const rows = await conn.query(query, [serviceId]);
   return rows;
 }
-async function createService({
-  service_name,
-  service_price,
-  service_description,
-  createdBy,
-  active,
-}) {
+async function createService(ServiceData) {
+  const {
+    service_name,
+    service_price,
+    service_description,
+    createdBy,
+    active,
+  } = ServiceData;
+
   if (
     service_name === undefined ||
     service_price === undefined ||
@@ -36,50 +38,54 @@ async function createService({
     createdBy === undefined
   ) {
     throw new Error("Some service parameters are undefined");
-  } else {
-    const query =
-      "INSERT INTO common_services (service_name, Service_Price, service_description, createdBy, active) VALUES (?, ?, ?, ?, ?)";
-    try {
-      const [rows, fields] = await conn.query(query, [
-        service_name,
-        service_price,
-        service_description,
-        createdBy,
-        active,
-      ]);
-      console.log(rows);
-      if (result.insertId) {
-        return result.insertId;
-      }
+  }
+
+  const query = `
+    INSERT INTO common_services (service_name, Service_Price, service_description, createdBy, active)
+    VALUES (?, ?, ?, ?, ?)`;
+
+  try {
+    // Execute the query
+    const result = await conn.query(query, [
+      service_name,
+      service_price,
+      service_description,
+      createdBy,
+      active,
+    ]);
+
+    // Check if exactly one row was inserted
+    if (result.affectedRows !== 1) {
       throw new Error("Failed to add the service");
-    } catch (error) {
-      console.error("Error executing query:", error);
-      throw error; // Re-throw the error after logging it
+    } else {
+      console.log("Service added successfully");
+      const insertedServiceId = result.insertId;
+      return insertedServiceId;
     }
+  } catch (error) {
+    console.error("Error executing query:", error);
+    throw error; // Re-throw the error after logging it
   }
 }
+
 async function updateService(serviceId, serviceData) {
   const query =
     "UPDATE common_services SET service_name = ?, Service_Price = ?, service_description = ? WHERE service_id = ?";
 
   try {
     // Execute the query
-    const [rows] = await conn.query(query, [
+    const result = await conn.query(query, [
       serviceData.service_name,
       serviceData.service_price,
       serviceData.service_description,
       serviceId,
     ]);
-
     // Check if exactly one row was affected
-    if (rows.affectedRows === 1) {
-      return true;
-    } else {
-      // If no rows are affected, it could be due to an invalid serviceId or no changes
-      console.warn(
-        "No rows affected. Service might not exist or no change was made."
-      );
+    if (result.affectedRows !== 1) {
       return false;
+    } else {
+      console.log("Service Updated successfully");
+      return true;
     }
   } catch (error) {
     console.error("Error executing query:", error);
