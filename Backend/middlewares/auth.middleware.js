@@ -16,11 +16,11 @@ const verifyToken = async (req, res, next) => {
     });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
     if (err) {
       return res.status(401).send({
         status: "fail",
-        message: "Unauthorized!"
+        message: "Unauthorized!",
       });
     }
     // console.log("Here is the decoded token");

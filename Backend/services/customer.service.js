@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 // A function to check if a customer exists
 async function checkIfCustomerExists(email) {
   //check if customer email already exists in the database
-  const query =" SELECT * FROM customer_identifier WHERE customer_email = ?";
+  const query = `SELECT * FROM customer_identifier WHERE customer_email = ?`;
   const rows = await db.query(query, [email]);
   console.log(rows);
   if (rows.length > 0) {
