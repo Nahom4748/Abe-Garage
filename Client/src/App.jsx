@@ -37,6 +37,7 @@ import ServicePage from "./Markup/pages/ServicePage/ServicePage";
 
 import ViewServices from "./Markup/pages/admin/ViewServices";
 import Addcustomer from "./Markup/pages/admin/Addcustomer";
+import ContactUsPage from "./Markup/pages/contactUsPage/ContactUsPage"
 
 
 function App() {
