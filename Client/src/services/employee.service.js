@@ -1,21 +1,48 @@
 // Import from the env
 // const api_url = process.env.REACT_APP_API_URL;
+// Import axios
+import axios from "axios";
 
 // A function to send post request to create a new employee
+
 const createEmployee = async (formData, token) => {
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-access-token": token, // Ensure token is being sent
-    },
-    body: JSON.stringify(formData),
-  };
-  const response = await fetch(
-    `http://localhost:5000/api/employee`,
-    requestOptions
-  );
-  return response;
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/api/employee",
+      formData,
+      {
+        headers: {
+          "x-access-token": token,
+          "Content-Type": "multipart/form-data", // Ensure the correct Content-Type
+        },
+      }
+    );
+
+    // Axios parses response.data automatically
+    if (response.status === 200) {
+      return response.data; // Directly return the data
+    } else {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+  } catch (error) {
+    // Enhanced error handling
+    if (error.response) {
+      // Server responded with an error
+      console.error("Error response:", error.response.data);
+      throw new Error(
+        error.response.data.error ||
+          `Error ${error.response.status}: ${error.response.statusText}`
+      );
+    } else if (error.request) {
+      // Request was made but no response received
+      console.error("Error request:", error.request);
+      throw new Error("No response received from server");
+    } else {
+      // Something went wrong in setting up the request
+      console.error("Error message:", error.message);
+      throw new Error("An error occurred: " + error.message);
+    }
+  }
 };
 
 // Export all the functions
@@ -32,7 +59,7 @@ const getAllEmployees = async (token) => {
     `http://localhost:5000/api/employees`,
     requestOptions
   );
-  return response;
+  return response.json();
 };
 
 const updateEmployee = async (formData, token) => {

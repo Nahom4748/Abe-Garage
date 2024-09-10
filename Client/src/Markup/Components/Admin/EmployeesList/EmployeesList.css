@@ -1,97 +1,61 @@
-.employees-list-section {
-  padding: 20px;
+.employee-popover {
+  display: flex;
+  align-items: center;
 }
 
-.employee-table {
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.employee-image-popover {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 15px;
 }
 
-.table th,
-.table td {
-  vertical-align: middle;
+.employee-popover-details {
+  flex: 1;
 }
 
-.icon-edit,
-.icon-delete {
-  margin-right: 5px;
+.employee-modal-content .employee-image-modal {
+  max-width: 150px;
+  margin-bottom: 15px;
+}
+/* Title container and search bar styles */
+.title-container {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-.btn-warning {
-  background-color: #ffc107;
-  border-color: #ffc107;
-  color: #000;
+.title {
+  font-size: 1.5rem;
 }
 
-.btn-danger {
-  background-color: #dc3545;
-  border-color: #dc3545;
-  color: #fff;
+.search-bar-container {
+  max-width: 300px;
 }
 
-.btn-warning:hover,
-.btn-danger:hover {
-  opacity: 0.9;
-}
-
-.modal-content {
-  border-radius: 10px;
-}
-
-.modal-header {
-  border-bottom: 1px solid #dee2e6;
-}
-
-.modal-footer {
-  border-top: 1px solid #dee2e6;
-}
-/* Ensure the section takes full width */
-.employees-list-section {
-  padding: 20px;
+.search-bar {
   width: 100%;
 }
 
-/* Table styling */
-.employee-table {
-  width: 100%;
-  border-collapse: collapse;
+/* Employee Modal Styles */
+.employee-modal-content {
+  display: flex;
+  align-items: center;
 }
 
-/* Add overflow auto to the container to handle horizontal scrolling */
-.table-container {
-  overflow-x: auto;
-  width: 100%;
+.employee-info {
+  display: flex;
+  align-items: center;
 }
 
-/* Styling for table cells and headers */
-.table th,
-.table td {
-  white-space: nowrap;
-  text-align: center;
-  padding: 8px;
+.employee-image-modal {
+  max-width: 150px;
+  max-height: 150px;
+  margin-right: 1rem;
 }
 
-/* Adjust button styles */
-.btn-warning,
-.btn-danger {
-  background-color: #ffc107;
-  border-color: #ffc107;
-  color: #000;
-}
-
-.btn-danger {
-  background-color: #dc3545;
-  border-color: #dc3545;
-  color: #fff;
-}
-
-.btn-warning:hover,
-.btn-danger:hover {
-  opacity: 0.9;
-}
-
-.icon-edit,
-.icon-delete {
-  margin-right: 5px;
+.employee-details {
+  flex: 1;
 }

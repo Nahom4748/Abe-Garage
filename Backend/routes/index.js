@@ -16,7 +16,10 @@ const loginRoutes = require("./login.routes");
 const newsRouter = require("./news.routes");
 // import the service routes
 const serviceRouter = require("./service.routes");
+
+
  router.use(customerRouter)
+
 //add the service routes
 router.use(serviceRouter);
 router.use(vehicleRouter);

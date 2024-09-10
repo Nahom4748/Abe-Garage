@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Spinner } from "react-bootstrap";
+import { Modal, Button, Alert } from "react-bootstrap";
 import employeeService from "../../../../services/employee.service";
 import { useAuth } from "../../../../Contexts/AuthContext";
 import "./AddCustomer.css";
-import { useNavigate } from "react-router";
 
 function AddEmployeeForm() {
   const [employee_email, setEmail] = useState("");
@@ -13,34 +12,42 @@ function AddEmployeeForm() {
   const [employee_password, setPassword] = useState("");
   const [active_employee, setActive_employee] = useState(1);
   const [company_role_id, setCompany_role_id] = useState(1);
+  const [employee_image, setEmployeeImage] = useState(null);
+  const [success, setSuccess] = useState(false); // Added success state
+
   // Errors
   const [emailError, setEmailError] = useState("");
   const [firstNameRequired, setFirstNameRequired] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [success, setSuccess] = useState(false);
   const [serverError, setServerError] = useState("");
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
 
-  let loggedInEmployeeToken = "";
   const { employee } = useAuth();
-  if (employee && employee.employee_token) {
-    loggedInEmployeeToken = employee.employee_token;
-  }
-  const navigate = useNavigate();
-  const handleSubmit = (e) => {
+  const loggedInEmployeeToken = employee?.employee_token || "";
+
+  const handleImageChange = (event) => {
+    setEmployeeImage(event.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let valid = true;
+
+    // Validation logic
     if (!employee_first_name) {
       setFirstNameRequired("First name is required");
       valid = false;
     } else {
       setFirstNameRequired("");
     }
+
     if (!employee_email) {
       setEmailError("Email is required");
       valid = false;
     } else if (!employee_email.includes("@")) {
       setEmailError("Invalid email format");
+      valid = false;
     } else {
       const regex = /^\S+@\S+\.\S+$/;
       if (!regex.test(employee_email)) {
@@ -50,51 +57,52 @@ function AddEmployeeForm() {
         setEmailError("");
       }
     }
+
     if (!employee_password || employee_password.length < 6) {
       setPasswordError("Password must be at least 6 characters long");
       valid = false;
     } else {
       setPasswordError("");
     }
+
     if (!valid) {
       return;
     }
-    setLoading(true); // Show spinner
-    const formData = {
-      employee_email,
-      employee_first_name,
-      employee_last_name,
-      employee_phone,
-      employee_password,
-      active_employee,
-      company_role_id,
-    };
-    employeeService
-      .createEmployee(formData, loggedInEmployeeToken)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error) {
-          setServerError(data.error);
-        } else {
-          setSuccess(true);
-          setServerError("");
-          setTimeout(() => {
-            setLoading(false); // Hide spinner
-            navigate("/admin/employees");
-            // window.location.href = "/";
-          }, 2000);
-        }
-      })
-      .catch((error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        setServerError(resMessage);
-        setLoading(false);
-      });
+
+    // Create a FormData object to handle file uploads
+    const formData = new FormData();
+    formData.append("employee_email", employee_email);
+    formData.append("employee_first_name", employee_first_name);
+    formData.append("employee_last_name", employee_last_name);
+    formData.append("employee_phone", employee_phone);
+    formData.append("employee_password", employee_password);
+    formData.append("active_employee", active_employee);
+    formData.append("company_role_id", company_role_id);
+
+    if (employee_image) {
+      formData.append("employee_image", employee_image);
+    }
+
+    try {
+      const data = await employeeService.createEmployee(
+        formData,
+        loggedInEmployeeToken
+      );
+      if (data.error) {
+        setServerError(data.error);
+      } else {
+        setSuccess(true);
+        setServerError("");
+        setTimeout(() => {
+          // Optional: Redirect or clear the form
+          // window.location.href = '/admin/employees';
+          // window.location.href = "/";
+        }, 2000);
+      }
+    } catch (error) {
+      const resMessage = error.message || "An error occurred";
+      setServerError(resMessage);
+    }
   };
 
   return (
@@ -106,14 +114,22 @@ function AddEmployeeForm() {
         <div className="contact-form">
           <form onSubmit={handleSubmit}>
             {serverError && (
-              <div className="validation-error" role="alert">
+              <Alert
+                variant="danger"
+                onClose={() => setServerError("")}
+                dismissible
+              >
                 {serverError}
-              </div>
+              </Alert>
             )}
             {success && (
-              <div className="validation-success" role="alert">
+              <Alert
+                variant="success"
+                onClose={() => setSuccess(false)}
+                dismissible
+              >
                 Employee added successfully!
-              </div>
+              </Alert>
             )}
             <div className="form-group">
               <label htmlFor="employee_email">
@@ -214,25 +230,58 @@ function AddEmployeeForm() {
               )}
             </div>
             <div className="form-group">
+              <label htmlFor="employee_image">
+                <i className="bi bi-image"></i> Employee Image
+              </label>
+              <input
+                id="employee_image"
+                type="file"
+                accept="image/*"
+                name="employee_image"
+                onChange={handleImageChange}
+              />
+            </div>
+            <div className="form-group">
               <button
                 className="theme-btn btn-style-one"
                 type="submit"
                 data-loading-text="Please wait..."
-                disabled={loading}
               >
-                {loading ? (
-                  <>
-                    <Spinner animation="border" size="sm" />{" "}
-                    <span>Adding...</span>
-                  </>
-                ) : (
-                  <span>Add employee</span>
-                )}
+                <span>Add employee</span>
               </button>
             </div>
           </form>
         </div>
       </div>
+
+      {/* Success Modal */}
+      <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Success</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Employee added successfully!</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowSuccessModal(false)}
+          >
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Error Modal */}
+      <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Error</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{serverError}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </section>
   );
 }
