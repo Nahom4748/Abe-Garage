@@ -10,12 +10,12 @@ async function getAllServices(req, res, next) {
         status: "error",
         message: "No services found",
       });
+    } else {
+      res.status(200).json({
+        status: "success",
+        data: services,
+      });
     }
-
-    res.status(200).json({
-      status: "success",
-      data: services,
-    });
   } catch (error) {
     console.error("Error fetching services:", error);
     res.status(500).json({
@@ -25,7 +25,7 @@ async function getAllServices(req, res, next) {
   }
 }
 
-async function updateServiceController(req, res) {
+async function updateServiceController(req, res, next) {
   const serviceId = req.params.service_id;
   const serviceData = req.body;
 
@@ -34,7 +34,7 @@ async function updateServiceController(req, res) {
 
     if (success) {
       res
-        .status(200)
+        .status(201)
         .json({ success: true, message: "Service updated successfully" });
     } else {
       res.status(404).json({ message: "Service not found or no changes made" });

@@ -34,10 +34,9 @@ import News from "./Markup/pages/Manager/News";
 import HomePage from "./Markup/pages/HomePage";
 import AboutUsPage from "./Markup/pages/AboutUsPage/AboutUsPage";
 import ServicePage from "./Markup/pages/ServicePage/ServicePage";
-
+import ContactUsPage from "./Markup/pages/contactUsPage/ContactUsPage";
 import ViewServices from "./Markup/pages/admin/ViewServices";
 import Addcustomer from "./Markup/pages/admin/Addcustomer";
-
 
 function App() {
   const { isLogged, userType } = useAuth();
@@ -50,7 +49,6 @@ function App() {
           <>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<HomePage />} />
-    
           </>
         ) : (
           <Route element={<PrivateAuthRoute />}>

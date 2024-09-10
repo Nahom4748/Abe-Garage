@@ -2,6 +2,7 @@
 const conn = require("../config/db.config");
 // Import the bcrypt module
 const bcrypt = require("bcrypt");
+
 // A function to check if employee exists in the database
 async function checkIfEmployeeExists(email) {
   const query = "SELECT * FROM employee WHERE employee_email = ? ";
@@ -14,21 +15,17 @@ async function checkIfEmployeeExists(email) {
 }
 
 // A function to create a new employee
-async function createEmployee(employee) {
+async function createEmployee(row1, row2, row3, employee_password) {
   let createdEmployee = {};
   try {
     // Generate a salt and hash the password
     const salt = await bcrypt.genSalt(10);
     // Hash the password
-    const hashedPassword = await bcrypt.hash(employee.employee_password, salt);
+    const hashedPassword = await bcrypt.hash(employee_password, salt);
     // Insert the email in to the employee table
     const query =
-      "INSERT INTO employee (employee_email, active_employee) VALUES (?, ?)";
-    const rows = await conn.query(query, [
-      employee.employee_email,
-      employee.active_employee,
-    ]);
-    console.log(rows);
+      "INSERT INTO employee (employee_email, active_employee,added_date,employee_image) VALUES (?,?,NOW(),?)";
+    const rows = await conn.query(query, [row1[0], row1[1], row1[2]]);
     if (rows.affectedRows !== 1) {
       return false;
     }
@@ -39,28 +36,33 @@ async function createEmployee(employee) {
       "INSERT INTO employee_info (employee_id, employee_first_name, employee_last_name, employee_phone) VALUES (?, ?, ?, ?)";
     const rows2 = await conn.query(query2, [
       employee_id,
-      employee.employee_first_name,
-      employee.employee_last_name,
-      employee.employee_phone,
+      row2[0],
+      row2[1],
+      row2[2],
     ]);
+    if (rows2.affectedRows !== 1) {
+      return false;
+    }
     const query3 =
       "INSERT INTO employee_pass (employee_id, employee_password_hashed) VALUES (?, ?)";
     const rows3 = await conn.query(query3, [employee_id, hashedPassword]);
+    if (rows3.affectedRows !== 1) {
+      return false;
+    }
     const query4 =
       "INSERT INTO employee_role (employee_id, company_role_id) VALUES (?, ?)";
-    const rows4 = await conn.query(query4, [
-      employee_id,
-      employee.company_role_id,
-    ]);
+    const rows4 = await conn.query(query4, [employee_id, row3[0]]);
+    if (rows4.affectedRows !== 1) {
+      return false;
+    } else {
+      console.log("employee created");
+      return true;
+    }
     // construct to the employee object to return
-    createdEmployee = {
-      employee_id: employee_id,
-    };
   } catch (err) {
     console.log(err);
   }
   // Return the employee object
-  return createdEmployee;
 }
 // A function to get employee by email
 async function getEmployeeByEmail(employee_email) {
@@ -70,12 +72,35 @@ async function getEmployeeByEmail(employee_email) {
   return rows;
 }
 // A function to get all employees
-async function getAllEmployees() {
-  const query =
-    "SELECT * FROM employee INNER JOIN employee_info ON employee.employee_id = employee_info.employee_id INNER JOIN employee_role ON employee.employee_id = employee_role.employee_id INNER JOIN company_roles ON employee_role.company_role_id = company_roles.company_role_id ORDER BY employee.employee_id DESC limit 10";
-  const rows = await conn.query(query);
-  return rows;
-}
+const getAllEmployees = async () => {
+  try {
+    // Fetch employee data including image URL
+    const rows = await conn.query(`
+      SELECT e.employee_id, e.employee_email, e.active_employee, e.added_date, e.employee_image,
+             ei.employee_first_name, ei.employee_last_name, ei.employee_phone,
+             er.company_role_id
+      FROM employee e
+      JOIN employee_info ei ON e.employee_id = ei.employee_id
+      JOIN employee_role er ON e.employee_id = er.employee_id
+    `);
+
+    // Construct full image URL if using a URL or static path
+    const baseImageUrl = "http://localhost:5000"; // Update with your actual base URL or path
+
+    const employees = rows.map((employee) => ({
+      ...employee,
+      employee_image: employee.employee_image
+        ? baseImageUrl + employee.employee_image
+        : null,
+    }));
+
+    return employees;
+  } catch (error) {
+    console.error("Error fetching employees:", error);
+    throw new Error("Error fetching employees");
+  }
+};
+
 // delete employee
 async function deleteEmployee(employee_id) {
   console.log(employee_id);
