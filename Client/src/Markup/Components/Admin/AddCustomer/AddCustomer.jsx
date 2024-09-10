@@ -29,7 +29,7 @@ const AddCustomer = ({ token }) => {
     setSuccess(null);
 
     try {
-      const response = await axios.post("/api/customer", formData, {
+      const response = await axios.post("/api/addcustomer", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -122,7 +122,7 @@ const AddCustomer = ({ token }) => {
             </Col>
           </Row>
 
-          <Row className="mb-3">
+          {/* <Row className="mb-3">
             <Col>
               <Form.Group controlId="formPassword">
                 <Form.Label>Password</Form.Label>
@@ -136,7 +136,7 @@ const AddCustomer = ({ token }) => {
                 />
               </Form.Group>
             </Col>
-          </Row>
+          </Row> */}
 
           <Button
             variant="primary"

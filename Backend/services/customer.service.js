@@ -1,10 +1,10 @@
-const db = require("../config/dbConfig");
+const db = require("../config/db.config");
 const bcrypt = require("bcrypt");
 
 // A function to check if a customer exists
 async function checkIfCustomerExists(email) {
   //check if customer email already exists in the database
-  const query = `SELECT * FROM customer_identifier WHERE customer_email = ?`;
+  const query =" SELECT * FROM customer_identifier WHERE customer_email = ?";
   const rows = await db.query(query, [email]);
   console.log(rows);
   if (rows.length > 0) {
@@ -13,40 +13,7 @@ async function checkIfCustomerExists(email) {
     return false;
   }
 }
-// a function to create a customer
-// A function to add customer information to customer_info table and customer_pass table
-async function addCustomerInfo(customer) {
-  try {
-    //hash the password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(customer.customer_password, salt);
-    // Insert into customer_info table
-    const query2 = `
-      INSERT INTO customer_info (customer_id, customer_first_name, customer_last_name,customer_email, active_customer_status) 
-      VALUES (?, ?, ?, ?)
-    `;
-    const rows2 = await db.query(query2, [
-      customer.customer_id,
-      customer.customer_first_name,
-      customer.customer_last_name,
-      customer.customer_email,
-      customer.active_customer_status,
-    ]);
 
-    // Insert into customer_pass table
-    const query3 = `
-      INSERT INTO customer_pass (customer_id, customer_password_hashed) 
-      VALUES (?, ?)
-    `;
-    const rows3 = await db.query(query3, [rows2.insertId, hashedPassword]);
-    if (rows2.affectedRows !== 1 || rows3.affectedRows !== 1) {
-      return false;
-    }
-    return true;
-  } catch (error) {
-    console.error("Error adding customer info:", error);
-  }
-}
 // A function to create a customer
 async function createCustomer(customer) {
   let createdCustomer = {};
@@ -84,20 +51,20 @@ async function createCustomer(customer) {
     // if (rows2.affectedRows !== 1) return false;
 
     // Insert into customer_vehicle_info table
-    const query3 = `
-      INSERT INTO customer_vehicle_info (customer_id, vehicle_make, vehicle_model, vehicle_year, vehicle_tag, vehicle_mileage, vehicle_color, vehicle_type, vehicle_serial) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    const rows3 = await db.query(query3, [
-      customer_id,
-      customer.vehicle_make,
-      customer.vehicle_model,
-      customer.vehicle_year,
-      customer.vehicle_tag,
-      customer.vehicle_mileage,
-      customer.vehicle_color,
-      customer.vehicle_type,
-      customer.vehicle_serial,
-    ]);
+    // const query3 = `
+    //   INSERT INTO customer_vehicle_info (customer_id, vehicle_make, vehicle_model, vehicle_year, vehicle_tag, vehicle_mileage, vehicle_color, vehicle_type, vehicle_serial) 
+    //   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    // const rows3 = await db.query(query3, [
+    //   customer_id,
+    //   customer.vehicle_make,
+    //   customer.vehicle_model,
+    //   customer.vehicle_year,
+    //   customer.vehicle_tag,
+    //   customer.vehicle_mileage,
+    //   customer.vehicle_color,
+    //   customer.vehicle_type,
+    //   customer.vehicle_serial,
+    // ]);
 
     // if (rows3.affectedRows !== 1) return false;
     // Construct the customer object to return
@@ -166,5 +133,4 @@ module.exports = {
   createCustomer,
   getAllCustomers,
   getCustomerById,
-  addCustomerInfo,
 };

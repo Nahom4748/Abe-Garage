@@ -6,35 +6,34 @@ async function createCustomer(req, res, next) {
   const customerExists = await customerService.checkIfCustomerExists(
     req.body.customer_email
   );
+
   if (customerExists) {
     return res.status(400).json({ error: "Customer already exists" });
   } else {
     try {
-      //get the customer data from the request body
+      // Get the customer data from the request body
       const customerData = req.body;
-      //call the createCustomer method from the customer service
-      const customer = await customerService.addCustomerInfo(customerData);
+      console.log("Customer data:", customerData);
+      // Call the createCustomer method from the customer service
+      const customer = await customerService.createCustomer(customerData);
+      console.log("customer:", customer);
       if (!customer) {
         return res.status(400).json({ error: "Customer not created" });
       } else {
-        res
+        return res
           .status(201)
           .json({ message: "Customer created successfully", success: "true" });
       }
     } catch (error) {
-      //send the error as a response
-      res.status(400).json({
-        error: "Bad Request",
-        message: "Please provide all required fields",
-      });
       // Send the error as a response with a more descriptive message
-      res.status(500).json({
+      return res.status(500).json({
         error: "Internal Server Error",
         message: "An error occurred while creating the customer.",
       });
     }
   }
 }
+
 //create a function to get all customers
 async function getAllCustomers(req, res, next) {
   try {
