@@ -12,7 +12,7 @@ const createEmployee = async (formData, token) => {
     body: JSON.stringify(formData),
   };
   const response = await fetch(
-    `http://localhost:5000/api/employee`,
+    `http://localhost:8001/api/employee`,
     requestOptions
   );
   return response;
@@ -29,7 +29,7 @@ const getAllEmployees = async (token) => {
     },
   };
   const response = await fetch(
-    `http://localhost:5000/api/employees`,
+    `http://localhost:8001/api/employees`,
     requestOptions
   );
   return response;
@@ -45,7 +45,7 @@ const updateEmployee = async (formData, token) => {
     body: JSON.stringify(formData),
   };
   const response = await fetch(
-    `http://localhost:5000/api/employee`,
+    `http://localhost:8001/api/employee`,
     requestOptions
   );
   return response;
@@ -54,7 +54,7 @@ const updateEmployee = async (formData, token) => {
 //delete employee
 const deleteEmployee = async (employeeId, token) => {
   // Construct the URL with the employee ID as a path parameter
-  const url = `http://localhost:5000/api/employee/${employeeId}`;
+  const url = `http://localhost:8001/api/employee/${employeeId}`;
 
   const requestOptions = {
     method: "DELETE",

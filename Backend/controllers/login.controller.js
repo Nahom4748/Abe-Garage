@@ -3,7 +3,7 @@ const loginService = require('../services/login.service');
 // Import the jsonwebtoken module
 const jwt = require("jsonwebtoken");
 // Import the secret key from the environment variables
-const jwtSecret = process.env.JWT_SECRET;
+const jwtSecret = process.env.SECRET_KEY;
 
 // Handle employee login 
 async function logIn(req, res, next) {
