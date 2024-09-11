@@ -2,6 +2,7 @@
 .admin-menu {
   width: 250px; /* Adjust width as needed */
   font-family: Arial, sans-serif;
+  height: 100vh;
 }
 
 /* Style for the list group items */

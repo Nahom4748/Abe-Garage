@@ -1,6 +1,6 @@
 import React from "react";
 import { Navbar, Nav, Container, Button, Dropdown } from "react-bootstrap";
-import logo from "../../../Assets/img/logo/Logo.jpeg";
+import logo from "../../../Assets/img/logo/logo.png";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../../Contexts/AuthContext";
 import { FaUserCircle, FaEdit, FaSignOutAlt } from "react-icons/fa";
@@ -45,19 +45,18 @@ function Header() {
         <Navbar
           collapseOnSelect
           expand="lg"
-          bg="dark"
-          variant="dark"
+          bg="light"
+          variant="light"
           sticky="top"
+          className="custom-navbar"
         >
           <Container>
             <Navbar.Brand className="me-auto">
               <img
                 onClick={() => navigate("/")}
                 src={logo}
-                width="60"
-                height="50"
                 alt="Logo"
-                style={{ cursor: "pointer" }}
+                className="logo"
               />
             </Navbar.Brand>
             {!isLogged && (
@@ -74,19 +73,22 @@ function Header() {
                   className="justify-content-center"
                 >
                   <Nav className="text-center">
-                    <Link to="/" className="nav-link text-white fw-bold">
+                    <Link to="/" className="nav-link text-primary fw-bold">
                       Home
                     </Link>
-                    <Link to="/about" className="nav-link text-white fw-bold">
+                    <Link to="/about" className="nav-link text-primary fw-bold">
                       About Us
                     </Link>
                     <Link
                       to="/services"
-                      className="nav-link text-white fw-bold"
+                      className="nav-link text-primary fw-bold"
                     >
                       Service
                     </Link>
-                    <Link to="/contact" className="nav-link text-white fw-bold">
+                    <Link
+                      to="/contact"
+                      className="nav-link text-primary fw-bold"
+                    >
                       Contact Us
                     </Link>
                   </Nav>
@@ -100,22 +102,22 @@ function Header() {
                   <Dropdown.Toggle
                     variant="link"
                     id="dropdown-avatar"
-                    className="text-white"
+                    className="text-primary"
                   >
                     <FaUserCircle size={30} />
                   </Dropdown.Toggle>
 
-                  <Dropdown.Menu className="custom-dropdown bg-primary">
+                  <Dropdown.Menu className="custom-dropdown bg-light">
                     <Dropdown.Item
                       onClick={() => navigate("/edit-profile")}
-                      className="d-flex align-items-center bg-primary text-white"
+                      className="d-flex align-items-center text-primary"
                     >
                       <FaEdit className="me-2" /> Edit Profile
                     </Dropdown.Item>
                     <Dropdown.Divider />
                     <Dropdown.Item
                       onClick={handleLogout}
-                      className="d-flex align-items-center text-white"
+                      className="d-flex align-items-center text-primary"
                     >
                       <FaSignOutAlt className="me-2" /> Logout
                     </Dropdown.Item>
@@ -124,7 +126,7 @@ function Header() {
               ) : (
                 <Button
                   onClick={() => navigate("/login")}
-                  className="btn btn-primary text-white fw-bold border-0"
+                  className="btn btn-danger text-white fw-bold border-0"
                 >
                   Login
                 </Button>

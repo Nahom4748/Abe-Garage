@@ -119,10 +119,50 @@ async function deleteEmployee(req, res, next) {
     // console.log("controller error",error)
   }
 }
+// Create the getEmployeeStats controller
+async function getEmployeeStats(req, res, next) {
+  // Call the getEmployeeStats method from the employee service
+  const employeeStats = await employeeService.getEmployeeStats();
+  if (!employeeStats) {
+    res.status(400).json({
+      error: "Failed to get employee stats!",
+    });
+  } else {
+    res.status(200).json({
+      status: "success",
+      data: employeeStats,
+    });
+  }
+}
+//create the reset password controller
+async function resetEmployeePassword(req, res, next) {
+  const employeeId = req.params.employeeId;
+  try {
+    const result = await employeeService.resetEmployeePassword(employeeId);
+    if (!result) {
+      return res.status(400).json({
+        error: "Failed to reset password!",
+      });
+    }
+    res.status(200).json({
+      success: "true",
+      message: "Password reset successfully",
+    });
+  } catch (error) {
+    console.log("Controller Error:", error.message);
+    res.status(500).json({
+      error: "Internal Server Error",
+    });
+    // console.log("controller error",error)
+  }
+}
 // Export the createEmployee controller
+
 module.exports = {
   createEmployee,
   getAllEmployees,
   updateEmployee,
   deleteEmployee,
+  getEmployeeStats,
+  resetEmployeePassword,
 };

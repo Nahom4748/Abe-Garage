@@ -205,7 +205,62 @@ async function updateEmployee(updatedEmployeeData) {
     return false; // Fail
   }
 }
+// function fetch employee status
+async function getEmployeeStats() {
+  try {
+    const rows = await conn.query(`
+      SELECT 
+             COUNT(*) AS total_employees, 
+             SUM(active_employee) AS active_employees
+      FROM employee
+     
+    `);
 
+    // Mocking inactive employees as total - active (modify according to your real logic)
+    const totalEmployees = rows.map((row) => row.total_employees);
+    const activeEmployees = rows.map((row) => row.active_employees);
+    const inactiveEmployees = totalEmployees.map(
+      (total, index) => total - activeEmployees[index]
+    );
+
+    const data = {
+      months: rows.map((row) => row.month),
+      totalEmployees,
+      activeEmployees,
+      inactiveEmployees,
+    };
+    // Return the data
+    console.log("Employee stats fetched successfully:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching employee stats:", error);
+    // Return an error
+    return error;
+  }
+}
+// create function to reset password
+async function resetEmployeePassword(employeeId) {
+  try {
+    const query = `UPDATE employee_pass SET employee_password_hashed = ? WHERE employee_id = ?`;
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash("123456", salt);
+    const result = await conn.query(query, [hashedPassword, employeeId]);
+    if (result.affectedRows === 0) {
+      console.error(
+        "Failed to reset employee password for employee_id:",
+        employeeId
+      );
+      throw new Error("Failed to reset employee password");
+    }
+
+    console.log("Employee password reset successfully:", employeeId);
+    return true; // Success
+  } catch (error) {
+    console.error("Service Error:", error.message);
+
+    return false; // Fail
+  }
+}
 // Export the functions for use in the controller
 module.exports = {
   checkIfEmployeeExists,
@@ -214,4 +269,6 @@ module.exports = {
   getAllEmployees,
   updateEmployee,
   deleteEmployee,
+  getEmployeeStats,
+  resetEmployeePassword,
 };

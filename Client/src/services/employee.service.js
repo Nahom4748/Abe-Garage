@@ -105,7 +105,27 @@ const deleteEmployee = async (employeeId, token) => {
     throw error; // Rethrow the error to be handled by calling code
   }
 };
-
+//a function to reseet password
+const resetEmployeePassword = async (employeeId, token) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/employee/password/${employeeId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+      }
+    );
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Error resetting employee password:", error);
+  }
+};
 // Export all the functions
 const employeeService = {
   createEmployee,

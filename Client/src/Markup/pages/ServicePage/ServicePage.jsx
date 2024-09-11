@@ -1,19 +1,15 @@
-import React from 'react'
-// import HeaderPage from '../HeaderPage/HeaderPage'
-// import img9 from '../../assets/img/bg/9.jpg'
-// import img11 from '../../assets/img/service/11.jpg'
-import img1 from "../../../Assets/img/11.webp"
-import img2 from "../../../Assets/img/22.webp";
+import React from "react";
+import img1 from "../../../Assets/img/Gif.gif";
+import img2 from "../../../Assets/img/10001.jpg";
 function ServicePage() {
   return (
     <>
       {/* <HeaderPage /> */}
       <div
         className="ltn__breadcrumb-area ltn__breadcrumb-area-2 ltn__breadcrumb-color-white bg-overlay-theme-blue-90 bg-image"
-       style={{
-  backgroundImage: `url(${img2})`,
-  
-}}
+        style={{
+          backgroundImage: `url(${img2})`,
+        }}
       >
         <div className="container">
           <div className="row">
@@ -61,18 +57,20 @@ function ServicePage() {
                     We are Qualified & Professional<span>.</span>
                   </h1>
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore
+                    At [Company Name], we take pride in delivering top-quality
+                    services with a team of certified professionals. Our
+                    commitment to excellence ensures that every project is
+                    completed to the highest standards.
                   </p>
                 </div>
                 <div className="about-us-info-wrap-inner about-us-info-devide">
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur.
+                    With years of experience in the industry, we are equipped to
+                    handle a wide range of services tailored to meet your needs.
+                    Whether you're looking for expert advice, hands-on support,
+                    or the latest in technology solutions, we've got you
+                    covered. Our team works around the clock to provide seamless
+                    service that you can count on.
                   </p>
                   <div className="list-item-with-icon">
                     <ul>
@@ -83,10 +81,12 @@ function ServicePage() {
                         <a href="team.html">Expert Team</a>
                       </li>
                       <li>
-                        <a href="service-details.html">Pure Equipment</a>
+                        <a href="service-details.html">
+                          State-of-the-Art Equipment
+                        </a>
                       </li>
                       <li>
-                        <a href="shop.html">Unlimited Product</a>
+                        <a href="shop.html">Extensive Product Range</a>
                       </li>
                     </ul>
                   </div>
@@ -536,4 +536,4 @@ function ServicePage() {
   );
 }
 
-export default ServicePage
+export default ServicePage;
