@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Container,
-  Row,
-  Col,
-  Card,
+  Table,
   Spinner,
   Alert,
   Form,
@@ -175,61 +173,52 @@ const ServiceList = () => {
         </Alert>
       ) : currentServices.length > 0 ? (
         <>
-          {currentServices.map((service) => (
-            <CSSTransition
-              key={service.service_id}
-              timeout={500}
-              classNames="fade"
-            >
-              <Row className="mb-4">
-                <Col>
-                  <Card
-                    className="shadow-sm border-0 rounded-lg service-card"
-                    style={{
-                      backgroundColor: "#f8f9fa",
-                      minHeight: "150px",
-                    }}
-                  >
-                    <Card.Body className="d-flex justify-content-between align-items-start p-3">
-                      <div>
-                        <Card.Title className="font-weight-bold card-title">
-                          {service.service_name}
-                        </Card.Title>
-                        <Card.Text>
-                          {service.service_description.length > 100
-                            ? `${service.service_description.substring(
-                                0,
-                                100
-                              )}...`
-                            : service.service_description}
-                        </Card.Text>
-                        <Card.Subtitle className="mb-2 text-success">
-                          Price: ${service.service_price}
-                        </Card.Subtitle>
-                      </div>
-                      <div>
-                        <Button
-                          variant="outline-primary"
-                          size="sm"
-                          onClick={() => handleShowModal(service, true)}
-                        >
-                          <FaEdit />
-                        </Button>
-                        <Button
-                          variant="outline-danger"
-                          size="sm"
-                          className="ml-2"
-                          onClick={() => handleShowDeleteModal(service)}
-                        >
-                          <FaTrash />
-                        </Button>
-                      </div>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row>
-            </CSSTransition>
-          ))}
+          <Table striped bordered hover responsive>
+            <thead>
+              <tr>
+                <th>Service Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentServices.map((service) => (
+                <CSSTransition
+                  key={service.service_id}
+                  timeout={500}
+                  classNames="fade"
+                >
+                  <tr>
+                    <td>{service.service_name}</td>
+                    <td>
+                      {service.service_description.length > 50
+                        ? `${service.service_description.substring(0, 50)}...`
+                        : service.service_description}
+                    </td>
+                    <td>${service.service_price}</td>
+                    <td>
+                      <Button
+                        variant="outline-primary"
+                        size="sm"
+                        onClick={() => handleShowModal(service, true)}
+                      >
+                        <FaEdit />
+                      </Button>
+                      <Button
+                        variant="outline-danger"
+                        size="sm"
+                        className="ml-2"
+                        onClick={() => handleShowDeleteModal(service)}
+                      >
+                        <FaTrash />
+                      </Button>
+                    </td>
+                  </tr>
+                </CSSTransition>
+              ))}
+            </tbody>
+          </Table>
 
           <Pagination className="justify-content-center mt-4">
             {Array.from({ length: totalPages }, (_, index) => (
