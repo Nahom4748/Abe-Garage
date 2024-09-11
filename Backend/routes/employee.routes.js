@@ -22,7 +22,7 @@ router.post(
 // Create a route to handle the get all employees request on get
 router.get(
   "/api/employees",
-  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  [authMiddleware.verifyToken, authMiddleware.isManager_or_Admin],
   employeeController.getAllEmployees
 );
 // Create a route to handle the update employee request on put
