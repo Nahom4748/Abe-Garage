@@ -1,29 +1,56 @@
 .top-bar {
-  background-color: #007bff;
-}
-
-.top-bar .left-column .text,
-.top-bar .left-column .office-hour,
-.top-bar .right-column .phone-number {
-  color: #ffffff;
+  background-color: #007bff; /* Primary blue */
+  color: white;
 }
 
 .site-header {
-  background-color: #343a40;
+  background-color: white; /* White background for the main header */
 }
 
-.nav-link {
-  color: #ffffff !important;
+.navbar-light .navbar-toggler-icon {
+  filter: invert(1); /* Ensures the hamburger menu is visible */
 }
 
-.nav-link:hover {
-  color: #adb5bd !important;
+.navbar-light .navbar-brand img {
+  max-height: 50px; /* Resizes the logo */
+}
+
+.custom-navbar .nav-link {
+  color: #007bff !important; /* Blue text color for nav links */
+}
+
+.custom-navbar .nav-link:hover {
+  color: #0056b3 !important; /* Darker blue on hover */
 }
 
 .custom-dropdown .dropdown-item {
-  color: #ffffff;
+  background-color: #f8f9fa;
 }
 
 .custom-dropdown .dropdown-item:hover {
+  background-color: #e9ecef;
+}
+
+.btn-outline-primary {
+  background-color: white;
+  color: #007bff;
+}
+
+.btn-outline-primary:hover {
   background-color: #007bff;
+  color: white;
+}
+
+.logo {
+  cursor: pointer;
+  max-height: 50px;
+}
+.btn-danger {
+  background-color: #dc3545; /* Red background */
+  color: white; /* White text */
+}
+
+.btn-danger:hover {
+  background-color: #c82333; /* Darker red on hover */
+  color: white;
 }

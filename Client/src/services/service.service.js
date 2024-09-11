@@ -10,7 +10,7 @@ export const addService = async (serviceData, token) => {
     body: JSON.stringify(serviceData),
   };
   const response = await fetch(
-    `http://localhost:8001/api/service`,
+    `http://localhost:5000/api/service`,
     requestOptions
   );
   return response;
@@ -19,7 +19,7 @@ export const addService = async (serviceData, token) => {
 
 export const getAllServices = async (token) => {
   try {
-    const response = await fetch("http://localhost:8001/api/services", {
+    const response = await fetch("http://localhost:5000/api/services", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -42,7 +42,7 @@ export const getAllServices = async (token) => {
 export const updateService = async (service_id, serviceData, token) => {
   try {
     const response = await fetch(
-      `http://localhost:8001/api/service/${service_id}`,
+      `http://localhost:5000/api/service/${service_id}`,
       {
         method: "PUT",
         headers: {

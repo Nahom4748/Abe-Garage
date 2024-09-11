@@ -6,11 +6,8 @@ const dbConfig = {
   // socketPath: process.env.DB_SOCKET_PATH,
   password: process.env.DB_PASS,
   user: process.env.DB_USER,
-
   host: process.env.DB_HOST,
-
   password: process.env.DB_PASS,
-
   database: process.env.DB_NAME,
   //waitForConnections: true,
   waitForConnections: true,

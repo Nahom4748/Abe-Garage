@@ -1,7 +1,5 @@
-// src/Contexts/AuthContext.js
-
 import React, { useState, useEffect, useContext } from "react";
-import getAuth from "../util/employeeAuthHeader";
+import getAuth from "../util/employeeAuthHeader"; // Ensure this utility function is correctly implemented
 
 const AuthContext = React.createContext();
 
@@ -13,30 +11,42 @@ export const AuthProvider = ({ children }) => {
   const [isLogged, setIsLogged] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [employee, setEmployee] = useState(null);
-  const [userType, setUserType] = useState();
+  const [userType, setUserType] = useState(null);
 
   useEffect(() => {
     const checkAuth = async () => {
-      const loggedInEmployee = await getAuth();
+      try {
+        const loggedInEmployee = await getAuth(); // Adjust based on how `getAuth` works
 
-      if (loggedInEmployee.employee_token) {
-        setIsLogged(true);
-        setEmployee(loggedInEmployee);
-        setUserType(loggedInEmployee.employee_role);
-        if (loggedInEmployee.employee_role === 3) {
-          setIsAdmin(true);
+        if (loggedInEmployee && loggedInEmployee.employee_token) {
+          setIsLogged(true);
+          setEmployee(loggedInEmployee);
+          setUserType(loggedInEmployee.employee_role);
+          setIsAdmin(loggedInEmployee.employee_role === 3);
+        } else {
+          setIsLogged(false);
+          setEmployee(null);
+          setUserType(null);
+          setIsAdmin(false);
         }
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+        setIsLogged(false);
+        setEmployee(null);
+        setUserType(null);
+        setIsAdmin(false);
       }
     };
 
     checkAuth();
-  }, []);
+  }, [userType, isLogged]);
 
   const logout = () => {
     setIsLogged(false);
     setIsAdmin(false);
     setEmployee(null);
-    localStorage.removeItem("employee");
+    setUserType(null);
+    localStorage.removeItem("employee"); // Ensure you clear local storage if it's used
   };
 
   const value = {

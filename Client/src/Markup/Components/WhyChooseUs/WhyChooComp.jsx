@@ -19,8 +19,9 @@ function WhyChooComp() {
                   Safety Is Our First Priority<span>.</span>
                 </h1>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore
+                  We take pride in ensuring that your vehicle is always safe and
+                  road-ready. From regular check-ups to specialized services, we
+                  have you covered.
                 </p>
               </div>
               <div className="row">
@@ -31,12 +32,12 @@ function WhyChooComp() {
                     </div>
                     <div className="why-choose-us-feature-brief">
                       <h3>
-                        <Link to="/service">Anytime Get Your Service</Link>
+                        <Link to="/service">Get Service Anytime</Link>
                       </h3>
                       <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor ut labore et dolore magna aliqua.
-                        Ut enim ad minim
+                        Our team is ready to assist you 24/7 with all your
+                        automotive needs, whether it's an emergency or scheduled
+                        maintenance.
                       </p>
                     </div>
                   </div>
@@ -48,12 +49,12 @@ function WhyChooComp() {
                     </div>
                     <div className="why-choose-us-feature-brief">
                       <h3>
-                        <Link to="/service">Hardcore Repair Service</Link>
+                        <Link to="/service">Expert Repair Services</Link>
                       </h3>
                       <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor ut labore et dolore magna aliqua.
-                        Ut enim ad minim
+                        Our expert technicians can handle even the most complex
+                        repairs, ensuring your vehicle is back on the road in no
+                        time with top-notch performance.
                       </p>
                     </div>
                   </div>
@@ -65,9 +66,6 @@ function WhyChooComp() {
             <div className="why-choose-us-img-wrap">
               <div className="why-choose-us-img-1 text-left">
                 <img src={imgOther1} alt="Image" />
-              </div>
-              <div className="why-choose-us-img-2 text-right">
-                <img src={imgOther2} alt="Image" />
               </div>
             </div>
           </div>

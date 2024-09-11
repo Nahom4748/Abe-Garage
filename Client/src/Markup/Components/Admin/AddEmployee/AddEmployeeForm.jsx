@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button, Alert } from "react-bootstrap";
 import employeeService from "../../../../services/employee.service";
 import { useAuth } from "../../../../Contexts/AuthContext";
-import "./AddCustomer.css";
+import "./AddEmployeeForm.css";
 
 function AddEmployeeForm() {
   const [employee_email, setEmail] = useState("");

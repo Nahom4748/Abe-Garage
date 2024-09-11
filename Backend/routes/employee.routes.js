@@ -37,5 +37,13 @@ router.delete(
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
   employeeController.deleteEmployee
 );
+//route to reset password
+router.put(
+  "/api/employee/password/:employeeId",
+  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  employeeController.resetEmployeePassword
+);
+// router employee stats data
+router.get("/api/employees/stats", employeeController.getEmployeeStats);
 // Export the router
 module.exports = router;
