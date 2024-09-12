@@ -20,7 +20,7 @@ async function createCustomer(customer) {
   try {
     // Generate a salt and hash the customer's hash
     const salt = await bcrypt.genSalt(10);
-    const hashedCustomer = await bcrypt.hash(customer.customer_hash, salt);
+    const hashedCustomer = await bcrypt.hash(customer.customer_password, salt);
 
     // Insert into customer_identifier table
     const query = `
@@ -45,7 +45,7 @@ async function createCustomer(customer) {
       customer_id,
       customer.customer_first_name,
       customer.customer_last_name,
-      customer.active_customer_status,
+      1,
     ]);
 
     // if (rows2.affectedRows !== 1) return false;

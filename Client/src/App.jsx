@@ -19,7 +19,7 @@ import PrivateAuthRoute from "./Markup/Components/Auth/PrivateAuthRoute";
 import AdminDashbord from "./Markup/pages/admin/AdminDashbord";
 import { useAuth } from "./Contexts/AuthContext";
 import AddService from "./Markup/pages/admin/AddService";
-import Customers from "./Markup/pages/admin/customers";
+import Customers from "./Markup/pages/admin/Customers";
 import Employees from "./Markup/pages/admin/Employees";
 import NewOrder from "./Markup/pages/admin/NewOrder";
 import Orders from "./Markup/pages/admin/Orders";
@@ -38,7 +38,7 @@ import ContactUsPage from "./Markup/pages/contactUsPage/ContactUsPage";
 import ViewServices from "./Markup/pages/admin/ViewServices";
 import Addcustomer from "./Markup/pages/admin/Addcustomer";
 import EmployeeStatsChart from "./Markup/Components/EmployeeStatsChart/EmployeeStatsChart";
-
+import AddCustomerForm from "./Markup/Components/Admin/AddCustomer/AddCustomerForm";
 
 function App() {
   const { isLogged, userType } = useAuth();
@@ -64,7 +64,10 @@ function App() {
                 <Route path="/admin/services/add" element={<AddService />} />
                 <Route path="/admin/employees" element={<Employees />} />
                 <Route path="/admin/services/view" element={<ViewServices />} />
-                <Route path="/admin/add-customer" element={<Addcustomer />} />
+                <Route
+                  path="/admin/add-customer"
+                  element={<AddCustomerForm />}
+                />
                 <Route path="/admin/customers" element={<Customers />} />
                 <Route path="/admin-dashboard" element={<AdminDashbord />} />
               </>

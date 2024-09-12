@@ -1,23 +1,28 @@
-
-
 import React, { useState } from "react";
 import { Form, Button, InputGroup, Col, Row, Alert } from "react-bootstrap";
-import { Envelope, Person, Phone } from "react-bootstrap-icons";
+import { Envelope, Person, Phone, Lock } from "react-bootstrap-icons";
 import customerService from "../../../../services/customer.service";
+import { useAuth } from "../../../../Contexts/AuthContext";
 
 function AddCustomerForm(props) {
   const [customer_email, setEmail] = useState("");
   const [customer_first_name, setFirstName] = useState("");
   const [customer_last_name, setLastName] = useState("");
   const [customer_phone_number, setPhone] = useState("");
+  const [customer_password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { employee } = useAuth();
+  const token = employee ? employee.employee_token : null;
 
   const [emailError, setEmailError] = useState("");
   const [firstNameRequired, setFirstNameRequired] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [success, setSuccess] = useState(false);
   const [serverError, setServerError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     let valid = true;
 
     if (!customer_first_name) {
@@ -43,7 +48,19 @@ function AddCustomerForm(props) {
       }
     }
 
+    // Password validation
+    if (!customer_password) {
+      setPasswordError("Password is required");
+      valid = false;
+    } else if (customer_password.length < 6) {
+      setPasswordError("Password must be at least 6 characters");
+      valid = false;
+    } else {
+      setPasswordError("");
+    }
+
     if (!valid) {
+      setLoading(false);
       return;
     }
 
@@ -52,30 +69,18 @@ function AddCustomerForm(props) {
       customer_first_name,
       customer_last_name,
       customer_phone_number,
+      customer_password,
     };
-
-    customerService
-      .createCustomer(formData)
-      .then((data) => {
-        if (data.error) {
-          setServerError(data.error);
-        } else {
-          setSuccess(true);
-          setServerError("");
-          setTimeout(() => {
-            window.location.href = "/";
-          }, 2000);
-        }
-      })
-      .catch((error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        setServerError(resMessage);
-      });
+    try {
+      await customerService.createCustomer(formData, token);
+      setSuccess(true);
+      setServerError("");
+      setTimeout(() => (window.location.href = "/"), 2000);
+    } catch (error) {
+      setServerError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -164,6 +169,27 @@ function AddCustomerForm(props) {
                     onChange={(event) => setPhone(event.target.value)}
                     required
                   />
+                </InputGroup>
+              </Form.Group>
+            </Col>
+
+            {/* Password Field */}
+            <Col md={12}>
+              <Form.Group className="mb-3">
+                <InputGroup>
+                  <InputGroup.Text>
+                    <Lock />
+                  </InputGroup.Text>
+                  <Form.Control
+                    type="password"
+                    placeholder="customer password"
+                    value={customer_password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    isInvalid={!!passwordError}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {passwordError}
+                  </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
             </Col>
