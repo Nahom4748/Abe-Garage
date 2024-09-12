@@ -19,7 +19,7 @@ import PrivateAuthRoute from "./Markup/Components/Auth/PrivateAuthRoute";
 import AdminDashbord from "./Markup/pages/admin/AdminDashbord";
 import { useAuth } from "./Contexts/AuthContext";
 import AddService from "./Markup/pages/admin/AddService";
-import Customers from "./Markup/pages/admin/customers";
+import Customers from "./Markup/pages/admin/Customers";
 import Employees from "./Markup/pages/admin/Employees";
 import NewOrder from "./Markup/pages/admin/NewOrder";
 import Orders from "./Markup/pages/admin/Orders";

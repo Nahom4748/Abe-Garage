@@ -30,17 +30,21 @@ const getAllCustomers = async (token) => {
 
 // A function to send a PUT request to update a customer
 const updateCustomer = async (formData, token) => {
+  const url = `${api_url}/api/customer/${formData.customer_id}`;
+
   const requestOptions = {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": token, // Ensure token is being sent
+      "x-access-token": token,
     },
     body: JSON.stringify(formData),
   };
-  const response = await fetch(`${api_url}/api/customers/`, requestOptions);
+
+  const response = await fetch(url, requestOptions);
   return response;
 };
+
 
 // A function to send a DELETE request to delete a customer by ID
 const deleteCustomer = async (customerId, token) => {
