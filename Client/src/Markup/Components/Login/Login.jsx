@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import loginService from "../../../services/login.service";
 import { useAuth } from "../../../Contexts/AuthContext";
 import {
@@ -53,7 +53,6 @@ function Login() {
     try {
       const response = await loginService.logIn(formData);
       const data = await response.json();
-
       if (data.status === "success") {
         if (data.data.employee_token) {
           localStorage.setItem("employee", JSON.stringify(data.data));
@@ -62,7 +61,7 @@ function Login() {
           setIsAdmin(data.data.employee_role === 3); // Set admin status
           // Redirect based on user role
           if (data.data.employee_role === 3) {
-            navigate("/admin-dashboard");
+            <Navigate to={"/admin-dashboard"} />;
           } else if (data.data.employee_role === 2) {
             navigate("/manager");
           } else {

@@ -1,6 +1,6 @@
 // src/Components/AdminMenu/AdminMenu.js
 
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   FaTachometerAlt,
@@ -10,11 +10,39 @@ import {
   FaUsers,
   FaUser,
   FaCog,
-  FaConciergeBell,
-} from "react-icons/fa"; // Import necessary icons
-import "./Admin.css"; // Create or update this CSS file for custom styles
+  FaTools,
+  FaAngleDown,
+  FaAngleUp,
+} from "react-icons/fa";
+import "./Admin.css";
 
 function AdminMenu() {
+  // State to manage the visibility of the services, orders, employees, and customers sub-menus
+  const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isOrdersOpen, setIsOrdersOpen] = useState(false);
+  const [isEmployeesOpen, setIsEmployeesOpen] = useState(false);
+  const [isCustomersOpen, setIsCustomersOpen] = useState(false);
+
+  // Function to toggle the services sub-menu
+  const toggleServicesMenu = () => {
+    setIsServicesOpen(!isServicesOpen);
+  };
+
+  // Function to toggle the orders sub-menu
+  const toggleOrdersMenu = () => {
+    setIsOrdersOpen(!isOrdersOpen);
+  };
+
+  // Function to toggle the employees sub-menu
+  const toggleEmployeesMenu = () => {
+    setIsEmployeesOpen(!isEmployeesOpen);
+  };
+
+  // Function to toggle the customers sub-menu
+  const toggleCustomersMenu = () => {
+    setIsCustomersOpen(!isCustomersOpen);
+  };
+
   return (
     <div className="admin-menu">
       <h2>Admin Menu</h2>
@@ -22,27 +50,86 @@ function AdminMenu() {
         <Link to="/admin" className="list-group-item">
           <FaTachometerAlt className="icon" /> Dashboard
         </Link>
-        <Link to="/admin/orders" className="list-group-item">
+
+        {/* Orders menu item with toggle functionality */}
+        <div className="list-group-item" onClick={toggleOrdersMenu}>
           <FaBox className="icon" /> Orders
-        </Link>
-        <Link to="/admin/new-order" className="list-group-item">
-          <FaPlus className="icon" /> New Order
-        </Link>
-        <Link to="/admin/add-employee" className="list-group-item">
-          <FaUserPlus className="icon" /> Add Employee
-        </Link>
-        <Link to="/admin/employees" className="list-group-item">
+          <span className="expand-icon">
+            {isOrdersOpen ? <FaAngleUp /> : <FaAngleDown />}
+          </span>
+        </div>
+
+        {/* Conditional rendering of orders sub-menu items */}
+        {isOrdersOpen && (
+          <div className="sub-menu">
+            <Link to="/admin/new-order" className="list-group-item">
+              <FaUserPlus className="icon" /> New Order
+            </Link>
+            <Link to="/admin/orders" className="list-group-item">
+              <FaUser className="icon" /> View Orders
+            </Link>
+          </div>
+        )}
+
+        {/* Employees menu item with toggle functionality */}
+        <div className="list-group-item" onClick={toggleEmployeesMenu}>
           <FaUsers className="icon" /> Employees
-        </Link>
-        <Link to="/admin/add-customer" className="list-group-item">
-          <FaUserPlus className="icon" /> Add Customer
-        </Link>
-        <Link to="/admin/customers" className="list-group-item">
-          <FaUser className="icon" /> Customers
-        </Link>
-        <Link to="/admin/services" className="list-group-item">
-          <FaConciergeBell className="icon" /> Services
-        </Link>
+          <span className="expand-icon">
+            {isEmployeesOpen ? <FaAngleUp /> : <FaAngleDown />}
+          </span>
+        </div>
+
+        {/* Conditional rendering of employees sub-menu items */}
+        {isEmployeesOpen && (
+          <div className="sub-menu">
+            <Link to="/admin/add-employee" className="list-group-item">
+              <FaUserPlus className="icon" /> Add Employee
+            </Link>
+            <Link to="/admin/employees" className="list-group-item">
+              <FaUser className="icon" /> View Employees
+            </Link>
+          </div>
+        )}
+
+        {/* Services menu item with toggle functionality */}
+        <div className="list-group-item" onClick={toggleServicesMenu}>
+          <FaTools className="icon" /> Services
+          <span className="expand-icon">
+            {isServicesOpen ? <FaAngleUp /> : <FaAngleDown />}
+          </span>
+        </div>
+
+        {/* Conditional rendering of services sub-menu items */}
+        {isServicesOpen && (
+          <div className="sub-menu">
+            <Link to="/admin/services/add" className="list-group-item">
+              <FaPlus className="icon" /> Add Service
+            </Link>
+            <Link to="/admin/services/view" className="list-group-item">
+              <FaCog className="icon" /> View Services
+            </Link>
+          </div>
+        )}
+
+        {/* Customers menu item with toggle functionality */}
+        <div className="list-group-item" onClick={toggleCustomersMenu}>
+          <FaUsers className="icon" /> Customers
+          <span className="expand-icon">
+            {isCustomersOpen ? <FaAngleUp /> : <FaAngleDown />}
+          </span>
+        </div>
+
+        {/* Conditional rendering of customers sub-menu items */}
+        {isCustomersOpen && (
+          <div className="sub-menu">
+            <Link to="/admin/add-customer" className="list-group-item">
+              <FaPlus className="icon" /> Add Customer
+            </Link>
+            <Link to="/admin/customers" className="list-group-item">
+              <FaCog className="icon" /> View Customers
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

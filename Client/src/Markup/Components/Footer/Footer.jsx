@@ -1,5 +1,5 @@
 import React from "react";
-
+import logo from "../../../Assets/img/logo/logo.png";
 function Footer() {
   return (
     <footer class="ltn__footer-area ltn__footer-2 ltn__footer-color-1">
@@ -17,22 +17,22 @@ function Footer() {
                 <h4 class="footer-title">Meet In Timeline.</h4>
                 <ul>
                   <li>
-                    Monday <span>07:00AM - 20:00PM</span>
+                    Monday <span>07:00AM - 12:00PM</span>
                   </li>
                   <li>
-                    Tuesday <span>07:00AM - 20:00PM</span>
+                    Tuesday <span>07:00AM - 12:00PM</span>
                   </li>
                   <li>
-                    Wednesday <span>07:00AM - 20:00PM</span>
+                    Wednesday <span>07:00AM - 12:00PM</span>
                   </li>
                   <li>
-                    Thursday <span>07:00AM - 20:00PM</span>
+                    Thursday <span>07:00AM - 12:00PM</span>
                   </li>
                   <li>
-                    Friday <span>07:00AM - 20:00PM</span>
+                    Friday <span>07:00AM - 12:00PM</span>
                   </li>
                   <li>
-                    Saturday <span>07:00AM - 20:00PM</span>
+                    Saturday <span>07:00AM - 12:00PM</span>
                   </li>
                   <li>
                     Sunday <span>Official Holiday</span>
@@ -140,14 +140,16 @@ function Footer() {
               <div class="site-logo-wrap">
                 <div class="site-logo">
                   <a href="index.html">
-                    <img src="img/logo-2.png" alt="Logo" />
+                    <img src={logo} alt="Logo" />
                   </a>
                 </div>
                 <div class="get-support ltn__copyright-design clearfix">
                   <div class="get-support-info">
                     <h6>Copyright & Design By</h6>
                     <h4>
-                      Company - <span class="current-year"></span>
+                      <span class="current-year">
+                        Evangadi Jan , 2024 Group Two{" "}
+                      </span>
                     </h4>
                   </div>
                 </div>

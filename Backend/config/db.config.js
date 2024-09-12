@@ -7,14 +7,22 @@ const dbConfig = {
   password: process.env.DB_PASS,
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
+  password: process.env.DB_PASS,
   database: process.env.DB_NAME,
+  //waitForConnections: true,
+  waitForConnections: true,
 };
-// Create the connection pool
+//create the connection pool
 const pool = mysql.createPool(dbConfig);
-// Prepare a function that will execute the SQL queries asynchronously
+//Prepare a function that will execute the sql queries asynchrously
 async function query(sql, params) {
   const [rows, fields] = await pool.execute(sql, params);
+  //return the results
   return rows;
 }
-// Export the query function for use in the application
-module.exports = { query };
+//export the query function
+module.exports = {
+  query,
+};
+//The above code is a simple wrapper for the mysql module that will allow us to execute queries asynchronously. We have defined a function called query that will execute the queries and return the results. The function will take two parameters, the sql query and the parameters.
+// Now let’s create the model for the user.

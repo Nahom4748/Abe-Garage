@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS `customer_identifier` (
   `customer_phone_number` varchar(255) NOT NULL,
   `customer_added_date` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `customer_hash` varchar(255) NOT NULL,
+  
   PRIMARY KEY (customer_id),
   UNIQUE (customer_email)
 ) ENGINE=InnoDB;
@@ -45,6 +46,7 @@ CREATE TABLE IF NOT EXISTS `company_roles` (
 CREATE TABLE IF NOT EXISTS `common_services` (
   `service_id` int(11) NOT NULL AUTO_INCREMENT,
   `service_name` varchar(255) NOT NULL,
+  `Service_Price` int(11) NOT NULL,
   `service_description` TEXT,
   `active` int(11) NOT NULL,
   PRIMARY KEY (service_id)
@@ -57,6 +59,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `employee_email` varchar(255) NOT NULL,
   `active_employee` int(11) NOT NULL,
   `added_date` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `employee_image` varchar(255) NOT NULL,
   PRIMARY KEY (employee_id), 
   UNIQUE (employee_email)
 ) ENGINE=InnoDB;
@@ -148,7 +151,7 @@ VALUES (1, 'Admin', 'Admin', 555-555-5555);
 
 -- Password is 123456
 INSERT INTO employee_pass (employee_id, employee_password_hashed)
-VALUES (1, '$2b$10$B6yvl4hECXploM.fCDbXz.brkhmgqNlawh9ZwbfkFX.F3xrs.15Xi');  
+VALUES (1, '$2b$10$DX9eZK099SgsYXIWOyYDTef4Z/7emhCt9MsMVxyqUyDIlIZ1oRkE6');  
 
 INSERT INTO employee_role (employee_id, company_role_id)
 VALUES (1, 3); 

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Parallax } from "react-parallax";
 import "./Aboutus.css";
-import img1 from "../../../Assets/img/effect/1.png";
-import img2 from "../../../Assets/img/effect/2.png";
-import img3 from "../../../Assets/img/effect/3.png";
-import img4 from "../../../Assets/img/effect/4.png";
-import img5 from "../../../Assets/img/effect/5.png";
-import img6 from "../../../Assets/img/effect/6.png";
+import img1 from "../../../Assets/img/effect/1(1).jpg";
+import img2 from "../../../Assets/img/effect/2.jpg";
+import img3 from "../../../Assets/img/effect/3.jpg";
+import img4 from "../../../Assets/img/effect/4.jpg";
+import img5 from "../../../Assets/img/effect/5.jpg";
+import img6 from "../../../Assets/img/effect/6.jpg";
 import img7 from "../../../Assets/img/icons/7.png";
 import { Link } from "react-router-dom";
 
@@ -179,16 +179,25 @@ function AboutUs() {
                   Get Amazing Service From Us<span>.</span>
                 </h1>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore
+                  At Abe Garage, we pride ourselves on delivering top-quality
+                  automotive services. Our team of skilled technicians is
+                  dedicated to keeping your vehicle running smoothly and
+                  efficiently.
                 </p>
               </div>
 
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi{" "}
+                From routine maintenance like oil changes and tire rotations to
+                more complex repairs such as engine diagnostics and brake
+                replacements, we have the expertise to handle it all. Our
+                state-of-the-art facility is equipped with the latest tools and
+                technology to ensure your vehicle receives the best care
+                possible. Whether you're in need of a quick tune-up or a
+                full-scale repair, you can trust us to provide exceptional
+                service and customer care. We strive to make your experience as
+                convenient as possible, offering flexible scheduling and
+                transparent pricing. Let Abe Garage be your go-to destination
+                for all your automotive needs.
               </p>
               <hr />
               <div className="about-call-us">

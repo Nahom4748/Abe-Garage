@@ -1,67 +1,68 @@
 import React, { useState, useEffect } from "react";
 import getAuth from "../../../../util/employeeAuthHeader";
 import "./AddService.css";
-
+import { useAuth } from "../../../../Contexts/AuthContext";
+import serviceService from "../../../../services/service.service";
 const AddService = () => {
   const [serviceName, setServiceName] = useState("");
   const [serviceDescription, setServiceDescription] = useState("");
   const [servicePrice, setServicePrice] = useState(""); // New state for service price
   const [isAuthorized, setIsAuthorized] = useState(false);
 
+  let loggedInEmployeeToken = "";
+  let role = 0;
+  let employeeId = 0;
+  const { employee, isLogged } = useAuth();
+  if (employee && employee.employee_token) {
+    loggedInEmployeeToken = employee.employee_token;
+    role = employee.employee_role;
+    employeeId = employee.employee_id;
+  }
+  // Handle form submission
   const handleAddService = async (e) => {
     e.preventDefault();
-    const employee = await getAuth();
-    if (!employee.employee_id) {
+    console.log(loggedInEmployeeToken);
+    // Authorization checks
+    if (!isLogged) {
       alert("You are not authenticated. Please log in.");
       return;
     }
-    if (employee.employee_role !== 3) {
+    if (role !== 3) {
       alert("You do not have permission to add a service.");
       return;
     }
+
     const serviceData = {
-      name: serviceName,
-      description: serviceDescription,
-      price: servicePrice,
-      createdBy: employee.employee_id,
+      service_name: serviceName,
+      service_price: servicePrice, // Ensure the price is an integer parseFloat(servicePrice), // Ensure the price is a number
+      service_description: serviceDescription,
+      createdBy: employeeId,
+      active: 1,
     };
 
-    try {
-      const response = await fetch("http://localhost:5000/api/addService", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${employee.employee_token}`,
-        },
-        body: JSON.stringify(serviceData),
-      });
-
-      if (response.ok) {
-        alert("Service added successfully");
-        setServiceName("");
-        setServiceDescription("");
-        setServicePrice("");
-      } else {
-        alert("Failed to add service");
-      }
-    } catch (error) {
-      console.error("Error adding service:", error);
+    const res = serviceService.addService(serviceData, loggedInEmployeeToken);
+    if (!res) {
       alert("An error occurred. Please try again later.");
+      return;
+    } else {
+      alert("Service added successfully");
     }
   };
 
+  // Check if the user is authorized to add services
   useEffect(() => {
     const checkAuthorization = async () => {
       const employee = await getAuth();
-      if (employee && employee.employee_role === 3) {
-        setIsAuthorized(true);
-      } else {
-        setIsAuthorized(false);
-      }
+      setIsAuthorized(employee && employee.employee_role === 3);
     };
 
     checkAuthorization();
   }, []);
+
+  // Render the form only if the user is authorized
+  if (!isAuthorized) {
+    return <div>You are not authorized to add a service.</div>;
+  }
 
   return (
     <div className="add-service-container">
@@ -102,7 +103,6 @@ const AddService = () => {
             required
           />
         </div>
-
         <button type="submit" className="add-service-button">
           Add Service
         </button>

@@ -2,50 +2,45 @@
 const serviceService = require("../services/service.service");
 
 async function getAllServices(req, res, next) {
-  // Call the getAllEmployees method from the employee service
-  const service = await serviceService.getAllServices();
-  // console.log(employees);
-  if (!service) {
-    res.status(400).json({
-      error: "Failed to get all services!",
-    });
-  } else {
-    res.status(200).json({
-      status: "success",
-      data: service,
+  try {
+    const services = await serviceService.getAllServices();
+
+    if (!services || services.length === 0) {
+      return res.status(404).json({
+        status: "error",
+        message: "No services found",
+      });
+    } else {
+      res.status(200).json({
+        status: "success",
+        data: services,
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching services:", error);
+    res.status(500).json({
+      status: "error",
+      message: "Failed to fetch services",
     });
   }
 }
-async function updateService(req, res, next) {
-  try {
-    // const service_id = req.params.id; // Get service_id from URL parameters
-    console.log(req.body);
-    const { service_id, service_name, service_description } = req.body;
-    // console.log(service_id);
-    // Validate input
-    if (!service_id || !service_name || !service_description) {
-      return res.status(400).json({
-        error: "Service ID, name, and description are required!",
-      });
-    }
 
-    // Call the updateService method from the service service
-    const success = await serviceService.updateService(
-      service_id,
-      service_name,
-      service_description
-    );
+async function updateServiceController(req, res, next) {
+  const serviceId = req.params.service_id;
+  const serviceData = req.body;
+
+  try {
+    const success = await serviceService.updateService(serviceId, serviceData);
 
     if (success) {
-      res.status(200).json({
-        success: true,
-        message: "Service updated successfully",
-      });
+      res
+        .status(201)
+        .json({ success: true, message: "Service updated successfully" });
     } else {
-      res.status(404).json({ message: "Service not found" });
+      res.status(404).json({ message: "Service not found or no changes made" });
     }
   } catch (error) {
-    console.error("Error updating service:", error.message); // Logging the error
+    console.error("Error in updateServiceController:", error);
     res
       .status(500)
       .json({ error: "An error occurred while updating the service" });
@@ -86,49 +81,24 @@ async function getServiceById(req, res, next) {
     res.status(500).json({ error: error.message });
   }
 }
-
+// async function to create a new service
 async function createService(req, res, next) {
   try {
-    const { service_name, service_description } = req.body;
-    // console.log(service_name, service_description);
-    const serviceData = {
-      service_name,
-      service_description,
-    };
-    // Validate input
-    if (!service_name) {
-      return res.status(400).json({
-        error: "Service name is required!",
-      });
-    }
-
-    // Create the service
-    const serviceId = await serviceService.createService(serviceData);
-    console.log(serviceId);
-
-    if (!serviceId) {
-      return res.status(400).json({
-        error: "Failed to add the service!",
-      });
+    const service = await serviceService.createService(req.body);
+    if (service) {
+      res.status(200).json(service);
     } else {
-      return res.status(200).json({
-        status: "true",
-        service_id: serviceId,
-      });
+      res.status(404).json({ message: "Service not found" });
     }
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      error: "Something went wrong!",
-    });
+    res.status(500).json({ error: error.message });
   }
 }
 
-// Export the createEmployee controller
 module.exports = {
   getAllServices,
   createService,
   getServiceById,
-  updateService,
+  updateServiceController,
   deactivateService,
 };
