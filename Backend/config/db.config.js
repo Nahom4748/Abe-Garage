@@ -3,11 +3,10 @@ const mysql = require("mysql2/promise");
 // Prepare connection parameters we use to connect to the database
 const dbConfig = {
   connectionLimit: 10,
-  // socketPath: process.env.DB_SOCKET_PATH,
+  socketPath: process.env.DB_SOCKET,
   password: process.env.DB_PASS,
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
-  password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   //waitForConnections: true,
   waitForConnections: true,

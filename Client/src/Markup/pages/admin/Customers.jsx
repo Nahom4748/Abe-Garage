@@ -1,5 +1,6 @@
 import React from "react";
 import AdminMenu from "../../Components/Admin/AdminMenu/AdminMenu";
+import CustomersList from "../../Components/Admin/CustomersList/CustomersList";
 
 function Customers() {
   return (
@@ -10,7 +11,8 @@ function Customers() {
             <AdminMenu />
           </div>
           <div className="col-md-9 admin-right-side">
-            <h1>Customer</h1>{" "}
+            
+            <CustomersList />
           </div>
         </div>
       </div>

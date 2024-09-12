@@ -7,6 +7,7 @@ const AddCustomer = () => {
     firstName: "",
     lastName: "",
     phone: "",
+    password: "",
   });
 
   const [message, setMessage] = useState("");
@@ -153,7 +154,21 @@ const AddCustomer = () => {
                   required
                 />
               </div>
-
+              <div className="mb-3">
+                <label htmlFor="phone" className="form-label">
+                  Customer phone
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="phone"
+                  name="phone"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="password"
+                  required
+                />
+              </div>
               <button type="submit" className="btn btn-danger">
                 Add Customer
               </button>
