@@ -36,6 +36,7 @@ import AddServiceManager from "./Markup/pages/Manager/AddServiceManager";
 import News from "./Markup/pages/Manager/News";
 import HomePage from "./Markup/pages/HomePage";
 
+
 function App() {
   const { isLogged, employee, userType } = useAuth();
 
