@@ -51,14 +51,13 @@ function App() {
           <>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<HomePage />} />
-            <Route path="/admin/add-employee" element={<AddEmployee />} />
           </>
         ) : (
           <Route element={<PrivateAuthRoute />}>
             {userType === 3 ? (
               <>
                 <Route path="/" element={<Navigate to="/admin-dashboard" />} />
-
+                <Route path="/admin/add-employee" element={<AddEmployee />} />
                 <Route path="/admin/orders" element={<Orders />} />
                 <Route path="/admin/new-order" element={<NewOrder />} />
                 <Route path="/admin/services/add" element={<AddService />} />

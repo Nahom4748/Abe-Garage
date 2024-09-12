@@ -1,7 +1,5 @@
 import React from "react";
 import AdminMenu from "../../Components/Admin/AdminMenu/AdminMenu";
-
-// import AddCustomer from "../../Components/Admin/AddCustomer/AddCustomer";
 import AddCustomerForm from "../../Components/Admin/AddCustomer/AddCustomerForm";
 
 function Addcustomer() {
