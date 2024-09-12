@@ -1,18 +1,43 @@
 // Import from the env
-const api_url = "http://localhost:8001";
+const api_url = "http://localhost:5000";
 
 // A function to send a POST request to create a new customer
+// const createCustomer = async (formData, token) => {
+//   const requestOptions = {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "x-access-token": token, // Ensure token is being sent
+//     },
+//     body: JSON.stringify(formData),
+//   };
+//   const response = await fetch(`${api_url}/api/customer`, requestOptions);
+//   return response;
+// };
+
 const createCustomer = async (formData, token) => {
+  console.log("Form data:", formData);
+
   const requestOptions = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": token, // Ensure token is being sent
+      "x-access-token": token,
     },
     body: JSON.stringify(formData),
   };
-  const response = await fetch(`${api_url}/api/customer`, requestOptions);
-  return response;
+
+  try {
+    const response = await fetch(`${api_url}/api/customer`, requestOptions);
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText);
+    }
+    return await response.json(); // Assuming the server responds with JSON
+  } catch (error) {
+    console.error("Error creating customer:", error);
+    throw error; // Rethrow the error to handle it elsewhere
+  }
 };
 
 // A function to send a GET request to retrieve all customers
@@ -44,7 +69,6 @@ const updateCustomer = async (formData, token) => {
   const response = await fetch(url, requestOptions);
   return response;
 };
-
 
 // A function to send a DELETE request to delete a customer by ID
 const deleteCustomer = async (customerId, token) => {

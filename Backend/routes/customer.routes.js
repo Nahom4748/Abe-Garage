@@ -1,8 +1,8 @@
-//import the express module
+// Import the express module
 const express = require("express");
-//import the router method from express
+// Call the router method from express to create the router
 const router = express.Router();
-//import the customer controller
+// Import the customer controller
 const customerController = require("../controllers/customer.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
 //create a route for the customer controller request a post request
