@@ -5,7 +5,6 @@ const api_url = "http://localhost:5000 ";
 
 // A function to send a POST request to add a new vehicle
 const createVehicle = async (formData, token) => {
-  console.log(formData);
   try {
     const response = await axios.post(
       `http://localhost:5000/api/vehicle`,

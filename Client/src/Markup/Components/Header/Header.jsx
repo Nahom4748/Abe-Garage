@@ -41,14 +41,13 @@ function Header() {
       </div>
 
       {/* Main Header */}
-      <header className="site-header header-style-6 style-1">
+      <header className="site-header sticky-header">
         <Navbar
           collapseOnSelect
           expand="lg"
           bg="light"
           variant="light"
           sticky="top"
-          className="custom-navbar"
         >
           <Container>
             <Navbar.Brand className="me-auto">
@@ -95,7 +94,6 @@ function Header() {
                 </Navbar.Collapse>
               </>
             )}
-
             <div className="ms-auto">
               {isLogged ? (
                 <Dropdown align="end">
