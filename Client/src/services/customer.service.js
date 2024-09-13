@@ -28,6 +28,22 @@ const getAllCustomers = async (token) => {
   return response;
 };
 
+// A function to send a GET request to retrieve a customer by ID
+const getCustomerById = async (customer_id, token) => {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+  };
+  const response = await fetch(
+    `${api_url}/api/customer/${customer_id}`,
+    requestOptions
+  );
+  return response;
+};
+
 // A function to send a PUT request to update a customer
 const updateCustomer = async (formData, token) => {
   const url = `${api_url}/api/customer/${formData.customer_id}`;
@@ -80,6 +96,7 @@ const customerService = {
   getAllCustomers,
   updateCustomer,
   deleteCustomer,
+  getCustomerById,
 };
 
 export default customerService;
