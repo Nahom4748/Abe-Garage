@@ -122,7 +122,7 @@ function AdminMenu() {
         {/* Conditional rendering of customers sub-menu items */}
         {isCustomersOpen && (
           <div className="sub-menu">
-            <Link to="/admin/add-customer" className="list-group-item">
+            <Link to="/admin/add_customer" className="list-group-item">
               <FaPlus className="icon" /> Add Customer
             </Link>
             <Link to="/admin/customers" className="list-group-item">

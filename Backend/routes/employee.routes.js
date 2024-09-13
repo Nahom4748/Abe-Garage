@@ -15,7 +15,8 @@ const upload = require("../config/multer.config");
 
 router.post(
   "/api/employee",
-
+  [authMiddleware.verifyToken, authMiddleware.isManager_or_Admin],
+  upload.single("employee_image"),
   employeeController.createEmployee
 );
 // Create a route to handle the get all employees request on get

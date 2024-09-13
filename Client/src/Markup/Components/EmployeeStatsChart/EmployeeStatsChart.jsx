@@ -13,7 +13,7 @@ const EmployeeStatsChart = () => {
     const fetchEmployeeStats = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8001/api/employees/stats"
+          "http://localhost:5000/api/employees/stats"
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

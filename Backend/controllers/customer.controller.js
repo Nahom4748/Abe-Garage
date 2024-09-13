@@ -11,16 +11,18 @@ async function createCustomer(req, res, next) {
     try {
       // Get the customer data from the request body
       const customerData = req.body;
-      console.log("Customer data:", customerData);
       // Call the createCustomer method from the customer service
       const customer = await customerService.createCustomer(customerData);
-      console.log("customer:", customer);
       if (!customer) {
         return res.status(400).json({ error: "Customer not created" });
       } else {
         return res
           .status(201)
-          .json({ message: "Customer created successfully", success: "true" });
+          .json({
+            message: "Customer created successfully",
+            success: "true",
+            customer_id: customer,
+          });
       }
     } catch (error) {
       // Send the error as a response with a more descriptive message

@@ -5,42 +5,35 @@ const conn = require("../config/db.config");
 // A function to create a vehicle
 async function createVehicle(vehicle) {
   try {
-    // Insert into the vehicle table
     const query = `
       INSERT INTO customer_vehicle_info 
-      (customer_id, vehicle_make, vehicle_model, vehicle_year, vehicle_tag, vehicle_mileage, vehicle_color, vehicle_type, vehicle_serial) 
+      (customer_id, vehicle_year, vehicle_make, vehicle_model, vehicle_type, vehicle_mileage, vehicle_tag, vehicle_serial, vehicle_color) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    const rows = await conn.query(query, [
-      vehicle.customer_id, // Use correct parameter from vehicle object
+    // Use connection.query with placeholders
+    const result = await conn.query(query, [
+      vehicle.customer_id,
+      vehicle.vehicle_year,
       vehicle.vehicle_make,
       vehicle.vehicle_model,
-      vehicle.vehicle_year,
-      vehicle.vehicle_tag,
-      vehicle.vehicle_mileage,
-      vehicle.vehicle_color,
       vehicle.vehicle_type,
+      vehicle.vehicle_mileage,
+      vehicle.vehicle_tag,
       vehicle.vehicle_serial,
+      vehicle.vehicle_color,
     ]);
 
-    // If the vehicle was not inserted
-    if (rows.affectedRows !== 1) {
-      return false;
+    // Check if insertion was successful
+    if (result.affectedRows === 1) {
+      return { vehicle_id: result.insertId, customer_id: vehicle.customer_id };
+    } else {
+      throw new Error("Failed to insert vehicle");
     }
-
-    // Construct the vehicle object to return (optional if needed)
-    const createdVehicle = {
-      vehicle_id: rows.insertId,
-      customer_id: vehicle.customer_id,
-    };
-
-    return createdVehicle;
   } catch (error) {
-    console.log(error);
-    return false;
+    console.error("Error creating vehicle:", error.message);
+    throw error; // Rethrow the error after logging
   }
 }
-
 // create a function to get all vehicles per customer
 async function getAllVehicles(customer_id) {
   try {

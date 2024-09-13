@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import { Form, Button, InputGroup, Col, Row, Alert } from "react-bootstrap";
-import { Envelope, Person, Phone, Lock } from "react-bootstrap-icons";
+import { Form, Button, Col, Row, Alert } from "react-bootstrap";
 import customerService from "../../../../services/customer.service";
 import { useAuth } from "../../../../Contexts/AuthContext";
+import AddVehicleForm from "../AddVehicleForm/AddVehicleForm"; // Adjust the path as needed
 
-function AddCustomerForm(props) {
+function AddCustomerForm() {
   const [customer_email, setEmail] = useState("");
   const [customer_first_name, setFirstName] = useState("");
   const [customer_last_name, setLastName] = useState("");
   const [customer_phone_number, setPhone] = useState("");
   const [customer_password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showVehicleForm, setShowVehicleForm] = useState(false);
+  const [customerId, setCustomerId] = useState(null); // State to store customer ID
   const { employee } = useAuth();
   const token = employee ? employee.employee_token : null;
 
@@ -32,12 +34,12 @@ function AddCustomerForm(props) {
       setFirstNameRequired("");
     }
 
-    // Email validation
     if (!customer_email) {
       setEmailError("Email is required");
       valid = false;
     } else if (!customer_email.includes("@")) {
       setEmailError("Invalid email format");
+      valid = false;
     } else {
       const regex = /^\S+@\S+\.\S+$/;
       if (!regex.test(customer_email)) {
@@ -48,7 +50,6 @@ function AddCustomerForm(props) {
       }
     }
 
-    // Password validation
     if (!customer_password) {
       setPasswordError("Password is required");
       valid = false;
@@ -71,138 +72,134 @@ function AddCustomerForm(props) {
       customer_phone_number,
       customer_password,
     };
+
     try {
-      await customerService.createCustomer(formData, token);
+      const response = await customerService.createCustomer(formData, token);
+      if (!response) {
+        throw new Error("Failed to create customer");
+      }
+
+      const { customer_id } = response;
+      setCustomerId(customer_id); // Set the customer ID
+
       setSuccess(true);
       setServerError("");
-      setTimeout(() => (window.location.href = "/"), 2000);
+      setLoading(false);
+      setTimeout(() => {
+        setSuccess(false);
+        setShowVehicleForm(true); // Show the vehicle form
+      }, 2000);
     } catch (error) {
       setServerError(error.message);
-    } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section
-      className="d-flex justify-content-center align-items-center"
-      style={{ height: "60vh", margin: "90px 0" }}
-    >
-      <div
-        className="p-4 bg-light rounded shadow"
-        style={{ width: "80%", maxWidth: "600px" }}
+    <>
+      <section
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "60vh", margin: "90px 0" }}
       >
-        <h2 className="text-center mb-4">Add a New Customer</h2>
-        {serverError && <Alert variant="danger">{serverError}</Alert>}
-        {success && (
-          <Alert variant="success">Customer added successfully!</Alert>
-        )}
-        <Form onSubmit={handleSubmit}>
-          <Row>
-            <Col md={12}>
-              <Form.Group className="mb-3">
-                <InputGroup>
-                  <InputGroup.Text>
-                    <Envelope />
-                  </InputGroup.Text>
+        <div
+          className="p-4 bg-light rounded shadow-sm"
+          style={{ width: "100%", maxWidth: "600px" }}
+        >
+          <h2 className="text-center mb-4">Add a New Customer</h2>
+          {serverError && <Alert variant="danger">{serverError}</Alert>}
+          {success && !showVehicleForm && (
+            <Alert variant="success">Customer added successfully!</Alert>
+          )}
+          <Form onSubmit={handleSubmit}>
+            <Row>
+              <Col md={12}>
+                <Form.Group className="mb-3">
                   <Form.Control
                     type="email"
-                    placeholder="customer email"
+                    placeholder="Customer Email"
                     value={customer_email}
-                    onChange={(event) => setEmail(event.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                     isInvalid={!!emailError}
                   />
                   <Form.Control.Feedback type="invalid">
                     {emailError}
                   </Form.Control.Feedback>
-                </InputGroup>
-              </Form.Group>
-            </Col>
+                </Form.Group>
+              </Col>
 
-            <Col md={12}>
-              <Form.Group className="mb-3">
-                <InputGroup>
-                  <InputGroup.Text>
-                    <Person />
-                  </InputGroup.Text>
+              <Col md={12}>
+                <Form.Group className="mb-3">
                   <Form.Control
                     type="text"
-                    placeholder="customer first name"
+                    placeholder="Customer First Name"
                     value={customer_first_name}
-                    onChange={(event) => setFirstName(event.target.value)}
+                    onChange={(e) => setFirstName(e.target.value)}
                     isInvalid={!!firstNameRequired}
                   />
                   <Form.Control.Feedback type="invalid">
                     {firstNameRequired}
                   </Form.Control.Feedback>
-                </InputGroup>
-              </Form.Group>
-            </Col>
+                </Form.Group>
+              </Col>
 
-            <Col md={12}>
-              <Form.Group className="mb-3">
-                <InputGroup>
-                  <InputGroup.Text>
-                    <Person />
-                  </InputGroup.Text>
+              <Col md={12}>
+                <Form.Group className="mb-3">
                   <Form.Control
                     type="text"
-                    placeholder="customer last name"
+                    placeholder="Customer Last Name"
                     value={customer_last_name}
-                    onChange={(event) => setLastName(event.target.value)}
-                    required
+                    onChange={(e) => setLastName(e.target.value)}
                   />
-                </InputGroup>
-              </Form.Group>
-            </Col>
+                </Form.Group>
+              </Col>
 
-            <Col md={12}>
-              <Form.Group className="mb-3">
-                <InputGroup>
-                  <InputGroup.Text>
-                    <Phone />
-                  </InputGroup.Text>
+              <Col md={12}>
+                <Form.Group className="mb-3">
                   <Form.Control
                     type="text"
-                    placeholder="customer phone (555-555-5555)"
+                    placeholder="Customer Phone (555-555-5555)"
                     value={customer_phone_number}
-                    onChange={(event) => setPhone(event.target.value)}
-                    required
+                    onChange={(e) => setPhone(e.target.value)}
                   />
-                </InputGroup>
-              </Form.Group>
-            </Col>
+                </Form.Group>
+              </Col>
 
-            {/* Password Field */}
-            <Col md={12}>
-              <Form.Group className="mb-3">
-                <InputGroup>
-                  <InputGroup.Text>
-                    <Lock />
-                  </InputGroup.Text>
+              <Col md={12}>
+                <Form.Group className="mb-3">
                   <Form.Control
                     type="password"
-                    placeholder="customer password"
+                    placeholder="Customer Password"
                     value={customer_password}
-                    onChange={(event) => setPassword(event.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                     isInvalid={!!passwordError}
                   />
                   <Form.Control.Feedback type="invalid">
                     {passwordError}
                   </Form.Control.Feedback>
-                </InputGroup>
-              </Form.Group>
-            </Col>
+                </Form.Group>
+              </Col>
 
-            <Col md={12}>
-              <Button variant="primary" type="submit" className="w-100">
-                Add Customer
-              </Button>
-            </Col>
-          </Row>
-        </Form>
-      </div>
-    </section>
+              <Col md={12}>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="w-100"
+                  disabled={loading}
+                >
+                  {loading ? "Adding..." : "Add Customer"}
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      </section>
+
+      <AddVehicleForm
+        show={showVehicleForm}
+        handleClose={() => setShowVehicleForm(false)}
+        customerId={customerId}
+      />
+    </>
   );
 }
 

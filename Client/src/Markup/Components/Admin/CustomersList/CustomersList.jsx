@@ -28,7 +28,7 @@ const CustomersList = () => {
       try {
         const res = await customerService.getAllCustomers(token);
 
-        if (!res.ok) {
+        if (!res) {
           setApiError(true);
           if (res.status === 401) {
             setApiErrorMessage("Please login again.");
@@ -38,9 +38,7 @@ const CustomersList = () => {
             setApiErrorMessage("Something went wrong, please try again.");
           }
         } else {
-          const data = await res.json();
-          console.log(data)
-          setCustomers(data);
+          setCustomers(res);
         }
       } catch (err) {
         console.error(err);
@@ -53,7 +51,6 @@ const CustomersList = () => {
 
     fetchCustomers();
   }, [token]);
-
 
   return (
     <>
@@ -106,10 +103,10 @@ const CustomersList = () => {
                         </p>
                       </td>
                       {/* <td>{customer.active_customer_status}</td> */}
-                      <td
-                        
-                      >
-                        {customer.active_customer_status === 1 ? "Active" : "Inactive"}
+                      <td>
+                        {customer.active_customer_status === 1
+                          ? "Active"
+                          : "Inactive"}
                       </td>
 
                       <td>

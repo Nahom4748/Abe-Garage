@@ -8,7 +8,7 @@ import axios from "axios";
 const createEmployee = async (formData, token) => {
   try {
     const response = await axios.post(
-      "http://localhost:8001/api/employee",
+      "http://localhost:5000/api/employee",
       formData,
       {
         headers: {
@@ -56,7 +56,7 @@ const getAllEmployees = async (token) => {
     },
   };
   const response = await fetch(
-    `http://localhost:8001/api/employees`,
+    `http://localhost:5000/api/employees`,
     requestOptions
   );
   return response.json();
@@ -72,7 +72,7 @@ const updateEmployee = async (formData, token) => {
     body: JSON.stringify(formData),
   };
   const response = await fetch(
-    `http://localhost:8001/api/employee`,
+    `http://localhost:5000/api/employee`,
     requestOptions
   );
   return response;
@@ -81,7 +81,7 @@ const updateEmployee = async (formData, token) => {
 //delete employee
 const deleteEmployee = async (employeeId, token) => {
   // Construct the URL with the employee ID as a path parameter
-  const url = `http://localhost:8001/api/employee/${employeeId}`;
+  const url = `http://localhost:5000/api/employee/${employeeId}`;
 
   const requestOptions = {
     method: "DELETE",
@@ -109,7 +109,7 @@ const deleteEmployee = async (employeeId, token) => {
 const resetEmployeePassword = async (employeeId, token) => {
   try {
     const response = await fetch(
-      `http://localhost:8001/api/employee/password/${employeeId}`,
+      `http://localhost:5000/api/employee/password/${employeeId}`,
       {
         method: "PUT",
         headers: {
