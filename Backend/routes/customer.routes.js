@@ -15,5 +15,18 @@ router.post(
 router.get("/api/customers", customerController.getAllCustomers);
 //create a route for the customer controller request a get customer by id request
 router.get("/api/customer/:id", customerController.getCustomerById);
+//create a route for the customer controller request a put request
+router.put(
+  "/api/customer/:id",
+  // [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  customerController.updateCustomer
+)
+//create a route for the customer controller request a delete request
+router.delete(
+  "/api/customer/:id",
+  // [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  customerController.deleteCustomer
+);
+
 //export the router
 module.exports = router;
