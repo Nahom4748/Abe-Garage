@@ -18,6 +18,10 @@ const newsRouter = require("./news.routes");
 const serviceRouter = require("./service.routes");
 //import the vehicle routes
 const vehicleRouter = require("./vehicle.routes");
+const orderRouter = require("./order.routes");
+
+// Use the order router
+router.use(orderRouter);
 
 router.use(customerRouter);
 
