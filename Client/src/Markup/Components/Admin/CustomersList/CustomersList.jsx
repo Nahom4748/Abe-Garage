@@ -32,10 +32,13 @@ const CustomersList = () => {
 
       try {
         const res = await customerService.getAllCustomers(token);
+
         if (!res.ok) {
+
           setApiError(true);
           setApiErrorMessage("Error fetching customers.");
         } else {
+
           const data = await res.json();
           setCustomers(data);
         }
@@ -49,6 +52,7 @@ const CustomersList = () => {
     };
     fetchCustomers();
   }, [token]);
+
 
   const handleRowClick = (customer) => {
     setSelectedCustomer(customer);
@@ -136,6 +140,8 @@ const CustomersList = () => {
                           "MM-dd-yyyy | HH:mm"
                         )}
                       </td>
+
+
                       <td>
                         {customer.active_customer_status === 1
                           ? "Active"

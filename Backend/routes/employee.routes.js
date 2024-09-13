@@ -15,7 +15,7 @@ const upload = require("../config/multer.config");
 
 router.post(
   "/api/employee",
-  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  [authMiddleware.verifyToken, authMiddleware.isManager_or_Admin],
   upload.single("employee_image"),
   employeeController.createEmployee
 );

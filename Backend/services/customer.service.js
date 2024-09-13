@@ -20,7 +20,7 @@ async function createCustomer(customer) {
   try {
     // Generate a salt and hash the customer's hash
     const salt = await bcrypt.genSalt(10);
-    const hashedCustomer = await bcrypt.hash(customer.customer_hash, salt);
+    const hashedCustomer = await bcrypt.hash(customer.customer_password, salt);
 
     // Insert into customer_identifier table
     const query = `
@@ -45,33 +45,15 @@ async function createCustomer(customer) {
       customer_id,
       customer.customer_first_name,
       customer.customer_last_name,
-      customer.active_customer_status,
+      1,
     ]);
 
-    // if (rows2.affectedRows !== 1) return false;
-
-    // Insert into customer_vehicle_info table
-    // const query3 = `
-    //   INSERT INTO customer_vehicle_info (customer_id, vehicle_make, vehicle_model, vehicle_year, vehicle_tag, vehicle_mileage, vehicle_color, vehicle_type, vehicle_serial) 
-    //   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    // const rows3 = await db.query(query3, [
-    //   customer_id,
-    //   customer.vehicle_make,
-    //   customer.vehicle_model,
-    //   customer.vehicle_year,
-    //   customer.vehicle_tag,
-    //   customer.vehicle_mileage,
-    //   customer.vehicle_color,
-    //   customer.vehicle_type,
-    //   customer.vehicle_serial,
-    // ]);
-
-    // if (rows3.affectedRows !== 1) return false;
     // Construct the customer object to return
     createdCustomer = {
       customer_id,
       customer_email: customer.customer_email,
     };
+    return createdCustomer;
     // return {
     //   customer_id,
     //   customer_email: customer.customer_email,

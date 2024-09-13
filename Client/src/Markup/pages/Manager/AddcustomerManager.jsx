@@ -1,6 +1,6 @@
 import React from "react";
 import ManagerMenu from "../../Components/Manager/ManagerMenu/ManagerMenu";
-import AddCustomer from "../../Components/Admin/AddCustomer/AddCustomer";
+import AddCustomerForm from "../../Components/Admin/AddCustomer/AddCustomerForm";
 
 function AddcustomerManager() {
   return (
@@ -11,7 +11,7 @@ function AddcustomerManager() {
             <ManagerMenu />
           </div>
           <div className="col-md-9 admin-right-side">
-            <AddCustomer />
+            <AddCustomerForm />
           </div>
         </div>
       </div>

@@ -4,9 +4,14 @@ const express = require("express");
 const router = express.Router();
 // Import the vehicle controller
 const vehicleController = require("../controllers/vehicle.controller");
+const authMiddleware = require("../middlewares/auth.middleware");
 
 // Create a route for the vehicle controller request with a POST request
-router.post("/api/vehicle", vehicleController.createVehicle);
+router.post(
+  "/api/vehicle",
+  [authMiddleware.verifyToken, authMiddleware.isManager_or_Admin],
+  vehicleController.createVehicle
+);
 // create a route for the vehicle controller request with a GET all vehicles request
 router.get("/api/vehicles/:customer_id", vehicleController.getAllVehicles);
 // create a route for the vehicle controller request with a GET vehicle by id request

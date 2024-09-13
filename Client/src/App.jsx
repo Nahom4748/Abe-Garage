@@ -37,8 +37,10 @@ import ServicePage from "./Markup/pages/ServicePage/ServicePage";
 import ContactUsPage from "./Markup/pages/contactUsPage/ContactUsPage";
 import ViewServices from "./Markup/pages/admin/ViewServices";
 import Addcustomer from "./Markup/pages/admin/Addcustomer";
+
 import EmployeeStatsChart from "./Markup/Components/EmployeeStatsChart/EmployeeStatsChart";
 import CustomerEdit from "./Markup/pages/admin/CustomerEdit";
+
 
 function App() {
   const { isLogged, userType } = useAuth();
@@ -63,7 +65,7 @@ function App() {
                 <Route path="/admin/services/add" element={<AddService />} />
                 <Route path="/admin/employees" element={<Employees />} />
                 <Route path="/admin/services/view" element={<ViewServices />} />
-                <Route path="/admin/add-customer" element={<Addcustomer />} />
+                <Route path="/admin/add_customer" element={<Addcustomer />} />
                 <Route path="/admin/customers" element={<Customers />} />
                 <Route
                   path="/admin/customer/:customer_id"

@@ -1,28 +1,28 @@
-//import the customer service
 const customerService = require("../services/customer.service");
-
-//create a function to create a customer
+// create the add customer controller
 async function createCustomer(req, res, next) {
   const customerExists = await customerService.checkIfCustomerExists(
     req.body.customer_email
   );
-
+  console.log(req.body.customer_email);
   if (customerExists) {
     return res.status(400).json({ error: "Customer already exists" });
   } else {
     try {
       // Get the customer data from the request body
       const customerData = req.body;
-console.log("Customer data:", customerData);
       // Call the createCustomer method from the customer service
       const customer = await customerService.createCustomer(customerData);
-console.log("customer:", customer);
       if (!customer) {
         return res.status(400).json({ error: "Customer not created" });
       } else {
         return res
           .status(201)
-          .json({ message: "Customer created successfully", success: "true" });
+          .json({
+            message: "Customer created successfully",
+            success: "true",
+            customer_id: customer,
+          });
       }
     } catch (error) {
       // Send the error as a response with a more descriptive message

@@ -1,31 +1,41 @@
-// Import from the env
-const api_url = "http://localhost:8001";
+import axios from "../Axios/Axios";
 
-// A function to send a POST request to create a new customer
 const createCustomer = async (formData, token) => {
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-access-token": token, // Ensure token is being sent
-    },
-    body: JSON.stringify(formData),
-  };
-  const response = await fetch(`${api_url}/api/customer`, requestOptions);
-  return response;
-};
+  console.log("Form data:", formData);
 
-// A function to send a GET request to retrieve all customers
-const getAllCustomers = async (token) => {
   const requestOptions = {
-    method: "GET",
     headers: {
       "Content-Type": "application/json",
       "x-access-token": token,
     },
   };
-  const response = await fetch(`${api_url}/api/customers`, requestOptions);
-  return response;
+
+  try {
+    const response = await axios.post(`/customer`, formData, requestOptions);
+    return response.data; // Assuming the server responds with JSON
+  } catch (error) {
+    console.error("Error creating customer:", error);
+    throw error; // Rethrow the error to handle it elsewhere
+  }
+};
+
+// A function to send a GET request to retrieve all customers
+const getAllCustomers = async (token) => {
+  const requestOptions = {
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+  };
+
+  try {
+    const response = await axios.get(`/customers`, requestOptions);
+    console.log(response.data);
+    return response.data; // Assuming the server responds with JSON
+  } catch (error) {
+    console.error("Error fetching customers:", error);
+    throw error; // Rethrow the error to handle it elsewhere
+  }
 };
 
 // A function to send a GET request to retrieve a customer by ID
@@ -46,29 +56,29 @@ const getCustomerById = async (customer_id, token) => {
 
 // A function to send a PUT request to update a customer
 const updateCustomer = async (formData, token) => {
-  const url = `${api_url}/api/customer/${formData.customer_id}`;
+  const url = `/customer/${formData.customer_id}`;
 
   const requestOptions = {
-    method: "PUT",
     headers: {
       "Content-Type": "application/json",
       "x-access-token": token,
     },
-    body: JSON.stringify(formData),
   };
 
-  const response = await fetch(url, requestOptions);
-  return response;
+  try {
+    const response = await axios.put(url, formData, requestOptions);
+    return response.data; // Assuming the server responds with JSON
+  } catch (error) {
+    console.error("Error updating customer:", error);
+    throw error; // Rethrow the error to handle it elsewhere
+  }
 };
-
 
 // A function to send a DELETE request to delete a customer by ID
 const deleteCustomer = async (customerId, token) => {
-  // Construct the URL with the customer ID as a path parameter
-  const url = `${api_url}/api/customer/${customerId}`;
+  const url = `/customer/${customerId}`;
 
   const requestOptions = {
-    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
       "x-access-token": token, // Ensure token is being sent
@@ -76,17 +86,11 @@ const deleteCustomer = async (customerId, token) => {
   };
 
   try {
-    const response = await fetch(url, requestOptions);
-
-    if (!response.ok) {
-      const errorText = await response.text(); // Read the error message
-      throw new Error(errorText);
-    }
-
-    return response.json(); // Assuming the server responds with JSON
+    const response = await axios.delete(url, requestOptions);
+    return response.data; // Assuming the server responds with JSON
   } catch (error) {
     console.error("Error deleting customer:", error);
-    throw error; // Rethrow the error to be handled by calling code
+    throw error; // Rethrow the error to handle it elsewhere
   }
 };
 
