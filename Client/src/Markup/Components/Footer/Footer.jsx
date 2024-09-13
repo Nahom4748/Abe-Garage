@@ -2,7 +2,7 @@ import React from "react";
 import logo from "../../../Assets/img/logo/logo.png";
 function Footer() {
   return (
-    <footer class="ltn__footer-area ltn__footer-2 ltn__footer-color-1">
+    <footer class="ltn__footer-area ltn__footer-2 ltn__footer-color-1 mt-100">
       <div class="footer-top-area  section-bg-2">
         <div class="container">
           <div class="row">
