@@ -20,6 +20,7 @@ import AdminDashbord from "./Markup/pages/admin/AdminDashbord";
 import { useAuth } from "./Contexts/AuthContext";
 import AddService from "./Markup/pages/admin/AddService";
 import Customers from "./Markup/pages/admin/Customers";
+import Items from "./Markup/pages/admin/Items";
 import Employees from "./Markup/pages/admin/Employees";
 import NewOrder from "./Markup/pages/admin/NewOrder";
 import Orders from "./Markup/pages/admin/Orders";
@@ -40,6 +41,9 @@ import Addcustomer from "./Markup/pages/admin/Addcustomer";
 
 import EmployeeStatsChart from "./Markup/Components/EmployeeStatsChart/EmployeeStatsChart";
 import CustomerEdit from "./Markup/pages/admin/CustomerEdit";
+
+
+import AddItemForm from "./Markup/Components/Admin/AddItem/AddItemForm";
 
 function App() {
   const { isLogged, userType } = useAuth();
@@ -77,6 +81,40 @@ function App() {
                     path="/admin/customer/:customer_id"
                     element={<CustomerEdit />}
                   />
+
+      <Routes>
+        {!isLogged ? (
+          <>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/" element={<HomePage />} />
+          </>
+        ) : (
+          <Route element={<PrivateAuthRoute />}>
+            {userType === 3 ? (
+              <>
+                <Route path="/" element={<Navigate to="/admin-dashboard" />} />
+                <Route path="/admin/add-employee" element={<AddEmployee />} />
+                <Route path="/admin/orders" element={<Orders />} />
+                <Route path="/admin/new-order" element={<NewOrder />} />
+                <Route path="/admin/services/add" element={<AddService />} />
+                <Route path="/admin/employees" element={<Employees />} />
+                <Route path="/admin/services/view" element={<ViewServices />} />
+
+                <Route
+                  path="/admin/add-customer"
+                  element={<AddCustomerForm />}
+                />
+                <Route path="/admin/add-item" element={<AddItemForm />} />
+                <Route path="/admin/customers" element={<Customers />} />
+                <Route path="/admin/items" element={<Items />} />
+
+                <Route path="/admin/add_customer" element={<Addcustomer />} />
+                <Route path="/admin/customers" element={<Customers />} />
+                <Route
+                  path="/admin/customer/:customer_id"
+                  element={<CustomerEdit />}
+                />
+
 
                   <Route path="/admin-dashboard" element={<AdminDashbord />} />
                 </>

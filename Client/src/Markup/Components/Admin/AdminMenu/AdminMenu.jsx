@@ -1,5 +1,3 @@
-// src/Components/AdminMenu/AdminMenu.js
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -17,11 +15,12 @@ import {
 import "./Admin.css";
 
 function AdminMenu() {
-  // State to manage the visibility of the services, orders, employees, and customers sub-menus
+  // State to manage the visibility of the services, orders, employees, customers, and items sub-menus
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isOrdersOpen, setIsOrdersOpen] = useState(false);
   const [isEmployeesOpen, setIsEmployeesOpen] = useState(false);
   const [isCustomersOpen, setIsCustomersOpen] = useState(false);
+  const [isItemsOpen, setIsItemsOpen] = useState(false); // State for items menu
 
   // Function to toggle the services sub-menu
   const toggleServicesMenu = () => {
@@ -41,6 +40,11 @@ function AdminMenu() {
   // Function to toggle the customers sub-menu
   const toggleCustomersMenu = () => {
     setIsCustomersOpen(!isCustomersOpen);
+  };
+
+  // Function to toggle the items sub-menu
+  const toggleItemsMenu = () => {
+    setIsItemsOpen(!isItemsOpen);
   };
 
   return (
@@ -127,6 +131,26 @@ function AdminMenu() {
             </Link>
             <Link to="/admin/customers" className="list-group-item">
               <FaCog className="icon" /> View Customers
+            </Link>
+          </div>
+        )}
+
+        {/* Items menu item with toggle functionality */}
+        <div className="list-group-item" onClick={toggleItemsMenu}>
+          <FaBox className="icon" /> Items
+          <span className="expand-icon">
+            {isItemsOpen ? <FaAngleUp /> : <FaAngleDown />}
+          </span>
+        </div>
+
+        {/* Conditional rendering of items sub-menu items */}
+        {isItemsOpen && (
+          <div className="sub-menu">
+            <Link to="/admin/add-item" className="list-group-item">
+              <FaPlus className="icon" /> Add Item
+            </Link>
+            <Link to="/admin/items" className="list-group-item">
+              <FaCog className="icon" /> View Items
             </Link>
           </div>
         )}
