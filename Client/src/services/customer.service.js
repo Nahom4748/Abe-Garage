@@ -1,5 +1,5 @@
 import axios from "../Axios/Axios";
-
+const api_url = "http://localhost:5000";
 const createCustomer = async (formData, token) => {
   console.log("Form data:", formData);
 

@@ -1,6 +1,6 @@
 import React from "react";
 import AdminMenu from "../../Components/Admin/AdminMenu/AdminMenu";
-
+import OrderStepper from "../../Components/Admin/NewOrder/OrderStepper";
 function NewOrder() {
   return (
     <>
@@ -10,7 +10,7 @@ function NewOrder() {
             <AdminMenu />
           </div>
           <div className="col-md-9 admin-right-side">
-            <h1>New Order</h1>{" "}
+            <OrderStepper />
           </div>
         </div>
       </div>
