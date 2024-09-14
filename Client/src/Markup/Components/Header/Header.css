@@ -1,56 +1,42 @@
-.top-bar {
-  background-color: #007bff; /* Primary blue */
-  color: white;
-}
-
+/* Header.css */
 .site-header {
-  background-color: white; /* White background for the main header */
+  background-color: #f8f9fa; /* Ensure the background color is set */
 }
 
-.navbar-light .navbar-toggler-icon {
-  filter: invert(1); /* Ensures the hamburger menu is visible */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1020; /* Ensures the header stays above other content */
 }
 
-.navbar-light .navbar-brand img {
-  max-height: 50px; /* Resizes the logo */
-}
-
-.custom-navbar .nav-link {
-  color: #007bff !important; /* Blue text color for nav links */
-}
-
-.custom-navbar .nav-link:hover {
-  color: #0056b3 !important; /* Darker blue on hover */
-}
-
-.custom-dropdown .dropdown-item {
-  background-color: #f8f9fa;
-}
-
-.custom-dropdown .dropdown-item:hover {
-  background-color: #e9ecef;
-}
-
-.btn-outline-primary {
-  background-color: white;
-  color: #007bff;
-}
-
-.btn-outline-primary:hover {
-  background-color: #007bff;
+/* Top Bar */
+.top-bar {
+  background-color: #007bff; /* Blue background */
   color: white;
 }
 
-.logo {
-  cursor: pointer;
-  max-height: 50px;
-}
-.btn-danger {
-  background-color: #dc3545; /* Red background */
-  color: white; /* White text */
+.top-bar .container-fluid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.btn-danger:hover {
-  background-color: #c82333; /* Darker red on hover */
-  color: white;
+.top-bar .left-column {
+  display: flex;
+  align-items: center;
+}
+
+.top-bar .text,
+.top-bar .office-hour {
+  margin-right: 1rem;
+}
+
+.top-bar .right-column {
+  display: flex;
+  align-items: center;
+}
+
+.top-bar .phone-number {
+  font-weight: bold;
 }

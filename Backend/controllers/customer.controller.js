@@ -11,16 +11,18 @@ async function createCustomer(req, res, next) {
     try {
       // Get the customer data from the request body
       const customerData = req.body;
-      console.log("Customer data:", customerData);
       // Call the createCustomer method from the customer service
       const customer = await customerService.createCustomer(customerData);
-      console.log("customer:", customer);
       if (!customer) {
         return res.status(400).json({ error: "Customer not created" });
       } else {
         return res
           .status(201)
-          .json({ message: "Customer created successfully", success: "true" });
+          .json({
+            message: "Customer created successfully",
+            success: "true",
+            customer_id: customer,
+          });
       }
     } catch (error) {
       // Send the error as a response with a more descriptive message
@@ -63,9 +65,46 @@ async function getCustomerById(req, res, next) {
   }
 }
 
+//create a function to update a customer
+async function updateCustomer(req, res, next) {
+  const { id } = req.params;
+  const customerData = req.body;
+  console.log("Updating customer with ID:", id); // Log the ID
+  try {
+    const customer = await customerService.updateCustomer(customerData, id);
+    console.log("Customer updated:", customer); // Log the updated customer object
+    if (!customer) {
+      return res.status(404).json({ error: "Customer not found" });
+    }
+    res.status(200).json({ message: "Customer updated successfully" });
+  } catch (error) {
+    console.error("Error updating customer:", error); // Log any errors
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+//create a function to delete a customer
+async function deleteCustomer(req, res, next) {
+  const { id } = req.params;
+  console.log("Deleting customer with ID:", id); // Log the ID
+  try {
+    const customer = await customerService.deleteCustomer(id);
+    console.log("Customer deleted:", customer); // Log the deleted customer object
+    if (!customer) {
+      return res.status(404).json({ error: "Customer not found" });
+    }
+    res.status(200).json({ message: "Customer deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting customer:", error); // Log any errors
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 //export the createCustomer function
 module.exports = {
   createCustomer,
   getAllCustomers,
   getCustomerById,
+  updateCustomer,
+  deleteCustomer,
 };

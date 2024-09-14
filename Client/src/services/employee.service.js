@@ -56,7 +56,8 @@ const getAllEmployees = async (token) => {
     },
   };
   const response = await fetch(
-    `http://localhost:5000:/api/employees`,
+    `http://localhost:5000/api/employees`,
+
     requestOptions
   );
   return response.json();

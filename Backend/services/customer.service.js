@@ -48,30 +48,12 @@ async function createCustomer(customer) {
       1,
     ]);
 
-    // if (rows2.affectedRows !== 1) return false;
-
-    // Insert into customer_vehicle_info table
-    // const query3 = `
-    //   INSERT INTO customer_vehicle_info (customer_id, vehicle_make, vehicle_model, vehicle_year, vehicle_tag, vehicle_mileage, vehicle_color, vehicle_type, vehicle_serial)
-    //   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    // const rows3 = await db.query(query3, [
-    //   customer_id,
-    //   customer.vehicle_make,
-    //   customer.vehicle_model,
-    //   customer.vehicle_year,
-    //   customer.vehicle_tag,
-    //   customer.vehicle_mileage,
-    //   customer.vehicle_color,
-    //   customer.vehicle_type,
-    //   customer.vehicle_serial,
-    // ]);
-
-    // if (rows3.affectedRows !== 1) return false;
     // Construct the customer object to return
     createdCustomer = {
       customer_id,
       customer_email: customer.customer_email,
     };
+    return createdCustomer;
     // return {
     //   customer_id,
     //   customer_email: customer.customer_email,
@@ -126,6 +108,65 @@ async function getCustomerById(customer_id) {
     return null;
   }
 }
+// a function to edit a customer
+async function updateCustomer(customer) {
+  // console.log("Editing customer");
+
+  // SQL query to update `customer_identifier`
+  const updateIdentifierQuery = `
+    UPDATE customer_identifier
+    SET customer_email = ?, customer_phone_number = ?
+    WHERE customer_id = ?;
+  `;
+
+  // SQL query to update `customer_info`
+  const updateInfoQuery = `
+    UPDATE customer_info
+    SET customer_first_name = ?, customer_last_name = ?, active_customer_status = ?
+    WHERE customer_id = ?;
+  `;
+
+  try {
+    // Start a transaction
+
+    // Update `customer_identifier`
+    await db.query(updateIdentifierQuery, [
+      customer.customer_email,
+      customer.customer_phone_number,
+      customer.customer_id,
+    ]);
+
+    // Update `customer_info`
+    await db.query(updateInfoQuery, [
+      customer.customer_first_name,
+      customer.customer_last_name,
+      customer.active_customer_status,
+      customer.customer_id,
+    ]);
+
+    console.log("Customer updated successfully");
+    return { success: true };
+  } catch (error) {
+    // Rollback transaction in case of error
+    console.error("Error executing query:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+// A function to delete a customer
+async function deleteCustomer(customer_id) {
+  console.log("Deleting customer with ID:", customer_id); // Log the ID
+  const query = `DELETE FROM customer_identifier WHERE customer_id = ?`;
+  try {
+    const [rows] = await db.query(query, [customer_id]);
+    console.log("Query Results:", rows); // Log the raw query results
+    return rows;
+  } catch (error) {
+    console.error("Error executing query:", error); // Log any errors
+    return null;
+  }
+}
+
 
 // Export the functions
 module.exports = {
@@ -133,4 +174,6 @@ module.exports = {
   createCustomer,
   getAllCustomers,
   getCustomerById,
+  updateCustomer,
+  deleteCustomer,
 };

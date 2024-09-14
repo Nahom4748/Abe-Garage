@@ -1,18 +1,41 @@
+import axios from "axios";
+
 // Import from the env
-const api_url = "http://localhost:8001";
+const api_url = "http://localhost:5000 ";
 
 // A function to send a POST request to add a new vehicle
-const addVehicle = async (formData, token) => {
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-access-token": token, // Ensure token is being sent
-    },
-    body: JSON.stringify(formData),
-  };
-  const response = await fetch(`${api_url}/api/vehicle`, requestOptions);
-  return response;
+const createVehicle = async (formData, token) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:5000/api/vehicle`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+      }
+    );
+
+    return response.data; // Axios returns the data directly
+  } catch (error) {
+    // Handle error
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      throw new Error(
+        error.response.data || "An error occurred while creating the vehicle"
+      );
+    } else if (error.request) {
+      // The request was made but no response was received
+      throw new Error("No response received from server");
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      throw new Error(
+        error.message || "An error occurred while creating the vehicle"
+      );
+    }
+  }
 };
 
 // A function to send a PUT request to update an existing vehicle
@@ -87,7 +110,7 @@ const getVehicleByCustomerName = async (customerName, token) => {
 
 // Export all the functions
 const vehicleService = {
-  addVehicle,
+  createVehicle,
   updateVehicle,
   deleteVehicle,
   getAllVehicles,
