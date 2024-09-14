@@ -18,9 +18,10 @@ function Search({ onCustomerSelect }) {
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
   const [selectedCustomerId, setSelectedCustomerId] = useState(null); // Customer selected for details
+  const [vehicles, setVehicles] = useState([]); // Store vehicle data for selected customer
 
   useEffect(() => {
-    // Fetch data from API
+    // Fetch customer data from API
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:5000/api/customers"); // Adjust endpoint as needed
@@ -35,6 +36,24 @@ function Search({ onCustomerSelect }) {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    // Fetch vehicle data when a customer is selected
+    const fetchVehicles = async () => {
+      if (selectedCustomerId) {
+        try {
+          const response = await axios.get(
+            `http://localhost:5000/api/vehicles?customer_id=${selectedCustomerId}`
+          ); // Adjust endpoint as needed
+          setVehicles(response.data);
+        } catch (err) {
+          setError("Failed to fetch vehicles");
+        }
+      }
+    };
+
+    fetchVehicles();
+  }, [selectedCustomerId]);
 
   const handleChange = (e) => {
     const newQuery = e.target.value;
@@ -139,6 +158,37 @@ function Search({ onCustomerSelect }) {
       {/* Show a message if no results are found */}
       {query && filteredData.length === 0 && (
         <div className="mt-3">No results found.</div>
+      )}
+
+      {/* Display vehicles for the selected customer */}
+      {selectedCustomerId && (
+        <div className="mt-3">
+          <h5>Vehicle Information</h5>
+          {vehicles.length > 0 ? (
+            <Table striped bordered hover className="mt-3">
+              <thead>
+                <tr>
+                  <th>Make</th>
+                  <th>Model</th>
+                  <th>Year</th>
+                  <th>Serial Number</th>
+                </tr>
+              </thead>
+              <tbody>
+                {vehicles.map((vehicle) => (
+                  <tr key={vehicle.vehicle_serial}>
+                    <td>{vehicle.vehicle_make}</td>
+                    <td>{vehicle.vehicle_model}</td>
+                    <td>{vehicle.vehicle_year}</td>
+                    <td>{vehicle.vehicle_serial}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          ) : (
+            <div>No vehicles found for this customer.</div>
+          )}
+        </div>
       )}
     </div>
   );

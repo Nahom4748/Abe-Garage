@@ -116,7 +116,7 @@ function App() {
         <Route path="/contact" element={<ContactUsPage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
