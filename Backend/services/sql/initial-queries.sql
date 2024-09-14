@@ -138,6 +138,17 @@ CREATE TABLE IF NOT EXISTS `order_status` (
   FOREIGN KEY (order_id) REFERENCES orders(order_id)
 ) ENGINE=InnoDB;
 
+-- Garage Purchases table
+CREATE TABLE IF NOT EXISTS `garage_purchases` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `item_name` varchar(255) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` decimal(10, 2) NOT NULL,
+  `purchase_date` DATE NOT NULL,
+  `image_url` varchar(255),
+  PRIMARY KEY (id)
+) ENGINE=InnoDB;
+
 -- Add the roles to the database 
 INSERT INTO company_roles (company_role_name)
 VALUES ('Employee'), ('Manager'), ('Admin');

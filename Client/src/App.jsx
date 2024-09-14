@@ -20,6 +20,7 @@ import AdminDashbord from "./Markup/pages/admin/AdminDashbord";
 import { useAuth } from "./Contexts/AuthContext";
 import AddService from "./Markup/pages/admin/AddService";
 import Customers from "./Markup/pages/admin/Customers";
+import Items from "./Markup/pages/admin/Items";
 import Employees from "./Markup/pages/admin/Employees";
 import NewOrder from "./Markup/pages/admin/NewOrder";
 import Orders from "./Markup/pages/admin/Orders";
@@ -39,6 +40,8 @@ import ViewServices from "./Markup/pages/admin/ViewServices";
 import Addcustomer from "./Markup/pages/admin/Addcustomer";
 import EmployeeStatsChart from "./Markup/Components/EmployeeStatsChart/EmployeeStatsChart";
 import AddCustomerForm from "./Markup/Components/Admin/AddCustomer/AddCustomerForm";
+
+import AddItemForm from "./Markup/Components/Admin/AddItem/AddItemForm";
 
 function App() {
   const { isLogged, userType } = useAuth();
@@ -67,7 +70,10 @@ function App() {
                   path="/admin/add-customer"
                   element={<AddCustomerForm />}
                 />
+                <Route path="/admin/add-item" element={<AddItemForm />} />
                 <Route path="/admin/customers" element={<Customers />} />
+                <Route path="/admin/items" element={<Items />} />
+
                 <Route path="/admin-dashboard" element={<AdminDashbord />} />
               </>
             ) : (
