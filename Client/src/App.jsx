@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-
 import "./Assets/css/font-icons.css";
 import "./Assets/sass/style.scss";
-
 import "./Assets/sass/elements/_button.scss";
-
 import Footer from "./Markup/Components/Footer/Footer";
 import Header from "./Markup/Components/Header/Header";
 import Register from "./Markup/Components/Register/Register";
@@ -38,12 +35,9 @@ import ServicePage from "./Markup/pages/ServicePage/ServicePage";
 import ContactUsPage from "./Markup/pages/contactUsPage/ContactUsPage";
 import ViewServices from "./Markup/pages/admin/ViewServices";
 import Addcustomer from "./Markup/pages/admin/Addcustomer";
-
-import EmployeeStatsChart from "./Markup/Components/EmployeeStatsChart/EmployeeStatsChart";
 import CustomerEdit from "./Markup/pages/admin/CustomerEdit";
-
-
-import AddItemForm from "./Markup/Components/Admin/AddItem/AddItemForm";
+import AddCustomerForm from "./Markup/Components/Admin/AddCustomer/AddCustomerForm";
+import AddItem from "./Markup/pages/admin/AddItem";
 
 function App() {
   const { isLogged, userType } = useAuth();
@@ -51,37 +45,6 @@ function App() {
   return (
     <>
       <Header />
-      <div>
-        <Routes>
-          {!isLogged ? (
-            <>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/" element={<HomePage />} />
-            </>
-          ) : (
-            <Route element={<PrivateAuthRoute />}>
-              {userType === 3 ? (
-                <>
-                  <Route
-                    path="/"
-                    element={<Navigate to="/admin-dashboard" />}
-                  />
-                  <Route path="/admin/add-employee" element={<AddEmployee />} />
-                  <Route path="/admin/orders" element={<Orders />} />
-                  <Route path="/admin/new-order" element={<NewOrder />} />
-                  <Route path="/admin/services/add" element={<AddService />} />
-                  <Route path="/admin/employees" element={<Employees />} />
-                  <Route
-                    path="/admin/services/view"
-                    element={<ViewServices />}
-                  />
-                  <Route path="/admin/add_customer" element={<Addcustomer />} />
-                  <Route path="/admin/customers" element={<Customers />} />
-                  <Route
-                    path="/admin/customer/:customer_id"
-                    element={<CustomerEdit />}
-                  />
-
       <Routes>
         {!isLogged ? (
           <>
@@ -104,10 +67,9 @@ function App() {
                   path="/admin/add-customer"
                   element={<AddCustomerForm />}
                 />
-                <Route path="/admin/add-item" element={<AddItemForm />} />
+                <Route path="/admin/add-item" element={<AddItem />} />
                 <Route path="/admin/customers" element={<Customers />} />
                 <Route path="/admin/items" element={<Items />} />
-
                 <Route path="/admin/add_customer" element={<Addcustomer />} />
                 <Route path="/admin/customers" element={<Customers />} />
                 <Route
@@ -115,48 +77,46 @@ function App() {
                   element={<CustomerEdit />}
                 />
 
+                <Route path="/admin-dashboard" element={<AdminDashbord />} />
+              </>
+            ) : (
+              <>
+                <Route path="/" element={<Navigate to="/manager" />} />
+                <Route path="/manager/orders" element={<OrdersManager />} />
+                <Route
+                  path="/manager/new-order"
+                  element={<NewOrderManager />}
+                />
+                <Route
+                  path="/manager/employees"
+                  element={<EmployeesManager />}
+                />
+                <Route
+                  path="/manager/services"
+                  element={<AddServiceManager />}
+                />
+                <Route
+                  path="/manager/add-customer"
+                  element={<AddcustomerManager />}
+                />
+                <Route
+                  path="/manager/customers"
+                  element={<CustomersManager />}
+                />
 
-                  <Route path="/admin-dashboard" element={<AdminDashbord />} />
-                </>
-              ) : (
-                <>
-                  <Route path="/" element={<Navigate to="/manager" />} />
-                  <Route path="/manager/orders" element={<OrdersManager />} />
-                  <Route
-                    path="/manager/new-order"
-                    element={<NewOrderManager />}
-                  />
-                  <Route
-                    path="/manager/employees"
-                    element={<EmployeesManager />}
-                  />
-                  <Route
-                    path="/manager/services"
-                    element={<AddServiceManager />}
-                  />
-                  <Route
-                    path="/manager/add-customer"
-                    element={<AddcustomerManager />}
-                  />
-                  <Route
-                    path="/manager/customers"
-                    element={<CustomersManager />}
-                  />
-
-                  <Route path="/manager/add-news" element={<News />} />
-                  <Route path="/manager" element={<ManagerDashbord />} />
-                </>
-              )}
-            </Route>
-          )}
-          <Route path="/register" element={<Register />} />
-          <Route path="/services" element={<ServicePage />} />
-          <Route path="/about" element={<AboutUsPage />} />
-          <Route path="/contact" element={<ContactUsPage />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </div>
-      {/* <Footer /> */}
+                <Route path="/manager/add-news" element={<News />} />
+                <Route path="/manager" element={<ManagerDashbord />} />
+              </>
+            )}
+          </Route>
+        )}
+        <Route path="/register" element={<Register />} />
+        <Route path="/services" element={<ServicePage />} />
+        <Route path="/about" element={<AboutUsPage />} />
+        <Route path="/contact" element={<ContactUsPage />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+      <Footer />
     </>
   );
 }
