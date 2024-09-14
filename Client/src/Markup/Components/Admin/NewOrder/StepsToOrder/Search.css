@@ -1,26 +1,14 @@
-.search-container {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 1rem;
+/* Search.css */
+.custom-modal .modal-dialog {
+  max-width: 100%;
+  margin: 0;
+  height: 60vh;
 }
 
-.search-input {
-  border-radius: 0.25rem 0 0 0.25rem;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+.custom-modal .modal-content {
+  height: 100%;
 }
 
-.search-button {
-  border-radius: 0 0.25rem 0.25rem 0;
-  box-shadow: none;
-  border: 1px solid transparent;
-}
-
-.search-button .bi {
-  font-size: 1.2rem;
-}
-
-/* Optional: Add focus styles for better UX */
-.search-input:focus {
-  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
-  border-color: #007bff;
+.custom-modal .modal-body {
+  overflow-y: auto;
 }

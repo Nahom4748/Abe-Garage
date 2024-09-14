@@ -42,6 +42,7 @@ import Addcustomer from "./Markup/pages/admin/Addcustomer";
 import EmployeeStatsChart from "./Markup/Components/EmployeeStatsChart/EmployeeStatsChart";
 import CustomerEdit from "./Markup/pages/admin/CustomerEdit";
 
+
 import AddItemForm from "./Markup/Components/Admin/AddItem/AddItemForm";
 
 function App() {
@@ -50,6 +51,37 @@ function App() {
   return (
     <>
       <Header />
+      <div>
+        <Routes>
+          {!isLogged ? (
+            <>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/" element={<HomePage />} />
+            </>
+          ) : (
+            <Route element={<PrivateAuthRoute />}>
+              {userType === 3 ? (
+                <>
+                  <Route
+                    path="/"
+                    element={<Navigate to="/admin-dashboard" />}
+                  />
+                  <Route path="/admin/add-employee" element={<AddEmployee />} />
+                  <Route path="/admin/orders" element={<Orders />} />
+                  <Route path="/admin/new-order" element={<NewOrder />} />
+                  <Route path="/admin/services/add" element={<AddService />} />
+                  <Route path="/admin/employees" element={<Employees />} />
+                  <Route
+                    path="/admin/services/view"
+                    element={<ViewServices />}
+                  />
+                  <Route path="/admin/add_customer" element={<Addcustomer />} />
+                  <Route path="/admin/customers" element={<Customers />} />
+                  <Route
+                    path="/admin/customer/:customer_id"
+                    element={<CustomerEdit />}
+                  />
+
       <Routes>
         {!isLogged ? (
           <>
@@ -83,46 +115,48 @@ function App() {
                   element={<CustomerEdit />}
                 />
 
-                <Route path="/admin-dashboard" element={<AdminDashbord />} />
-              </>
-            ) : (
-              <>
-                <Route path="/" element={<Navigate to="/manager" />} />
-                <Route path="/manager/orders" element={<OrdersManager />} />
-                <Route
-                  path="/manager/new-order"
-                  element={<NewOrderManager />}
-                />
-                <Route
-                  path="/manager/employees"
-                  element={<EmployeesManager />}
-                />
-                <Route
-                  path="/manager/services"
-                  element={<AddServiceManager />}
-                />
-                <Route
-                  path="/manager/add-customer"
-                  element={<AddcustomerManager />}
-                />
-                <Route
-                  path="/manager/customers"
-                  element={<CustomersManager />}
-                />
 
-                <Route path="/manager/add-news" element={<News />} />
-                <Route path="/manager" element={<ManagerDashbord />} />
-              </>
-            )}
-          </Route>
-        )}
-        <Route path="/register" element={<Register />} />
-        <Route path="/services" element={<ServicePage />} />
-        <Route path="/about" element={<AboutUsPage />} />
-        <Route path="/contact" element={<ContactUsPage />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-      <Footer />
+                  <Route path="/admin-dashboard" element={<AdminDashbord />} />
+                </>
+              ) : (
+                <>
+                  <Route path="/" element={<Navigate to="/manager" />} />
+                  <Route path="/manager/orders" element={<OrdersManager />} />
+                  <Route
+                    path="/manager/new-order"
+                    element={<NewOrderManager />}
+                  />
+                  <Route
+                    path="/manager/employees"
+                    element={<EmployeesManager />}
+                  />
+                  <Route
+                    path="/manager/services"
+                    element={<AddServiceManager />}
+                  />
+                  <Route
+                    path="/manager/add-customer"
+                    element={<AddcustomerManager />}
+                  />
+                  <Route
+                    path="/manager/customers"
+                    element={<CustomersManager />}
+                  />
+
+                  <Route path="/manager/add-news" element={<News />} />
+                  <Route path="/manager" element={<ManagerDashbord />} />
+                </>
+              )}
+            </Route>
+          )}
+          <Route path="/register" element={<Register />} />
+          <Route path="/services" element={<ServicePage />} />
+          <Route path="/about" element={<AboutUsPage />} />
+          <Route path="/contact" element={<ContactUsPage />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </div>
+      {/* <Footer /> */}
     </>
   );
 }
