@@ -16,7 +16,7 @@ function AddOrder({ customer, onProceed }) {
         .then((response) => {
           setVehicles(response.data);
         })
-        .catch((err) => {
+        .catch(() => {
           setError("Failed to fetch vehicles");
         })
         .finally(() => {
@@ -87,7 +87,7 @@ function AddOrder({ customer, onProceed }) {
           <tbody>
             {vehicles.map((vehicle) => (
               <tr
-                key={`${vehicle.vehicle_serial}-${vehicle.vehicle_id}`} // Ensuring unique key
+                key={`${vehicle.vehicle_serial}-${vehicle.vehicle_id}`} // Unique key
                 onClick={() => handleVehicleSelection(vehicle)}
                 style={{
                   cursor: "pointer",

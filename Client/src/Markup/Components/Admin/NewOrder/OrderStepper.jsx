@@ -1,25 +1,19 @@
 import React, { useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  ProgressBar,
-  ButtonGroup,
-} from "react-bootstrap";
+import { Container, Row, Col, Button, ButtonGroup } from "react-bootstrap";
 import Search from "./StepsToOrder/Search";
 import AddOrder from "./StepsToOrder/AddOrder";
-import "./neworder.css"; // Custom styles
-import CompleteOrder from "./StepsToOrder/completeorder";
+import CompleteOrder from "./StepsToOrder/CompleteOrder";
 import AssignItems from "./StepsToOrder/AssignItems/AssignItems";
 import AssignEmployee from "./StepsToOrder/AssignEmployee/AssignEmployee";
 import SubmitOrder from "./StepsToOrder/SubmitOrder/SubmitOrder";
+import "./neworder.css"; // Custom styles
 
 const NewOrder = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedData, setSelectedData] = useState({
     customer: null,
     vehicles: [],
+    orderDetails: {},
   });
 
   const handleNext = () => {
@@ -36,11 +30,28 @@ const NewOrder = () => {
 
   const handleCustomerSelect = (customer) => {
     setSelectedData((prevData) => ({ ...prevData, customer }));
+    handleNext(); // Move to Add Vehicle step
   };
 
   const handleProceed = (data) => {
-    setSelectedData(data);
-    setCurrentStep(2); // Move to Complete Order step
+    setSelectedData((prevData) => ({
+      ...prevData,
+      vehicles: data.vehicles,
+    }));
+    handleNext(); // Move to Complete Order step
+  };
+
+  const handleOrderDetails = (data) => {
+    setSelectedData((prevData) => ({
+      ...prevData,
+      orderDetails: data,
+    }));
+    handleNext(); // Move to Assign Items step
+  };
+
+  const handleOrderSubmission = () => {
+    // Handle order submission logic here
+    alert("Order Submitted Successfully!");
   };
 
   const steps = [
@@ -60,6 +71,7 @@ const NewOrder = () => {
         <CompleteOrder
           customer={selectedData.customer}
           vehicles={selectedData.vehicles}
+          onSubmit={handleOrderDetails}
         />
       ),
     },
@@ -69,16 +81,17 @@ const NewOrder = () => {
         <AssignItems
           customer={selectedData.customer}
           vehicles={selectedData.vehicles}
+          orderDetails={selectedData.orderDetails}
         />
       ),
     },
     {
-      name: " Employee",
+      name: "Assign Employee",
       component: <AssignEmployee />,
     },
     {
       name: "Submit Order",
-      component: <SubmitOrder />,
+      component: <SubmitOrder onSubmit={handleOrderSubmission} />,
     },
   ];
 
@@ -88,7 +101,6 @@ const NewOrder = () => {
         <Row className="text-center mb-4">
           {steps.map((step, index) => (
             <Col key={index} className="d-flex flex-column align-items-center">
-              {/* Step Circles */}
               <div
                 className={`circle ${
                   index <= currentStep
@@ -96,6 +108,7 @@ const NewOrder = () => {
                     : "bg-light text-muted"
                 } rounded-circle d-flex justify-content-center align-items-center`}
                 style={{ width: "3rem", height: "3rem", fontSize: "1.25rem" }}
+                aria-label={`Step ${index + 1}: ${step.name}`}
               >
                 {index < currentStep ? (
                   <i className="fa fa-check"></i>
@@ -104,7 +117,6 @@ const NewOrder = () => {
                 )}
               </div>
 
-              {/* Step Labels */}
               <div
                 className={`label-box ${
                   index <= currentStep
@@ -118,9 +130,7 @@ const NewOrder = () => {
           ))}
         </Row>
 
-        <div className="step-content mb-4">
-          {React.cloneElement(steps[currentStep].component)}
-        </div>
+        <div className="step-content mb-4">{steps[currentStep].component}</div>
 
         <Row className="text-center step-footer">
           <Col>
@@ -134,19 +144,17 @@ const NewOrder = () => {
               >
                 Previous
               </Button>
-              {currentStep < steps.length - 1 ? (
-                <Button variant="success" size="sm" onClick={handleNext}>
-                  Next
-                </Button>
-              ) : (
-                <Button
-                  variant="success"
-                  size="sm"
-                  onClick={() => alert("Order Submitted Successfully!")}
-                >
-                  Submit Order
-                </Button>
-              )}
+              <Button
+                variant="success"
+                size="sm"
+                onClick={
+                  currentStep < steps.length - 1
+                    ? handleNext
+                    : handleOrderSubmission
+                }
+              >
+                {currentStep < steps.length - 1 ? "Next" : "Submit Order"}
+              </Button>
             </ButtonGroup>
           </Col>
         </Row>

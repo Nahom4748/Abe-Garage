@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  Card,
-  ListGroup,
-  Form,
-  Row,
-  Col,
-  Alert,
-  Button,
-} from "react-bootstrap";
+import { Card, Form, Row, Col, Alert, Button, Table } from "react-bootstrap";
 import axios from "axios";
 import "./CompleteOrder.css"; // Custom styles
 
-const CompleteOrder = ({ customer, vehicles }) => {
+const CompleteOrder = ({ customer, vehicles, onSubmit }) => {
   const [services, setServices] = useState([]);
   const [error, setError] = useState(null);
   const [selectedServices, setSelectedServices] = useState({});
@@ -20,12 +12,9 @@ const CompleteOrder = ({ customer, vehicles }) => {
 
   useEffect(() => {
     if (customer) {
-      // Fetch services from the API
       axios
         .get("http://localhost:5000/api/services")
-        .then((response) => {
-          setServices(response.data.data);
-        })
+        .then((response) => setServices(response.data.data))
         .catch((err) => {
           console.error("Error fetching services:", err);
           setError("Failed to fetch services");
@@ -42,104 +31,161 @@ const CompleteOrder = ({ customer, vehicles }) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    // Handle the form submission logic, like sending data to an API or performing further validation.
-    console.log("Selected Services:", selectedServices);
-    console.log("Custom Price:", customPrice);
-    console.log("Additional Notes:", additionalNotes);
+
+    const selectedServiceDetails = services
+      .filter((service) => selectedServices[service.service_id])
+      .map((service) => ({
+        id: service.service_id,
+        name: service.service_name,
+        description: service.service_description,
+        price: service.service_price,
+      }));
+
+    onSubmit({
+      selectedServices: selectedServiceDetails,
+      customPrice: parseFloat(customPrice) || 0,
+      additionalNotes,
+    });
   };
 
-  if (!customer) {
-    return <Alert variant="warning">No customer selected.</Alert>;
-  }
-
-  if (!vehicles || vehicles.length === 0) {
+  if (!customer) return <Alert variant="warning">No customer selected.</Alert>;
+  if (!vehicles || vehicles.length === 0)
     return <Alert variant="warning">No vehicle information available.</Alert>;
-  }
+
+  // Generate selected services list
+  const selectedServiceDetails = services
+    .filter((service) => selectedServices[service.service_id])
+    .map((service) => ({
+      ...service,
+      price: service.service_price.toFixed(2),
+    }));
 
   return (
     <Card className="mb-4 shadow-sm border-0">
       <Card.Body className="step-container">
         <Card.Title className="fs-4">Complete Order</Card.Title>
-        <Card.Text className="small-text text-muted">
-          <strong>Customer:</strong> {customer.customer_first_name}{" "}
-          {customer.customer_last_name}
-        </Card.Text>
-        <Card.Text className="small-text text-muted">
-          <strong>Email:</strong> {customer.customer_email}
-        </Card.Text>
-        <Card.Text className="small-text text-muted">
-          <strong>Phone:</strong> {customer.customer_phone_number}
-        </Card.Text>
 
+        {/* Customer Info */}
+        <h5 className="mt-4 fs-5">Customer Information</h5>
+        <Table bordered className="customer-info-table mt-3">
+          <tbody>
+            <tr>
+              <td>
+                <strong>Customer ID:</strong> {customer.customer_id}
+              </td>
+              <td>
+                <strong>Name:</strong> {customer.customer_first_name}{" "}
+                {customer.customer_last_name}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Email:</strong> {customer.customer_email}
+              </td>
+              <td>
+                <strong>Phone:</strong> {customer.customer_phone_number}
+              </td>
+            </tr>
+          </tbody>
+        </Table>
+
+        {/* Vehicle Info Table */}
         <h5 className="mt-4 fs-5">Vehicle Information</h5>
-        <Row xs={1} md={2} lg={3} className="g-3">
-          {vehicles.map((vehicle) => (
-            <Col key={vehicle.vehicle_serial}>
-              <Card className="vehicle-card">
-                <Card.Body className="p-3">
-                  <Card.Title className="vehicle-title">
-                    {vehicle.vehicle_make} {vehicle.vehicle_model}
-                  </Card.Title>
-                  <Card.Text className="small-text text-muted">
-                    <strong>Year:</strong> {vehicle.vehicle_year}
-                  </Card.Text>
-                  <Card.Text className="small-text text-muted">
-                    <strong>Mileage:</strong>{" "}
-                    {vehicle.vehicle_mileage.toLocaleString()}
-                  </Card.Text>
-                  <Card.Text className="small-text text-muted">
-                    <strong>Tag:</strong> {vehicle.vehicle_tag}
-                  </Card.Text>
-                  <Card.Text className="small-text text-muted">
-                    <strong>Type:</strong> {vehicle.vehicle_type}
-                  </Card.Text>
-                  <Card.Text className="small-text text-muted">
-                    <strong>Serial:</strong> {vehicle.vehicle_serial}
-                  </Card.Text>
-                  <Card.Text className="small-text text-muted">
-                    <strong>Color:</strong> {vehicle.vehicle_color}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        <Table striped bordered hover className="vehicle-table mt-3">
+          <thead>
+            <tr>
+              <th>Make</th>
+              <th>Model</th>
+              <th>Year</th>
+              <th>Mileage</th>
+              <th>Tag</th>
+              <th>Type</th>
+              <th>Serial</th>
+              <th>Color</th>
+            </tr>
+          </thead>
+          <tbody>
+            {vehicles.map((vehicle) => (
+              <tr key={vehicle.vehicle_serial}>
+                <td>{vehicle.vehicle_make}</td>
+                <td>{vehicle.vehicle_model}</td>
+                <td>{vehicle.vehicle_year}</td>
+                <td>{vehicle.vehicle_mileage.toLocaleString()}</td>
+                <td>{vehicle.vehicle_tag}</td>
+                <td>{vehicle.vehicle_type}</td>
+                <td>{vehicle.vehicle_serial}</td>
+                <td>{vehicle.vehicle_color}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
 
+        {/* Service Info Table */}
         <h5 className="mt-4 fs-5">Service Information</h5>
         {error && <Alert variant="danger">{error}</Alert>}
         {services.length > 0 ? (
-          <ListGroup className="service-list mt-3">
-            {services.map((service) => (
-              <ListGroup.Item
-                key={service.service_id}
-                className="d-flex justify-content-between align-items-center py-3 try"
-              >
-                <div className="service-info">
-                  <h6 className="mb-1">{service.service_name}</h6>
-                  <p className="small-text text-muted mb-1">
-                    {service.service_description}
-                  </p>
-                  <strong className="service-price">
-                    ${service.service_price.toFixed(2)}
-                  </strong>
-                </div>
-                <Form.Check
-                  type="checkbox"
-                  id={`service-${service.service_id}`}
-                  checked={!!selectedServices[service.service_id]}
-                  onChange={() => handleCheckboxChange(service.service_id)}
-                  className="checkbox-large"
-                />
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
+          <Row className="mt-3">
+            <Col xs={12} md={7}>
+              <Table striped bordered hover className="service-table">
+                <thead>
+                  <tr>
+                    <th>Select</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {services.map((service) => (
+                    <tr
+                      key={service.service_id}
+                      style={{
+                        backgroundColor: selectedServices[service.service_id]
+                          ? "#d3f9d8"
+                          : "inherit",
+                      }}
+                    >
+                      <td>
+                        <Form.Check
+                          type="checkbox"
+                          id={`service-${service.service_id}`}
+                          checked={!!selectedServices[service.service_id]}
+                          onChange={() =>
+                            handleCheckboxChange(service.service_id)
+                          }
+                          className="checkbox-large"
+                        />
+                      </td>
+                      <td>{service.service_name}</td>
+                      <td>{service.service_description}</td>
+                      <td>${service.service_price.toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </Col>
+            <Col xs={12} md={5}>
+              <div className="selected-services-summary">
+                <h5>Selected Services</h5>
+                {selectedServiceDetails.length > 0 ? (
+                  <ul>
+                    {selectedServiceDetails.map((service) => (
+                      <li key={service.id}>{service.service_name}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No services selected.</p>
+                )}
+              </div>
+            </Col>
+          </Row>
         ) : (
           <Alert variant="info" className="mt-3">
             No services available.
           </Alert>
         )}
 
-        {/* Additional Order Details Section */}
+        {/* Additional Order Details Form */}
         <h5 className="mt-4 fs-5">Additional Order Details</h5>
         <Form onSubmit={handleFormSubmit}>
           <Form.Group className="mb-3" controlId="formNotes">
@@ -164,6 +210,10 @@ const CompleteOrder = ({ customer, vehicles }) => {
               min="0"
             />
           </Form.Group>
+
+          <Button type="submit" variant="primary">
+            Submit
+          </Button>
         </Form>
       </Card.Body>
     </Card>
