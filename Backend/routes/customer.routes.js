@@ -27,6 +27,8 @@ router.delete(
   // [authMiddleware.verifyToken, authMiddleware.isAdmin],
   customerController.deleteCustomer
 );
+//route get customer status
+router.get("/api/customers/stats", customerController.getCustomerByStatus);
 
 //export the router
 module.exports = router;

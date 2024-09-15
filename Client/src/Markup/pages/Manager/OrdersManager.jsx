@@ -1,5 +1,6 @@
 import React from "react";
 import ManagerMenu from "../../Components/Manager/ManagerMenu/ManagerMenu";
+import Listorder from "../../Components/Admin/ListOrder/Listorder";
 
 function OrdersManager() {
   return (
@@ -10,7 +11,7 @@ function OrdersManager() {
             <ManagerMenu />
           </div>
           <div className="col-md-9 admin-right-side">
-            <h1>Orders</h1>{" "}
+            <Listorder />
           </div>
         </div>
       </div>
