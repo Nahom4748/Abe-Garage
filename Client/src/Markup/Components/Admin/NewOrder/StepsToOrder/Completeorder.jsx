@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Card, Form, Row, Col, Alert, Button, Table } from "react-bootstrap";
+import {
+  Card,
+  Form,
+  Row,
+  Col,
+  Alert,
+  Button,
+  Table,
+  Modal,
+} from "react-bootstrap";
 import axios from "axios";
+import { FaCheck, FaTimes } from "react-icons/fa";
 import "./CompleteOrder.css"; // Custom styles
 
 const CompleteOrder = ({ customer, vehicles, onSubmit }) => {
@@ -9,6 +19,7 @@ const CompleteOrder = ({ customer, vehicles, onSubmit }) => {
   const [selectedServices, setSelectedServices] = useState({});
   const [additionalNotes, setAdditionalNotes] = useState("");
   const [customPrice, setCustomPrice] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     if (customer) {
@@ -41,6 +52,11 @@ const CompleteOrder = ({ customer, vehicles, onSubmit }) => {
         price: service.service_price,
       }));
 
+    if (selectedServiceDetails.length === 0) {
+      setShowAlert(true);
+      return;
+    }
+
     onSubmit({
       selectedServices: selectedServiceDetails,
       customPrice: parseFloat(customPrice) || 0,
@@ -52,7 +68,6 @@ const CompleteOrder = ({ customer, vehicles, onSubmit }) => {
   if (!vehicles || vehicles.length === 0)
     return <Alert variant="warning">No vehicle information available.</Alert>;
 
-  // Generate selected services list
   const selectedServiceDetails = services
     .filter((service) => selectedServices[service.service_id])
     .map((service) => ({
@@ -60,13 +75,23 @@ const CompleteOrder = ({ customer, vehicles, onSubmit }) => {
       price: service.service_price.toFixed(2),
     }));
 
+  // Check if any services are selected
+  const hasSelectedServices = Object.values(selectedServices).some(Boolean);
+
   return (
     <Card className="mb-4 shadow-sm border-0">
       <Card.Body className="step-container">
         <Card.Title className="fs-4">Complete Order</Card.Title>
 
         {/* Customer Info */}
-        <h5 className="mt-4 fs-5">Customer Information</h5>
+        <h5 className="mt-4 fs-5">
+          Customer Information{" "}
+          {customer ? (
+            <FaCheck className="text-success ms-2" />
+          ) : (
+            <FaTimes className="text-danger ms-2" />
+          )}
+        </h5>
         <Table bordered className="customer-info-table mt-3">
           <tbody>
             <tr>
@@ -90,7 +115,14 @@ const CompleteOrder = ({ customer, vehicles, onSubmit }) => {
         </Table>
 
         {/* Vehicle Info Table */}
-        <h5 className="mt-4 fs-5">Vehicle Information</h5>
+        <h5 className="mt-4 fs-5">
+          Vehicle Information{" "}
+          {vehicles.length > 0 ? (
+            <FaCheck className="text-success ms-2" />
+          ) : (
+            <FaTimes className="text-danger ms-2" />
+          )}
+        </h5>
         <Table striped bordered hover className="vehicle-table mt-3">
           <thead>
             <tr>
@@ -121,7 +153,18 @@ const CompleteOrder = ({ customer, vehicles, onSubmit }) => {
         </Table>
 
         {/* Service Info Table */}
-        <h5 className="mt-4 fs-5">Service Information</h5>
+        <h5 className="mt-4 fs-5">
+          Service Information{" "}
+          {services.length > 0 ? (
+            hasSelectedServices ? (
+              <FaCheck className="text-success ms-2" />
+            ) : (
+              <FaTimes className="text-danger ms-2" />
+            )
+          ) : (
+            <FaTimes className="text-danger ms-2" />
+          )}
+        </h5>
         {error && <Alert variant="danger">{error}</Alert>}
         {services.length > 0 ? (
           <Row className="mt-3">
@@ -216,6 +259,21 @@ const CompleteOrder = ({ customer, vehicles, onSubmit }) => {
           </Button>
         </Form>
       </Card.Body>
+
+      {/* Alert Modal */}
+      <Modal show={showAlert} onHide={() => setShowAlert(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Service Selection Required</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Please select at least one service before submitting the order.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAlert(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Card>
   );
 };

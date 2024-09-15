@@ -16,7 +16,7 @@ router.post(
 // Create a route for getting all items (GET request)
 router.get(
   "/api/items",
-  //   [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  [authMiddleware.verifyToken, authMiddleware.isAdmin],
   itemController.getAllItems
 );
 // Uncomment for authentication and authorization

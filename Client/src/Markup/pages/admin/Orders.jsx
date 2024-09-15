@@ -1,5 +1,6 @@
 import React from "react";
 import AdminMenu from "../../Components/Admin/AdminMenu/AdminMenu";
+import Listorder from "../../Components/Admin/ListOrder/Listorder";
 
 function Orders() {
   return (
@@ -10,7 +11,7 @@ function Orders() {
             <AdminMenu />
           </div>
           <div className="col-md-9 admin-right-side">
-            <h1>Orders</h1>{" "}
+            <Listorder />
           </div>
         </div>
       </div>
