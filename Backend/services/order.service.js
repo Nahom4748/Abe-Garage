@@ -1,10 +1,8 @@
-
 const conn = require("../config/db.config");
 
 // Function to add a new order
 async function addOrder(orderData) {
   try {
-    // Insert the order into the orders table
     const insertOrderQuery = `
             INSERT INTO orders (employee_id, customer_id, vehicle_id, order_date, active_order, order_hash)
             VALUES (?, ?, ?, ?, ?, ?)
@@ -16,8 +14,8 @@ async function addOrder(orderData) {
       orderData.employee_id,
       orderData.customer_id,
       orderData.vehicle_id,
-      orderData.order_date,
-      1, // Active order
+      orderData.Order_Date,
+      orderData.order_completed,
       orderHash,
     ]);
 
@@ -45,13 +43,18 @@ async function addOrder(orderData) {
             INSERT INTO order_services (order_id, service_id, service_completed)
             VALUES (?, ?, ?)
         `;
+    let services = JSON.parse(orderData.order_services);
 
-    const orderServices = JSON.parse(orderData.Order_services);
-    for (let service of orderServices) {
+    // loop through the order_services array
+    for (let service of services) {
+      if (service.service_id === undefined) {
+        throw new Error("service_id is required for each service");
+      }
+
       await conn.query(insertOrderServicesQuery, [
         newOrderId,
         service.service_id,
-        service.service_completed || 0,
+        service.service_completed,
       ]);
     }
 
@@ -74,43 +77,42 @@ function generateOrderHash() {
 }
 
 // Function to retrieve all orders
-async function getAllOrders() {
+const getAllOrders = async (req, res) => {
   try {
-    // Query to select all orders
     const ordersQuery = `
-            SELECT 
-                o.order_id, o.employee_id, o.customer_id, o.vehicle_id, 
-                oi.additional_request AS order_description, 
-                o.order_date, oi.estimated_completion_date, oi.completion_date, 
-                oi.additional_requests_completed AS order_completed
-            FROM orders o
-            LEFT JOIN order_info oi ON o.order_id = oi.order_id;
-        `;
+      SELECT 
+        o.order_id AS 'OrderId',
+        CONCAT(cinfo.customer_first_name, ' ', cinfo.customer_last_name) AS 'Customer',
+        CONCAT(ci.customer_email, '\\n', ci.customer_phone_number) AS 'CustomerContact',
+        CONCAT(v.vehicle_make, ' ', v.vehicle_model, '\\n', v.vehicle_year, '\\n', v.vehicle_serial) AS 'Vehicle',
+        DATE_FORMAT(o.order_date, '%d/%m/%Y') AS 'OrderDate',
+        CONCAT(ei.employee_first_name, ' ', ei.employee_last_name) AS 'ReceivedBy',
+        CASE 
+          WHEN oi.additional_requests_completed = 1 THEN 'Completed'
+          ELSE 'In progress'
+        END AS 'OrderStatus'
+      FROM orders o
+      LEFT JOIN customer_identifier ci ON o.customer_id = ci.customer_id
+      LEFT JOIN customer_info cinfo ON ci.customer_id = cinfo.customer_id
+      LEFT JOIN customer_vehicle_info v ON o.vehicle_id = v.vehicle_id
+      LEFT JOIN employee e ON o.employee_id = e.employee_id
+      LEFT JOIN employee_info ei ON e.employee_id = ei.employee_id
+      LEFT JOIN order_info oi ON o.order_id = oi.order_id;
+    `;
 
-    const orders = await conn.query(ordersQuery);
-
-    // Query to select all services associated with orders
-    const orderServicesQuery = `
-            SELECT os.order_service_id, os.order_id, os.service_id
-            FROM order_services os;
-        `;
-
-    const orderServices = await conn.query(orderServicesQuery);
-
-    // Map services to corresponding orders
-    const ordersWithServices = orders.map((order) => {
-      order.order_services = orderServices.filter(
-        (service) => service.order_id === order.order_id
-      );
-      return order;
-    });
-
-    return ordersWithServices;
+    // Execute the query
+    const [rows] = await conn.query(ordersQuery);
+    console.log(rows);
+    // Send the results as a JSON response
+    return rows;
   } catch (error) {
     console.error("Error retrieving orders:", error);
-    throw new Error("Failed to retrieve orders");
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "An unexpected error occurred while retrieving orders.",
+    });
   }
-}
+};
 
 // Function to retrieve an order by ID
 async function getOrderById(orderId) {
@@ -154,54 +156,80 @@ async function getOrderById(orderId) {
   }
 }
 
-
 // Service function to update an order
 async function updateOrder(orderData) {
   const {
-    order_id, customer_id, employee_id, vehicle_id, service_id,
-    order_date, estimated_completion_date, completion_date,
-    order_description, order_completed, order_services
+    order_id,
+    customer_id,
+    employee_id,
+    vehicle_id,
+    service_id,
+    order_date,
+    estimated_completion_date,
+    completion_date,
+    order_description,
+    order_completed,
+    order_services,
   } = orderData;
 
   try {
     // Check if the order exists
-    const orderCheck = await conn.query("SELECT * FROM orders WHERE order_id = ?", [order_id]);
+    const orderCheck = await conn.query(
+      "SELECT * FROM orders WHERE order_id = ?",
+      [order_id]
+    );
     if (orderCheck.length === 0) {
-      return { status: 'fail', error: 'not_found' };
+      return { status: "fail", error: "not_found" };
     }
 
     // Update the orders table
-    await conn.query(`
+    await conn.query(
+      `
       UPDATE orders
       SET customer_id = ?, employee_id = ?, vehicle_id = ?, order_date = ?
       WHERE order_id = ?
-    `, [customer_id, employee_id, vehicle_id, order_date, order_id]);
+    `,
+      [customer_id, employee_id, vehicle_id, order_date, order_id]
+    );
 
     // Update the order_info table
-    await conn.query(`
+    await conn.query(
+      `
       UPDATE order_info
       SET estimated_completion_date = ?, completion_date = ?, additional_request = ?, additional_requests_completed = ?
       WHERE order_id = ?
-    `, [estimated_completion_date, completion_date, order_description, order_completed, order_id]);
+    `,
+      [
+        estimated_completion_date,
+        completion_date,
+        order_description,
+        order_completed,
+        order_id,
+      ]
+    );
 
     // Update the order_services table
     // Delete existing services for the order, then re-insert the new ones
-    await conn.query("DELETE FROM order_services WHERE order_id = ?", [order_id]);
+    await conn.query("DELETE FROM order_services WHERE order_id = ?", [
+      order_id,
+    ]);
 
     const services = JSON.parse(order_services); // Assuming `order_services` is sent as a JSON string
     for (let service of services) {
-      await conn.query(`
+      await conn.query(
+        `
         INSERT INTO order_services (order_id, service_id, service_completed)
         VALUES (?, ?, ?)
-      `, [order_id, service.service_id, service.service_completed]);
+      `,
+        [order_id, service.service_id, service.service_completed]
+      );
     }
 
     // Return success status
-    return { status: 'success' };
-
+    return { status: "success" };
   } catch (error) {
     console.error("Error updating order: ", error);
-    return { status: 'error', message: error.message };
+    return { status: "error", message: error.message };
   }
 }
 
@@ -221,10 +249,12 @@ async function deleteOrderById(orderId) {
     const deleteOrderInfoQuery = "DELETE FROM order_info WHERE order_id = ?";
     await conn.query(deleteOrderInfoQuery, [orderId]);
 
-    const deleteOrderServicesQuery = "DELETE FROM order_services WHERE order_id = ?";
+    const deleteOrderServicesQuery =
+      "DELETE FROM order_services WHERE order_id = ?";
     await conn.query(deleteOrderServicesQuery, [orderId]);
 
-    const deleteOrderStatusQuery = "DELETE FROM order_status WHERE order_id = ?";
+    const deleteOrderStatusQuery =
+      "DELETE FROM order_status WHERE order_id = ?";
     await conn.query(deleteOrderStatusQuery, [orderId]);
 
     // Delete the order from the orders table
@@ -239,8 +269,6 @@ async function deleteOrderById(orderId) {
     throw error;
   }
 }
-
-
 
 // Export the service function
 module.exports = {

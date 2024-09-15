@@ -10,13 +10,13 @@ const authMiddleware = require("../middlewares/auth.middleware");
 // Define the route for adding a new order
 router.post(
   "/api/order",
-  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  // [authMiddleware.verifyToken, authMiddleware.isAdmin],
   orderController.addOrder
 );
 // Define the route for retrieving all orders
 router.get(
   "/api/orders",
-  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  // [authMiddleware.verifyToken, authMiddleware.isAdmin],
   orderController.getAllOrders
 );
 // Define the route for retrieving an order by ID

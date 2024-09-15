@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Card, Table, Spinner, Alert } from "react-bootstrap";
 import axios from "axios";
+import { FaCheck, FaTimes } from "react-icons/fa";
 
 function AddOrder({ customer, onProceed }) {
   const [vehicles, setVehicles] = useState([]);
@@ -41,28 +42,44 @@ function AddOrder({ customer, onProceed }) {
 
   return (
     <div>
-      <h4>Customer Details</h4>
-      <Card className="mb-4">
-        <Card.Body>
-          <Card.Title>Customer Information</Card.Title>
-          <Card.Text>
-            <strong>Customer ID:</strong> {customer.customer_id}
-            <br />
-            <strong>First Name:</strong> {customer.customer_first_name}
-            <br />
-            <strong>Last Name:</strong> {customer.customer_last_name}
-            <br />
-            <strong>Email:</strong> {customer.customer_email}
-            <br />
-            <strong>Phone:</strong> {customer.customer_phone_number}
-            <br />
-            <strong>Added Date:</strong>{" "}
-            {new Date(customer.customer_added_date).toLocaleString()}
-          </Card.Text>
-        </Card.Body>
-      </Card>
+      <h5 className="mt-4 fs-5">
+        Customer Information{" "}
+        {customer ? (
+          <FaCheck className="text-success ms-2" />
+        ) : (
+          <FaTimes className="text-danger ms-2" />
+        )}
+      </h5>
+      <Table bordered className="customer-info-table mt-3">
+        <tbody>
+          <tr>
+            <td>
+              <strong>Customer ID:</strong> {customer.customer_id}
+            </td>
+            <td>
+              <strong>Name:</strong> {customer.customer_first_name}{" "}
+              {customer.customer_last_name}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Email:</strong> {customer.customer_email}
+            </td>
+            <td>
+              <strong>Phone:</strong> {customer.customer_phone_number}
+            </td>
+          </tr>
+        </tbody>
+      </Table>
 
-      <h4>Vehicle Information</h4>
+      <h5 className="mt-4 fs-5">
+        Vehicle Information{" "}
+        {!selectedVehicle ? (
+          <FaTimes className="text-danger ms-2" />
+        ) : (
+          <FaCheck className="text-success ms-2" />
+        )}
+      </h5>
       {loading ? (
         <Spinner animation="border" role="status">
           <span className="visually-hidden">Loading...</span>
@@ -70,7 +87,7 @@ function AddOrder({ customer, onProceed }) {
       ) : error ? (
         <Alert variant="danger">{error}</Alert>
       ) : vehicles.length > 0 ? (
-        <Table striped bordered hover>
+        <Table striped bordered hover className="vehicle-table mt-3">
           <thead>
             <tr>
               <th>Select</th>
@@ -87,7 +104,7 @@ function AddOrder({ customer, onProceed }) {
           <tbody>
             {vehicles.map((vehicle) => (
               <tr
-                key={`${vehicle.vehicle_serial}-${vehicle.vehicle_id}`} // Unique key
+                key={`${vehicle.vehicle_serial}-${vehicle.vehicle_id}`}
                 onClick={() => handleVehicleSelection(vehicle)}
                 style={{
                   cursor: "pointer",
