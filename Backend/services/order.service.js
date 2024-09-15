@@ -79,31 +79,60 @@ function generateOrderHash() {
 // Function to retrieve all orders
 const getAllOrders = async (req, res) => {
   try {
+    // SQL query to get all orders with detailed information
     const ordersQuery = `
       SELECT 
-        o.order_id AS 'OrderId',
-        CONCAT(cinfo.customer_first_name, ' ', cinfo.customer_last_name) AS 'Customer',
-        CONCAT(ci.customer_email, '\\n', ci.customer_phone_number) AS 'CustomerContact',
-        CONCAT(v.vehicle_make, ' ', v.vehicle_model, '\\n', v.vehicle_year, '\\n', v.vehicle_serial) AS 'Vehicle',
-        DATE_FORMAT(o.order_date, '%d/%m/%Y') AS 'OrderDate',
-        CONCAT(ei.employee_first_name, ' ', ei.employee_last_name) AS 'ReceivedBy',
-        CASE 
-          WHEN oi.additional_requests_completed = 1 THEN 'Completed'
-          ELSE 'In progress'
-        END AS 'OrderStatus'
+        o.order_id,
+        cinfo.customer_first_name AS customer_first_name,
+        cinfo.customer_last_name AS customer_last_name,
+        v.vehicle_make,
+        v.vehicle_model,
+        v.vehicle_year,
+        o.order_date,
+        ei.employee_first_name AS assigned_employee_first_name,
+        ei.employee_last_name AS assigned_employee_last_name,
+        oi.additional_request AS order_description,
+        oi.estimated_completion_date,
+        oi.completion_date,
+        oi.additional_requests_completed AS order_status,
+        GROUP_CONCAT(
+          CONCAT(
+            '{"service_id": "', os.service_id,
+            '", "service_name": "', s.service_name,
+            '", "service_price": "', s.Service_Price,
+            '", "service_completed": "', os.service_completed,
+            '"}'
+          ) ORDER BY os.service_id ASC
+          SEPARATOR ','
+        ) AS order_services
       FROM orders o
       LEFT JOIN customer_identifier ci ON o.customer_id = ci.customer_id
       LEFT JOIN customer_info cinfo ON ci.customer_id = cinfo.customer_id
       LEFT JOIN customer_vehicle_info v ON o.vehicle_id = v.vehicle_id
       LEFT JOIN employee e ON o.employee_id = e.employee_id
       LEFT JOIN employee_info ei ON e.employee_id = ei.employee_id
-      LEFT JOIN order_info oi ON o.order_id = oi.order_id;
+      LEFT JOIN order_info oi ON o.order_id = oi.order_id
+      LEFT JOIN order_services os ON o.order_id = os.order_id
+      LEFT JOIN common_services s ON os.service_id = s.service_id
+      GROUP BY 
+        o.order_id, 
+        cinfo.customer_first_name, 
+        cinfo.customer_last_name,
+        v.vehicle_make, 
+        v.vehicle_model, 
+        v.vehicle_year, 
+        o.order_date, 
+        ei.employee_first_name, 
+        ei.employee_last_name, 
+        oi.additional_request, 
+        oi.estimated_completion_date, 
+        oi.completion_date, 
+        oi.additional_requests_completed;
     `;
 
     // Execute the query
     const [rows] = await conn.query(ordersQuery);
-    console.log(rows);
-    // Send the results as a JSON response
+    console.log("Orders Data:", rows); // Log the data to inspect
     return rows;
   } catch (error) {
     console.error("Error retrieving orders:", error);

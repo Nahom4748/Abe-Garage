@@ -53,7 +53,7 @@ const EmployeesList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [employeesPerPage] = useState(5);
 
-  const { employee } = useAuth();
+  const { employee, isAdmin } = useAuth();
   const token = employee ? employee.employee_token : null;
 
   useEffect(() => {
@@ -300,7 +300,7 @@ const EmployeesList = () => {
       </Popover.Body>
     </Popover>
   );
-
+  console.log(employee);
   return (
     <div className="employee-list">
       {apiError && (
@@ -347,31 +347,36 @@ const EmployeesList = () => {
                   <td>{employee.employee_email}</td>
                   <td>{employee.employee_phone}</td>
                   <td>{roleLabels[employee.company_role_id]}</td>
-                  <td>{statusLabels[employee.status]}</td>
+                  <td>{statusLabels[employee.active_employee]}</td>
+
                   <td>
+                    {isAdmin ? (
+                      <>
+                        <Button
+                          variant="warning"
+                          className="me-2"
+                          onClick={() => handleEditClick(employee)}
+                        >
+                          <FaEdit />
+                        </Button>
+                        <Button
+                          variant="danger"
+                          className="me-2"
+                          onClick={() => handleDeleteClick(employee)}
+                        >
+                          <FaTrash />
+                        </Button>
+                      </>
+                    ) : null}
                     <OverlayTrigger
                       trigger="click"
-                      placement="left" // Updated to 'left'
+                      placement="left"
                       overlay={employeePopover(employee)}
                     >
                       <Button variant="info" className="me-2">
                         <FaEye />
                       </Button>
                     </OverlayTrigger>
-                    <Button
-                      variant="warning"
-                      className="me-2"
-                      onClick={() => handleEditClick(employee)}
-                    >
-                      <FaEdit />
-                    </Button>
-                    <Button
-                      variant="danger"
-                      className="me-2"
-                      onClick={() => handleDeleteClick(employee)}
-                    >
-                      <FaTrash />
-                    </Button>
                     <Button
                       variant="secondary"
                       className="me-2"

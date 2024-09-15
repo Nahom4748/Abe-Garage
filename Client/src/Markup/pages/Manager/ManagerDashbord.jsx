@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import ManagerMenu from "../../Components/Manager/ManagerMenu/ManagerMenu";
-import EmployeeStatsChart from "../../Components/EmployeeStatsChart/EmployeeStatsChart";
+import StatsDashboard from "../../Components/StatsDashboard/StatsDashboard";
 
 function ManagerDashbord() {
   return (
@@ -11,7 +11,7 @@ function ManagerDashbord() {
           <ManagerMenu />
         </Col>
         <Col md={9}>
-          <EmployeeStatsChart />
+          <StatsDashboard />
         </Col>
       </Row>
     </Container>

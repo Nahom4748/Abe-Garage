@@ -16,13 +16,11 @@ async function createCustomer(req, res, next) {
       if (!customer) {
         return res.status(400).json({ error: "Customer not created" });
       } else {
-        return res
-          .status(201)
-          .json({
-            message: "Customer created successfully",
-            success: "true",
-            customer_id: customer,
-          });
+        return res.status(201).json({
+          message: "Customer created successfully",
+          success: "true",
+          customer_id: customer,
+        });
       }
     } catch (error) {
       // Send the error as a response with a more descriptive message
@@ -99,7 +97,20 @@ async function deleteCustomer(req, res, next) {
     res.status(500).json({ error: "Internal server error" });
   }
 }
-
+// create a functuon return customer status
+async function getCustomerByStatus(req, res, next) {
+  try {
+    const status = await customerService.getCustomerStatus();
+    if (status) {
+      res.status(200).json(status);
+    } else {
+      res.status(404).json({ error: "No data found" });
+    }
+  } catch (error) {
+    console.error("Error in getCustomerByStatus:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
 //export the createCustomer function
 module.exports = {
   createCustomer,
@@ -107,4 +118,5 @@ module.exports = {
   getCustomerById,
   updateCustomer,
   deleteCustomer,
+  getCustomerByStatus,
 };
