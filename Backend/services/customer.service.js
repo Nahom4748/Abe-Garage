@@ -166,6 +166,26 @@ async function deleteCustomer(customer_id) {
   }
 }
 
+// a function rerun customer status
+async function getCustomerStatus() {
+  const query = `
+    SELECT 
+      SUM(CASE WHEN active_customer_status = 1 THEN 1 ELSE 0 END) AS activeCustomers,
+      SUM(CASE WHEN active_customer_status = 0 THEN 1 ELSE 0 END) AS inactiveCustomers,
+      COUNT(*) AS totalCustomers
+    FROM customer_info
+  `;
+
+  try {
+    const [rows] = await db.query(query);
+
+    return rows;
+  } catch (error) {
+    console.error("Error executing query:", error);
+    return null;
+  }
+}
+
 // Export the functions
 module.exports = {
   checkIfCustomerExists,
@@ -174,4 +194,5 @@ module.exports = {
   getCustomerById,
   updateCustomer,
   deleteCustomer,
+  getCustomerStatus,
 };

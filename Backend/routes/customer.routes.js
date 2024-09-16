@@ -20,13 +20,15 @@ router.put(
   "/api/customer/:id",
   // [authMiddleware.verifyToken, authMiddleware.isAdmin],
   customerController.updateCustomer
-)
+);
 //create a route for the customer controller request a delete request
 router.delete(
   "/api/customer/:id",
   // [authMiddleware.verifyToken, authMiddleware.isAdmin],
   customerController.deleteCustomer
 );
+//route get customer status
+router.get("/api/customers/stats", customerController.getCustomerByStatus);
 
 //export the router
 module.exports = router;

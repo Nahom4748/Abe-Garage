@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-
 import "./Assets/css/font-icons.css";
 import "./Assets/sass/style.scss";
-
 import "./Assets/sass/elements/_button.scss";
-
 import Footer from "./Markup/Components/Footer/Footer";
 import Header from "./Markup/Components/Header/Header";
 import Register from "./Markup/Components/Register/Register";
@@ -38,11 +35,9 @@ import ServicePage from "./Markup/pages/ServicePage/ServicePage";
 import ContactUsPage from "./Markup/pages/contactUsPage/ContactUsPage";
 import ViewServices from "./Markup/pages/admin/ViewServices";
 import Addcustomer from "./Markup/pages/admin/Addcustomer";
-
-import EmployeeStatsChart from "./Markup/Components/EmployeeStatsChart/EmployeeStatsChart";
 import CustomerEdit from "./Markup/pages/admin/CustomerEdit";
-
-import AddItemForm from "./Markup/Components/Admin/AddItem/AddItemForm";
+import AddCustomerForm from "./Markup/Components/Admin/AddCustomer/AddCustomerForm";
+import AddItem from "./Markup/pages/admin/AddItem";
 
 function App() {
   const { isLogged, userType } = useAuth();
@@ -72,10 +67,9 @@ function App() {
                   path="/admin/add-customer"
                   element={<AddCustomerForm />}
                 />
-                <Route path="/admin/add-item" element={<AddItemForm />} />
+                <Route path="/admin/add-item" element={<AddItem />} />
                 <Route path="/admin/customers" element={<Customers />} />
                 <Route path="/admin/items" element={<Items />} />
-
                 <Route path="/admin/add_customer" element={<Addcustomer />} />
                 <Route path="/admin/customers" element={<Customers />} />
                 <Route
@@ -122,7 +116,7 @@ function App() {
         <Route path="/contact" element={<ContactUsPage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

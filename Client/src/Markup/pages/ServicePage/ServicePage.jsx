@@ -1,7 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import img1 from "../../../Assets/img/Gif.gif";
 import img2 from "../../../Assets/img/10001.jpg";
 function ServicePage() {
+  const [blogs, setBlogs] = useState([]);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/news");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setBlogs(data); // Adjust according to the structure of your API response
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+  console.log(blogs);
   return (
     <>
       {/* <HeaderPage /> */}
@@ -311,224 +330,60 @@ function ServicePage() {
               </div>
             </div>
           </div>
-          <div className="row  ltn__blog-slider-one-active slick-arrow-1">
-            <div className="col-lg-12">
-              <div
-                className="ltn__blog-item ltn__blog-item-4 bg-image"
-                data-bg="img/blog/1.jpg"
-              >
-                <div className="ltn__blog-brief">
-                  <div className="ltn__blog-meta">
-                    <ul>
-                      <li className="ltn__blog-author">
-                        <a href="#">
-                          <i className="far fa-user"></i>by: Admin
-                        </a>
-                      </li>
-                      <li className="ltn__blog-tags">
-                        <a href="#">
-                          <i className="fas fa-tags"></i>Services
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <h3 className="ltn__blog-title">
-                    <a href="blog-details.html">
-                      Electric Car Maintenance, Servicing & Repairs
-                    </a>
-                  </h3>
-                  <p>
-                    Lorem ipsum labore et dolore mag na aliqua. Ut enim ad minim
-                    veniam, quis nostrud exercitation ullamco.
-                  </p>
-                  <div className="ltn__blog-meta-btn">
-                    <div className="ltn__blog-meta">
-                      <ul>
-                        <li className="ltn__blog-date">
-                          <i className="far fa-calendar-alt"></i> June 24, 2020
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="ltn__blog-btn">
-                      <a href="blog-details.html">Read more</a>
-                    </div>
+          <div className="row ltn__blog-slider-one-active slick-arrow-1">
+            {blogs.length === 0 ? (
+              <div className="col-lg-12">
+                <div className="ltn__blog-item">
+                  <div className="ltn__blog-brief">
+                    <p>Loading blogs...</p>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="col-lg-12">
-              <div
-                className="ltn__blog-item ltn__blog-item-4 bg-image"
-                data-bg="img/blog/2.jpg"
-              >
-                <div className="ltn__blog-brief">
-                  <div className="ltn__blog-meta">
-                    <ul>
-                      <li className="ltn__blog-author">
-                        <a href="#">
-                          <i className="far fa-user"></i>by: Admin
-                        </a>
-                      </li>
-                      <li className="ltn__blog-tags">
-                        <a href="#">
-                          <i className="fas fa-tags"></i>Services
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <h3 className="ltn__blog-title">
-                    <a href="blog-details.html">
-                      Common Engine Oil Problems and Solutions
-                    </a>
-                  </h3>
-                  <p>
-                    Lorem ipsum labore et dolore mag na aliqua. Ut enim ad minim
-                    veniam, quis nostrud exercitation ullamco.
-                  </p>
-                  <div className="ltn__blog-meta-btn">
-                    <div className="ltn__blog-meta">
-                      <ul>
-                        <li className="ltn__blog-date">
-                          <i className="far fa-calendar-alt"></i> June 24, 2020
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="ltn__blog-btn">
-                      <a href="blog-details.html">Read more</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-12">
-              <div
-                className="ltn__blog-item ltn__blog-item-4 bg-image"
-                data-bg="img/blog/3.jpg"
-              >
-                <div className="ltn__blog-brief">
-                  <div className="ltn__blog-meta">
-                    <ul>
-                      <li className="ltn__blog-author">
-                        <a href="#">
-                          <i className="far fa-user"></i>by: Admin
-                        </a>
-                      </li>
-                      <li className="ltn__blog-tags">
-                        <a href="#">
-                          <i className="fas fa-tags"></i>Services
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <h3 className="ltn__blog-title">
-                    <a href="blog-details.html">
-                      How to Prepare for your First Track Day!
-                    </a>
-                  </h3>
-                  <p>
-                    Lorem ipsum labore et dolore mag na aliqua. Ut enim ad minim
-                    veniam, quis nostrud exercitation ullamco.
-                  </p>
-                  <div className="ltn__blog-meta-btn">
-                    <div className="ltn__blog-meta">
-                      <ul>
-                        <li className="ltn__blog-date">
-                          <i className="far fa-calendar-alt"></i> June 24, 2020
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="ltn__blog-btn">
-                      <a href="blog-details.html">Read more</a>
+            ) : (
+              blogs.map((blog) => (
+                <div className="col-lg-12" key={blog.id}>
+                  <div
+                    className="ltn__blog-item ltn__blog-item-4 bg-image"
+                    style={{ backgroundImage: `url(${blog.image})` }} // Use the URL from the blog object
+                  >
+                    <div className="ltn__blog-brief">
+                      <div className="ltn__blog-meta">
+                        <ul>
+                          <li className="ltn__blog-author">
+                            <a href="#">
+                              <i className="far fa-user"></i>by: {blog.author}
+                            </a>
+                          </li>
+                          <li className="ltn__blog-tags">
+                            <a href="#">
+                              <i className="fas fa-tags"></i>
+                              {blog.category}
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <h3 className="ltn__blog-title">
+                        <a href={`/blog-details/${blog.id}`}>{blog.title}</a>
+                      </h3>
+                      <p>{blog.summary}</p>
+                      <div className="ltn__blog-meta-btn">
+                        <div className="ltn__blog-meta">
+                          <ul>
+                            <li className="ltn__blog-date">
+                              <i className="far fa-calendar-alt"></i>{" "}
+                              {new Date(blog.date).toLocaleDateString()}
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="ltn__blog-btn">
+                          <a href={`/blog-details/${blog.id}`}>Read more</a>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="col-lg-12">
-              <div
-                className="ltn__blog-item ltn__blog-item-4 bg-image"
-                data-bg="img/blog/4.jpg"
-              >
-                <div className="ltn__blog-brief">
-                  <div className="ltn__blog-meta">
-                    <ul>
-                      <li className="ltn__blog-author">
-                        <a href="#">
-                          <i className="far fa-user"></i>by: Admin
-                        </a>
-                      </li>
-                      <li className="ltn__blog-tags">
-                        <a href="#">
-                          <i className="fas fa-tags"></i>Services
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <h3 className="ltn__blog-title">
-                    <a href="blog-details.html">
-                      The branch of biology that deals with the normal.
-                    </a>
-                  </h3>
-                  <p>
-                    Lorem ipsum labore et dolore mag na aliqua. Ut enim ad minim
-                    veniam, quis nostrud exercitation ullamco.
-                  </p>
-                  <div className="ltn__blog-meta-btn">
-                    <div className="ltn__blog-meta">
-                      <ul>
-                        <li className="ltn__blog-date">
-                          <i className="far fa-calendar-alt"></i> June 24, 2020
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="ltn__blog-btn">
-                      <a href="blog-details.html">Read more</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-12">
-              <div className="ltn__blog-item ltn__blog-item-4">
-                <div className="ltn__blog-brief">
-                  <div className="ltn__blog-meta">
-                    <ul>
-                      <li className="ltn__blog-author">
-                        <a href="#">
-                          <i className="far fa-user"></i>by: Admin
-                        </a>
-                      </li>
-                      <li className="ltn__blog-tags">
-                        <a href="#">
-                          <i className="fas fa-tags"></i>Services
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <h3 className="ltn__blog-title">
-                    <a href="blog-details.html">
-                      How to: Make Your Tires Last Longer
-                    </a>
-                  </h3>
-                  <p>
-                    Lorem ipsum labore et dolore mag na aliqua. Ut enim ad minim
-                    veniam, quis nostrud exercitation ullamco.
-                  </p>
-                  <div className="ltn__blog-meta-btn">
-                    <div className="ltn__blog-meta">
-                      <ul>
-                        <li className="ltn__blog-date">
-                          <i className="far fa-calendar-alt"></i> June 24, 2020
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="ltn__blog-btn">
-                      <a href="blog-details.html">Read more</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+              ))
+            )}
           </div>
         </div>
       </div>

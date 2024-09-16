@@ -1,0 +1,56 @@
+/* CompleteOrder.css */
+.customer-info-table {
+  margin-bottom: 1rem;
+}
+
+.customer-info-table td {
+  vertical-align: middle;
+  padding: 8px;
+}
+
+.checkbox-large {
+  transform: scale(1.5); /* Adjust size as needed */
+  margin-right: 10px;
+}
+
+.service-table td,
+.vehicle-table td {
+  vertical-align: middle; /* Center content vertically in cells */
+}
+
+.selected-services-summary {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.selected-services-summary ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.selected-services-summary li {
+  border-bottom: 1px solid #dee2e6;
+  padding: 5px 0;
+}
+
+.step-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
+.pagination-controls {
+  margin-top: 1rem;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #007bff;
+  border-color: #007bff;
+}

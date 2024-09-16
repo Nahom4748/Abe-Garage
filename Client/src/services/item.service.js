@@ -4,8 +4,6 @@ import axios from "axios";
 
 // A function to send a POST request to create a new item
 const createItem = async (formData, token) => {
-  console.log("Form data:", formData);
-
   const requestOptions = {
     method: "POST",
     headers: {
@@ -27,33 +25,6 @@ const createItem = async (formData, token) => {
     throw error; // Rethrow the error to handle it elsewhere
   }
 };
-
-// A function to send a GET request to retrieve all items
-// const getAllItems = async (token) => {
-//   const requestOptions = {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "x-access-token": token,
-//     },
-//   };
-
-//   try {
-//     const response = await fetch(
-//       "http://localhost:5000/api/items",
-//       requestOptions
-//     );
-//     console.log("Response:", response);
-//     if (!response.ok) {
-//       const errorText = await response.text();
-//       throw new Error(errorText);
-//     }
-//     return await response.json(); // Assuming the server responds with JSON
-//   } catch (error) {
-//     console.error("Error retrieving items:", error);
-//     throw error; // Rethrow the error to handle it elsewhere
-//   }
-// };
 
 const getAllItems = async (token) => {
   const requestOptions = {
