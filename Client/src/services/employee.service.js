@@ -1,7 +1,9 @@
 // Import from the env
 // const api_url = process.env.REACT_APP_API_URL;
 // Import axios
-import axios from "axios";
+// import axios from "axios";
+
+import axios from "../Axios/Axios";
 
 // A function to send post request to create a new employee
 
@@ -106,6 +108,7 @@ const deleteEmployee = async (employeeId, token) => {
     throw error; // Rethrow the error to be handled by calling code
   }
 };
+
 //a function to reseet password
 const resetEmployeePassword = async (employeeId, token) => {
   try {
@@ -127,11 +130,13 @@ const resetEmployeePassword = async (employeeId, token) => {
     console.error("Error resetting employee password:", error);
   }
 };
+
 // Export all the functions
 const employeeService = {
   createEmployee,
   getAllEmployees,
   updateEmployee,
   deleteEmployee,
+  resetEmployeePassword,
 };
 export default employeeService;

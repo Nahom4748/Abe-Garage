@@ -143,7 +143,6 @@ async function updateCustomer(customer) {
       customer.active_customer_status,
       customer.customer_id,
     ]);
-
     console.log("Customer updated successfully");
     return { success: true };
   } catch (error) {
@@ -166,7 +165,6 @@ async function deleteCustomer(customer_id) {
     return null;
   }
 }
-
 
 // Export the functions
 module.exports = {
