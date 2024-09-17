@@ -257,7 +257,7 @@ async function getOredrByCustumerId(req, res) {
     }
 
     // Fetch the order by ID from your service layer
-    const OrderData = await orderService.getOrderByCostumerId(costumer);
+    const OrderData = await orderService.getOrderByCustomerId(costumer);
     if (!OrderData) {
       // Return 404 Not Found if the order doesn't exist
       return res.status(404).json({

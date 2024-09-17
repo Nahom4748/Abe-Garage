@@ -601,11 +601,13 @@ async function getOrderByEmployeeId(EmployeeId) {
   }
 }
 //service for costumer
-async function getOrderByCostumerId(cutomerId) {
-  if (!cutomerId) {
+async function getOrderByCustomerId(customerId) {
+  if (!customerId) {
     throw new Error("Invalid customer ID");
   }
-  console.log(cutomerId);
+
+  console.log("Customer ID:", customerId);
+
   try {
     const orderQuery = `
       SELECT 
@@ -669,8 +671,9 @@ async function getOrderByCostumerId(cutomerId) {
       ORDER BY o.order_date DESC;
     `;
 
-    const rows = await conn.query(orderQuery, [cutomerId]);
-    console.log(rows);
+    const [rows] = await conn.query(orderQuery, [customerId]); // Destructuring to get rows
+    console.log("Query Result:", rows);
+
     if (!rows || rows.length === 0) {
       return null;
     }
@@ -730,7 +733,7 @@ async function getOrderByCostumerId(cutomerId) {
       },
     }));
 
-    console.log(formattedOrders);
+    console.log("Formatted Orders:", formattedOrders);
     return formattedOrders;
   } catch (error) {
     console.error("Error retrieving orders by customer ID:", error);
@@ -746,5 +749,5 @@ module.exports = {
   updateOrder,
   deleteOrderById,
   getOrderByEmployeeId,
-  getOrderByCostumerId,
+  getOrderByCustomerId,
 };
