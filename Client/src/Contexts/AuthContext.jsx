@@ -12,7 +12,6 @@ export const AuthProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [employee, setEmployee] = useState(null);
   const [userType, setUserType] = useState(null);
-
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -48,7 +47,7 @@ export const AuthProvider = ({ children }) => {
     setUserType(null);
     localStorage.removeItem("employee"); // Ensure you clear local storage if it's used
   };
-
+  console.log(employee);
   const value = {
     isLogged,
     isAdmin,

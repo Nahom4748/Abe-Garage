@@ -32,7 +32,9 @@ function Header() {
             <div className="phone-number me-4">
               <strong>
                 {isLogged
-                  ? `Welcome, ${employee?.employee_first_name || "User"}`
+                  ? employee?.employee_first_name
+                    ? `Welcome, ${employee?.employee_first_name} `
+                    : `Welcome, ${employee?.customer_email}`
                   : "Welcome"}
               </strong>
             </div>

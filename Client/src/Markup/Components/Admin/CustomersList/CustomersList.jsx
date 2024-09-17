@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Table, Spinner, Modal, Button, Pagination } from "react-bootstrap";
+import {
+  Table,
+  Spinner,
+  Pagination,
+  Tooltip,
+  OverlayTrigger,
+  Button,
+} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import customerService from "../../../../services/customer.service";
 import { format } from "date-fns";
 import { useAuth } from "../../../../Contexts/AuthContext";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import CustomerDetail from "../CustomerDetail/CustomerDetail";
 import "./CustomersList.css";
 
 const CustomersList = () => {
@@ -73,15 +81,13 @@ const CustomersList = () => {
 
   const handleCloseModal = () => setShowModal(false);
 
-  const handleDelete = async () => {
-    if (!selectedCustomer) return;
+  const handleDelete = async (customer) => {
+    if (!customer) return;
 
     try {
-      await customerService.deleteCustomer(selectedCustomer.customer_id, token);
+      await customerService.deleteCustomer(customer.customer_id, token);
       setCustomers(
-        customers.filter(
-          (customer) => customer.customer_id !== selectedCustomer.customer_id
-        )
+        customers.filter((c) => c.customer_id !== customer.customer_id)
       );
       handleCloseModal();
     } catch (error) {
@@ -89,18 +95,9 @@ const CustomersList = () => {
     }
   };
 
-  const handleDeleteClick = (customer) => {
-    setCustomerToDelete(customer);
-    setShowConfirmDelete(true);
-  };
-
   const handleEdit = (customer) => {
     navigate(`/admin/customer/${customer.customer_id}`);
-  };
-
-  const handleEditClick = (customer) => (e) => {
-    e.stopPropagation();
-    handleEdit(customer);
+    handleCloseModal(); // Close the modal after navigation
   };
 
   return (
@@ -133,7 +130,7 @@ const CustomersList = () => {
                   <thead>
                     <tr>
                       <th>Customer ID</th>
-                      <th>Full Name</th> {/* Changed column header */}
+                      <th>Full Name</th>
                       <th>Customer Email</th>
                       <th>Customer Phone</th>
                       <th>Created Date</th>
@@ -143,49 +140,57 @@ const CustomersList = () => {
                   </thead>
                   <tbody>
                     {currentCustomers.map((customer) => (
-                      <tr
+                      <OverlayTrigger
                         key={customer.customer_id}
-                        onClick={() => handleRowClick(customer)}
-                        style={{ cursor: "pointer" }}
+                        placement="top"
+                        overlay={
+                          <Tooltip id="button-tooltip">
+                            Click for details
+                          </Tooltip>
+                        }
                       >
-                        <td>{customer.customer_id}</td>
-                        <td>{`${customer.customer_first_name} ${customer.customer_last_name}`}</td>{" "}
-                        {/* Combined name */}
-                        <td>{customer.customer_email}</td>
-                        <td>{customer.customer_phone_number}</td>
-                        <td>
-                          {format(
-                            new Date(customer.customer_added_date),
-                            "MM-dd-yyyy | HH:mm"
-                          )}
-                        </td>
-                        <td>
-                          {customer.active_customer_status === 1
-                            ? "Active"
-                            : "Inactive"}
-                        </td>
-                        <td className="action-buttons">
-                          <Button
-                            variant="link"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleEdit(customer);
-                            }}
-                          >
-                            <FaEdit color="blue" />
-                          </Button>
-                          <Button
-                            variant="link"
-                            className="ms-2"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteClick(customer);
-                            }}
-                          >
-                            <FaTrashAlt color="red" />
-                          </Button>
-                        </td>
-                      </tr>
+                        <tr
+                          onClick={() => handleRowClick(customer)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <td>{customer.customer_id}</td>
+                          <td>{`${customer.customer_first_name} ${customer.customer_last_name}`}</td>
+                          <td>{customer.customer_email}</td>
+                          <td>{customer.customer_phone_number}</td>
+                          <td>
+                            {format(
+                              new Date(customer.customer_added_date),
+                              "MM-dd-yyyy | HH:mm"
+                            )}
+                          </td>
+                          <td>
+                            {customer.active_customer_status === 1
+                              ? "Active"
+                              : "Inactive"}
+                          </td>
+                          <td className="action-buttons">
+                            <Button
+                              variant="link"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEdit(customer);
+                              }}
+                            >
+                              <FaEdit color="blue" />
+                            </Button>
+                            <Button
+                              variant="link"
+                              className="ms-2"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteClick(customer);
+                              }}
+                            >
+                              <FaTrashAlt color="red" />
+                            </Button>
+                          </td>
+                        </tr>
+                      </OverlayTrigger>
                     ))}
                   </tbody>
                 </Table>
@@ -204,58 +209,13 @@ const CustomersList = () => {
             </div>
           </div>
 
-          <Modal show={showModal} onHide={handleCloseModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>Customer Details</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              {selectedCustomer && (
-                <>
-                  <p>
-                    <strong>Customer ID:</strong> {selectedCustomer.customer_id}
-                  </p>
-                  <p>
-                    <strong>Name:</strong>{" "}
-                    {`${selectedCustomer.customer_first_name} ${selectedCustomer.customer_last_name}`}
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {selectedCustomer.customer_email}
-                  </p>
-                  <p>
-                    <strong>Phone:</strong>{" "}
-                    {selectedCustomer.customer_phone_number}
-                  </p>
-                  <p>
-                    <strong>Created Date:</strong>{" "}
-                    {format(
-                      new Date(selectedCustomer.customer_added_date),
-                      "MM-dd-yyyy | HH:mm"
-                    )}
-                  </p>
-                  <p>
-                    <strong>Status:</strong>{" "}
-                    {selectedCustomer.active_customer_status === 1
-                      ? "Active"
-                      : "Inactive"}
-                  </p>
-                </>
-              )}
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleCloseModal}>
-                Close
-              </Button>
-              <Button
-                variant="primary"
-                onClick={() => handleEditClick(selectedCustomer)}
-              >
-                Edit
-              </Button>
-              <Button variant="danger" onClick={handleDelete}>
-                Delete
-              </Button>
-            </Modal.Footer>
-          </Modal>
+          <CustomerDetail
+            customer={selectedCustomer}
+            showModal={showModal}
+            handleCloseModal={handleCloseModal}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+          />
         </section>
       )}
     </>

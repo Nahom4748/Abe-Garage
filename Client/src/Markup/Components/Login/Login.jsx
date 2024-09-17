@@ -55,18 +55,12 @@ function Login() {
       const data = await response.json();
       if (data.status === "success") {
         if (data.data.employee_token) {
+          console.log(data.data);
           localStorage.setItem("employee", JSON.stringify(data.data));
           setIsLogged(true);
           setEmployee(data.data);
           setIsAdmin(data.data.employee_role === 3); // Set admin status
-          // Redirect based on user role
-          if (data.data.employee_role === 3) {
-            <Navigate to={"/admin-dashboard"} />;
-          } else if (data.data.employee_role === 2) {
-            navigate("/manager");
-          } else {
-            navigate("/"); // Default navigation for other roles
-          }
+          navigate("/"); // Default navigation for other roles
         }
       } else {
         setServerError(data.message);
