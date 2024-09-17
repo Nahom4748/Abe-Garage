@@ -17,12 +17,11 @@ const logIn = async (formData) => {
       requestOptions
     );
     if (!response2.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error("Not found");
     }
 
     return response2;
   }
-  console.log(response);
   return response;
 };
 

@@ -47,7 +47,6 @@ export const AuthProvider = ({ children }) => {
     setUserType(null);
     localStorage.removeItem("employee"); // Ensure you clear local storage if it's used
   };
-  console.log(employee);
   const value = {
     isLogged,
     isAdmin,
