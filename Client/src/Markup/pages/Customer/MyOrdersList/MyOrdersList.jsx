@@ -1,7 +1,8 @@
 import React from "react";
-import CustumerMenu from "../../Components/CustomerPage/CustomerMenu/CustumerMenu";
+import CustumerMenu from "../../../Components/CustomerPage/CustomerMenu/CustumerMenu";
+import MyOrders from "../../../Components/CustomerPage/CutomerOrders/MyOrders";
 
-function CustomerDash() {
+function MyOrdersList() {
   return (
     <>
       <div className="container-fluid admin-pages">
@@ -10,7 +11,7 @@ function CustomerDash() {
             <CustumerMenu />
           </div>
           <div className="col-md-9 admin-right-side">
-            <h1>Customer</h1>{" "}
+            <MyOrders />
           </div>
         </div>
       </div>
@@ -18,4 +19,4 @@ function CustomerDash() {
   );
 }
 
-export default CustomerDash;
+export default MyOrdersList;

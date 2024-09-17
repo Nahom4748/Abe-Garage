@@ -6,7 +6,6 @@ import "./Assets/sass/style.scss";
 import "./Assets/sass/elements/_button.scss";
 import Footer from "./Markup/Components/Footer/Footer";
 import Header from "./Markup/Components/Header/Header";
-import Register from "./Markup/Components/Register/Register";
 import "./index.css";
 import { Routes, Route, Navigate } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -43,6 +42,7 @@ import EmployeeMenu from "./Markup/pages/Employee/EmployeeDash";
 import EmployeeDash from "./Markup/pages/Employee/EmployeeDash";
 import EmployeeTasks from "./Markup/pages/Employee/EmployeeTasks";
 import CustomerDash from "./Markup/pages/Customer/CustomerDash";
+import MyOrdersList from "./Markup/pages/Customer/MyOrdersList/MyOrdersList";
 
 function App() {
   const { isLogged, userType } = useAuth();
@@ -124,11 +124,11 @@ function App() {
               <>
                 <Route path="/" element={<Navigate to="/Customer" />} />
                 <Route path="/Customer" element={<CustomerDash />} />
+                <Route path="/Costumer/Orders" element={<MyOrdersList />} />
               </>
             )}
           </Route>
         )}
-        <Route path="/register" element={<Register />} />
         <Route path="/services" element={<ServicePage />} />
         <Route path="/about" element={<AboutUsPage />} />
         <Route path="/contact" element={<ContactUsPage />} />
