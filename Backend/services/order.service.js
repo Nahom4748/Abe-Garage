@@ -462,6 +462,281 @@ async function deleteOrderById(orderId) {
     throw error;
   }
 }
+// service function to  getOrderByEmployeeId
+
+async function getOrderByEmployeeId(EmployeeId) {
+  if (!EmployeeId) {
+    throw new Error("Invalid employee ID");
+  }
+
+  try {
+    const orderQuery = `
+      SELECT 
+        o.order_id,
+        o.order_date,
+        o.active_order,
+        o.order_hash,
+  
+        -- Customer Details
+        ci.customer_id,
+        ci.customer_email,
+        ci.customer_phone_number,
+        cinfo.customer_first_name,
+        cinfo.customer_last_name,
+  
+        -- Vehicle Details
+        cv.vehicle_year,
+        cv.vehicle_make,
+        cv.vehicle_model,
+        cv.vehicle_type,
+        cv.vehicle_mileage,
+        cv.vehicle_tag,
+        cv.vehicle_serial,
+        cv.vehicle_color,
+  
+        -- Employee Details
+        e.employee_email,
+        ei.employee_first_name,
+        ei.employee_last_name,
+  
+        -- Order Info Details
+        oi.order_total_price,
+        oi.estimated_completion_date,
+        oi.completion_date,
+        oi.additional_request,
+        oi.notes_for_internal_use,
+        oi.notes_for_customer,
+        oi.additional_requests_completed,
+  
+        -- Service Details
+        cs.service_id,
+        cs.service_name,
+        cs.service_price,
+        cs.service_description,
+        os.service_completed,
+  
+        -- Order Status Details
+        os_table.order_status
+  
+      FROM orders o
+      LEFT JOIN customer_identifier ci ON o.customer_id = ci.customer_id
+      LEFT JOIN customer_info cinfo ON ci.customer_id = cinfo.customer_id
+      LEFT JOIN customer_vehicle_info cv ON o.vehicle_id = cv.vehicle_id
+      LEFT JOIN employee e ON o.employee_id = e.employee_id
+      LEFT JOIN employee_info ei ON e.employee_id = ei.employee_id
+      LEFT JOIN order_info oi ON o.order_id = oi.order_id
+      LEFT JOIN order_services os ON o.order_id = os.order_id
+      LEFT JOIN common_services cs ON os.service_id = cs.service_id
+      LEFT JOIN order_status os_table ON o.order_id = os_table.order_id
+      WHERE o.employee_id = ?
+      ORDER BY o.order_date DESC;
+    `;
+
+    const rows = await conn.query(orderQuery, [EmployeeId]);
+
+    if (!rows || rows.length === 0) {
+      return null;
+    }
+
+    // Format the result into a structured object
+    const formattedOrders = rows.map((row) => ({
+      orderId: row.order_id,
+      orderDate: row.order_date,
+      activeOrder: row.active_order,
+      orderHash: row.order_hash,
+
+      customer: {
+        id: row.customer_id,
+        email: row.customer_email,
+        phoneNumber: row.customer_phone_number,
+        firstName: row.customer_first_name,
+        lastName: row.customer_last_name,
+      },
+
+      vehicle: {
+        year: row.vehicle_year,
+        make: row.vehicle_make,
+        model: row.vehicle_model,
+        type: row.vehicle_type,
+        mileage: row.vehicle_mileage,
+        tag: row.vehicle_tag,
+        serial: row.vehicle_serial,
+        color: row.vehicle_color,
+      },
+
+      employee: {
+        email: row.employee_email,
+        firstName: row.employee_first_name,
+        lastName: row.employee_last_name,
+      },
+
+      orderInfo: {
+        totalPrice: row.order_total_price,
+        estimatedCompletionDate: row.estimated_completion_date,
+        completionDate: row.completion_date,
+        additionalRequest: row.additional_request,
+        internalNotes: row.notes_for_internal_use,
+        customerNotes: row.notes_for_customer,
+        additionalRequestsCompleted: row.additional_requests_completed,
+      },
+
+      services: {
+        serviceId: row.service_id,
+        serviceName: row.service_name,
+        serviceDescription: row.service_description,
+        servicePrice: row.service_price,
+        serviceCompleted: row.service_completed,
+      },
+
+      status: {
+        statusName: row.order_status,
+      },
+    }));
+
+    console.log(formattedOrders);
+    return formattedOrders;
+  } catch (error) {
+    console.error("Error retrieving orders by employee ID:", error);
+    throw new Error("Failed to retrieve orders");
+  }
+}
+//service for costumer
+async function getOrderByCostumerId(cutomerId) {
+  if (!cutomerId) {
+    throw new Error("Invalid customer ID");
+  }
+  console.log(cutomerId);
+  try {
+    const orderQuery = `
+      SELECT 
+        o.order_id,
+        o.order_date,
+        o.active_order,
+        o.order_hash,
+  
+        -- Customer Details
+        ci.customer_id,
+        ci.customer_email,
+        ci.customer_phone_number,
+        cinfo.customer_first_name,
+        cinfo.customer_last_name,
+  
+        -- Vehicle Details
+        cv.vehicle_year,
+        cv.vehicle_make,
+        cv.vehicle_model,
+        cv.vehicle_type,
+        cv.vehicle_mileage,
+        cv.vehicle_tag,
+        cv.vehicle_serial,
+        cv.vehicle_color,
+  
+        -- Employee Details
+        e.employee_email,
+        ei.employee_first_name,
+        ei.employee_last_name,
+  
+        -- Order Info Details
+        oi.order_total_price,
+        oi.estimated_completion_date,
+        oi.completion_date,
+        oi.additional_request,
+        oi.notes_for_internal_use,
+        oi.notes_for_customer,
+        oi.additional_requests_completed,
+  
+        -- Service Details
+        cs.service_id,
+        cs.service_name,
+        cs.service_price,
+        cs.service_description,
+        os.service_completed,
+  
+        -- Order Status Details
+        os_table.order_status
+  
+      FROM orders o
+      LEFT JOIN customer_identifier ci ON o.customer_id = ci.customer_id
+      LEFT JOIN customer_info cinfo ON ci.customer_id = cinfo.customer_id
+      LEFT JOIN customer_vehicle_info cv ON o.vehicle_id = cv.vehicle_id
+      LEFT JOIN employee e ON o.employee_id = e.employee_id
+      LEFT JOIN employee_info ei ON e.employee_id = ei.employee_id
+      LEFT JOIN order_info oi ON o.order_id = oi.order_id
+      LEFT JOIN order_services os ON o.order_id = os.order_id
+      LEFT JOIN common_services cs ON os.service_id = cs.service_id
+      LEFT JOIN order_status os_table ON o.order_id = os_table.order_id
+      WHERE o.customer_id = ?
+      ORDER BY o.order_date DESC;
+    `;
+
+    const rows = await conn.query(orderQuery, [cutomerId]);
+    console.log(rows);
+    if (!rows || rows.length === 0) {
+      return null;
+    }
+
+    // Format the result into a structured object
+    const formattedOrders = rows.map((row) => ({
+      orderId: row.order_id,
+      orderDate: row.order_date,
+      activeOrder: row.active_order,
+      orderHash: row.order_hash,
+
+      customer: {
+        id: row.customer_id,
+        email: row.customer_email,
+        phoneNumber: row.customer_phone_number,
+        firstName: row.customer_first_name,
+        lastName: row.customer_last_name,
+      },
+
+      vehicle: {
+        year: row.vehicle_year,
+        make: row.vehicle_make,
+        model: row.vehicle_model,
+        type: row.vehicle_type,
+        mileage: row.vehicle_mileage,
+        tag: row.vehicle_tag,
+        serial: row.vehicle_serial,
+        color: row.vehicle_color,
+      },
+
+      employee: {
+        email: row.employee_email,
+        firstName: row.employee_first_name,
+        lastName: row.employee_last_name,
+      },
+
+      orderInfo: {
+        totalPrice: row.order_total_price,
+        estimatedCompletionDate: row.estimated_completion_date,
+        completionDate: row.completion_date,
+        additionalRequest: row.additional_request,
+        internalNotes: row.notes_for_internal_use,
+        customerNotes: row.notes_for_customer,
+        additionalRequestsCompleted: row.additional_requests_completed,
+      },
+
+      services: {
+        serviceId: row.service_id,
+        serviceName: row.service_name,
+        serviceDescription: row.service_description,
+        servicePrice: row.service_price,
+        serviceCompleted: row.service_completed,
+      },
+
+      status: {
+        statusName: row.order_status,
+      },
+    }));
+
+    console.log(formattedOrders);
+    return formattedOrders;
+  } catch (error) {
+    console.error("Error retrieving orders by customer ID:", error);
+    throw new Error("Failed to retrieve orders");
+  }
+}
 
 // Export the service function
 module.exports = {
@@ -470,4 +745,6 @@ module.exports = {
   getOrderById,
   updateOrder,
   deleteOrderById,
+  getOrderByEmployeeId,
+  getOrderByCostumerId,
 };

@@ -4,7 +4,8 @@ import Services from "../Components/Services/Services";
 import Location from "../Components/Location/Location";
 import AboutUs from "../Components/About_us/AboutUs";
 import WhyChooComp from "../Components/WhyChooseUs/WhyChooComp";
-import ServicePage from './ServicePage/ServicePage';
+import ServicePage from "./ServicePage/ServicePage";
+import Footer from "../Components/Footer/Footer";
 
 function HomePage() {
   return (
@@ -12,8 +13,9 @@ function HomePage() {
       <HeroPage />
       <AboutUs />
       <WhyChooComp />
-<ServicePage/>
+      <ServicePage />
       <Location />
+      <Footer />
     </>
   );
 }
