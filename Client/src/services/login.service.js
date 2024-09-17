@@ -7,12 +7,21 @@ const logIn = async (formData) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(formData),
   };
-  console.log("About to send request");
-  console.log(requestOptions.body);
   const response = await fetch(
     `http://localhost:5000/api/employee/login`,
     requestOptions
   );
+  if (!response.ok) {
+    const response2 = await fetch(
+      `http://localhost:5000/api/customer/login`,
+      requestOptions
+    );
+    if (!response2.ok) {
+      throw new Error("Not found");
+    }
+
+    return response2;
+  }
   return response;
 };
 

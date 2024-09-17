@@ -38,8 +38,42 @@ async function logIn(employeeData) {
     console.log(error);
   }
 }
+async function logInCustomer(CustomerData) {
+  try {
+    let returnData = {}; // Object to be returned
+    const Customer = await employeeService.getCustomerByEmail(
+      CustomerData.employee_email
+    );
+    if (Customer.length === 0) {
+      returnData = {
+        status: "fail",
+        message: " does not exist",
+      };
+      return returnData;
+    }
+    const passwordMatch = await bcrypt.compare(
+      CustomerData.employee_password,
+      Customer[0].customer_hash
+    );
+    if (!passwordMatch) {
+      returnData = {
+        status: "fail",
+        message: "Incorrect password",
+      };
+      return returnData;
+    }
+    returnData = {
+      status: "success",
+      data: Customer[0],
+    };
+    return returnData;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 // Export the function
 module.exports = {
   logIn,
+  logInCustomer,
 };

@@ -4,7 +4,6 @@ async function createCustomer(req, res, next) {
   const customerExists = await customerService.checkIfCustomerExists(
     req.body.customer_email
   );
-  console.log(req.body.customer_email);
   if (customerExists) {
     return res.status(400).json({ error: "Customer already exists" });
   } else {
@@ -107,7 +106,6 @@ async function getCustomerByStatus(req, res, next) {
       res.status(404).json({ error: "No data found" });
     }
   } catch (error) {
-    console.error("Error in getCustomerByStatus:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 }

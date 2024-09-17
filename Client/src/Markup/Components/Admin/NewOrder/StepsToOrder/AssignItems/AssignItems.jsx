@@ -116,7 +116,7 @@ const Assignitems = ({
       setShowSuccess(true);
       setTimeout(() => {
         setShowSuccess(false);
-        navigate("/"); // Navigate to homepage
+        navigate("/admin/orders"); // Navigate to homepage
       }, 2000);
     } catch (err) {
       console.error("Error finalizing order:", err);

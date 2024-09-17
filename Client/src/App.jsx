@@ -6,7 +6,6 @@ import "./Assets/sass/style.scss";
 import "./Assets/sass/elements/_button.scss";
 import Footer from "./Markup/Components/Footer/Footer";
 import Header from "./Markup/Components/Header/Header";
-import Register from "./Markup/Components/Register/Register";
 import "./index.css";
 import { Routes, Route, Navigate } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -38,6 +37,12 @@ import Addcustomer from "./Markup/pages/admin/Addcustomer";
 import CustomerEdit from "./Markup/pages/admin/CustomerEdit";
 import AddCustomerForm from "./Markup/Components/Admin/AddCustomer/AddCustomerForm";
 import AddItem from "./Markup/pages/admin/AddItem";
+import SingleOrder from "./Markup/pages/admin/SingleOrder";
+import EmployeeMenu from "./Markup/pages/Employee/EmployeeDash";
+import EmployeeDash from "./Markup/pages/Employee/EmployeeDash";
+import EmployeeTasks from "./Markup/pages/Employee/EmployeeTasks";
+import CustomerDash from "./Markup/pages/Customer/CustomerDash";
+import MyOrdersList from "./Markup/pages/Customer/MyOrdersList/MyOrdersList";
 
 function App() {
   const { isLogged, userType } = useAuth();
@@ -71,15 +76,17 @@ function App() {
                 <Route path="/admin/customers" element={<Customers />} />
                 <Route path="/admin/items" element={<Items />} />
                 <Route path="/admin/add_customer" element={<Addcustomer />} />
-                <Route path="/admin/customers" element={<Customers />} />
                 <Route
                   path="/admin/customer/:customer_id"
                   element={<CustomerEdit />}
                 />
-
+                <Route
+                  path="/view-single-order/:orderId"
+                  element={<SingleOrder />}
+                />
                 <Route path="/admin-dashboard" element={<AdminDashbord />} />
               </>
-            ) : (
+            ) : userType === 2 ? (
               <>
                 <Route path="/" element={<Navigate to="/manager" />} />
                 <Route path="/manager/orders" element={<OrdersManager />} />
@@ -107,10 +114,21 @@ function App() {
                 <Route path="/manager/add-news" element={<News />} />
                 <Route path="/manager" element={<ManagerDashbord />} />
               </>
+            ) : userType === 1 ? (
+              <>
+                <Route path="/" element={<Navigate to="/employee" />} />
+                <Route path="/employee/tasks" element={<EmployeeTasks />} />
+                <Route path="/employee" element={<EmployeeDash />} />
+              </>
+            ) : (
+              <>
+                <Route path="/" element={<Navigate to="/Customer" />} />
+                <Route path="/Customer" element={<CustomerDash />} />
+                <Route path="/Costumer/Orders" element={<MyOrdersList />} />
+              </>
             )}
           </Route>
         )}
-        <Route path="/register" element={<Register />} />
         <Route path="/services" element={<ServicePage />} />
         <Route path="/about" element={<AboutUsPage />} />
         <Route path="/contact" element={<ContactUsPage />} />

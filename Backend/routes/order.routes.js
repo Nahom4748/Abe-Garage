@@ -21,11 +21,20 @@ router.get(
 );
 // Define the route for retrieving an order by ID
 router.get(
-  "/api/order/:id",
-  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  "/api/order/:orderId",
+  // [authMiddleware.verifyToken, authMiddleware.isAdmin],
   orderController.getOrderById
 );
 
+//get by employee Id
+
+router.get("/api/tasks/:EmployeeId", orderController.getTasksByEmployeeId);
+
+//Get by Costumer Id
+router.get(
+  "/api/order/customer/:cutomerId",
+  orderController.getOredrByCustumerId
+);
 // Route to update an order
 router.put(
   "/api/order",

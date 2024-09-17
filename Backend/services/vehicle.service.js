@@ -30,7 +30,6 @@ async function createVehicle(vehicle) {
       throw new Error("Failed to insert vehicle");
     }
   } catch (error) {
-    console.error("Error creating vehicle:", error.message);
     throw error; // Rethrow the error after logging
   }
 }
@@ -50,7 +49,6 @@ async function getAllVehicles(customer_id) {
 
     return vehicles;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }
@@ -71,7 +69,6 @@ async function getVehicleById(id) {
 
     return vehicle[0];
   } catch (error) {
-    console.log(error);
     return null;
   }
 }

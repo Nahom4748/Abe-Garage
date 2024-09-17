@@ -11,7 +11,7 @@ const authMiddleware = require("../middlewares/auth.middleware");
 
 router.get(
   "/api/services",
-  [authMiddleware.verifyToken, authMiddleware.isManager_or_Admin],
+  // [authMiddleware.verifyToken, authMiddleware.isManager_or_Admin],
   serviceController.getAllServices
 );
 router.get(
