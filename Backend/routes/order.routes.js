@@ -21,8 +21,8 @@ router.get(
 );
 // Define the route for retrieving an order by ID
 router.get(
-  "/api/order/:id",
-  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  "/api/order/:orderId",
+  // [authMiddleware.verifyToken, authMiddleware.isAdmin],
   orderController.getOrderById
 );
 

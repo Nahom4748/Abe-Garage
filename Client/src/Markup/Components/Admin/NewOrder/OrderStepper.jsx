@@ -4,8 +4,6 @@ import Search from "./StepsToOrder/Search";
 import AddOrder from "./StepsToOrder/AddOrder";
 import CompleteOrder from "./StepsToOrder/CompleteOrder";
 import AssignItems from "./StepsToOrder/AssignItems/AssignItems";
-import AssignEmployee from "./StepsToOrder/AssignEmployee/AssignEmployee";
-import SubmitOrder from "./StepsToOrder/SubmitOrder/SubmitOrder";
 import "./neworder.css"; // Custom styles
 
 const NewOrder = () => {
@@ -76,7 +74,7 @@ const NewOrder = () => {
       ),
     },
     {
-      name: "Assign Items",
+      name: "Submit Order",
       component: (
         <AssignItems
           customer={selectedData.customer}
@@ -84,14 +82,6 @@ const NewOrder = () => {
           orderDetails={selectedData.orderDetails}
         />
       ),
-    },
-    {
-      name: "Assign Employee",
-      component: <AssignEmployee />,
-    },
-    {
-      name: "Submit Order",
-      component: <SubmitOrder onSubmit={handleOrderSubmission} />,
     },
   ];
 

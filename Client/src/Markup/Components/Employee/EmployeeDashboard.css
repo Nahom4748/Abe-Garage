@@ -1,0 +1,14 @@
+/* Sidebar styling */
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+/* Card styling */
+.card-body {
+  padding: 1.5rem;
+}
+
+/* Additional custom styles */
+h4 {
+  font-weight: bold;
+}

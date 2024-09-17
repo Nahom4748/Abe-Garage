@@ -7,13 +7,22 @@ import {
   Alert,
   Spinner,
   Button,
+  Pagination,
+  Modal,
 } from "react-bootstrap";
-import { FaEye, FaEdit } from "react-icons/fa";
+import { FaEye, FaEdit, FaSortUp, FaSortDown } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function Listorder() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [ordersPerPage] = useState(10);
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -21,10 +30,16 @@ function Listorder() {
         const { data } = await axios.get("http://localhost:5000/api/orders");
         console.log("API Response:", data);
 
-        // Adjust for single order or multiple orders
         if (data.status === "success") {
           const ordersData = Array.isArray(data.data) ? data.data : [data.data];
-          setOrders(ordersData);
+
+          // Filter out duplicates by orderId
+          const uniqueOrders = ordersData.filter(
+            (order, index, self) =>
+              index === self.findIndex((o) => o.orderId === order.orderId)
+          );
+
+          setOrders(uniqueOrders);
         } else {
           setError("Failed to fetch orders");
         }
@@ -38,8 +53,43 @@ function Listorder() {
     fetchOrders();
   }, []);
 
+  // Sort orders based on sortOrder
+  const sortedOrders = [...orders].sort((a, b) => {
+    if (sortOrder === "asc") {
+      return a.orderId - b.orderId;
+    } else {
+      return b.orderId - a.orderId;
+    }
+  });
+
+  // Get the current orders based on pagination
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = sortedOrders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Function to get status background and text color based on order status
   const getStatusColor = (status) => {
-    return status === 0 ? "bg-warning text-dark" : "bg-success text-white";
+    if (status === 1) {
+      return { backgroundColor: "yellow", color: "black" }; // In Process
+    } else {
+      return { backgroundColor: "green", color: "white" }; // Completed
+    }
+  };
+
+  const handleEditClick = (order) => {
+    setSelectedOrder(order);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedOrder(null);
+  };
+
+  // Navigate to ViewsingleOrders component and pass the customerId
+  const handleViewClick = (orderId) => {
+    navigate(`/view-single-order/${orderId}`);
   };
 
   return (
@@ -47,6 +97,26 @@ function Listorder() {
       <Card>
         <Card.Header>
           <h4>Orders List</h4>
+          <div className="d-flex justify-content-between align-items-center">
+            <div>
+              <Button
+                variant="link"
+                onClick={() => setSortOrder("asc")}
+                className="p-0 me-2"
+                style={{ fontSize: "1.2rem" }}
+              >
+                <FaSortUp />
+              </Button>
+              <Button
+                variant="link"
+                onClick={() => setSortOrder("desc")}
+                className="p-0"
+                style={{ fontSize: "1.2rem" }}
+              >
+                <FaSortDown />
+              </Button>
+            </div>
+          </div>
         </Card.Header>
         <Card.Body>
           {loading ? (
@@ -57,55 +127,138 @@ function Listorder() {
           ) : error ? (
             <Alert variant="danger">{error}</Alert>
           ) : (
-            <Table striped bordered hover responsive>
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Customer Name</th>
-                  <th>Vehicle</th>
-                  <th>Order Date</th>
-                  <th>Vehicle Info</th>
-                  <th>Employee Name</th>
-                  <th>Order Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((order) => (
-                  <tr
-                    key={order.order_id}
-                    className={getStatusColor(order.order_status)}
-                  >
-                    <td>{order.order_id}</td>
-                    <td>{`${order.customer_first_name} ${order.customer_last_name}`}</td>
-                    <td>{`${order.vehicle_make} ${order.vehicle_model} (${order.vehicle_year})`}</td>
-                    <td>{new Date(order.order_date).toLocaleDateString()}</td>
-                    <td>{`${order.vehicle_make} ${order.vehicle_model}`}</td>
-                    <td>{`${order.assigned_employee_first_name} ${order.assigned_employee_last_name}`}</td>
-                    <td>
-                      {order.order_status === 0 ? "In Process" : "Completed"}
-                    </td>
-                    <td>
-                      <Button
-                        variant="info"
-                        size="sm"
-                        className="me-2"
-                        style={{ fontSize: "0.9rem" }}
-                      >
-                        <FaEye /> View
-                      </Button>
-                      <Button
-                        variant="warning"
-                        size="sm"
-                        style={{ fontSize: "0.9rem" }}
-                      >
-                        <FaEdit /> Edit
-                      </Button>
-                    </td>
+            <>
+              <Table striped bordered hover responsive>
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer Name</th>
+                    <th>Vehicle</th>
+                    <th>Order Date</th>
+                    <th>Received by</th>
+                    <th>Order Status</th>
+                    <th>Actions</th>
                   </tr>
+                </thead>
+                <tbody>
+                  {currentOrders.map((order) => (
+                    <tr key={order.orderId} style={{ fontSize: "0.8rem" }}>
+                      <td>{order.orderId}</td>
+                      <td>
+                        <b>
+                          {`${order.customer.firstName} ${order.customer.lastName}`}
+                        </b>
+                        <p>
+                          {order.customer.email}{" "}
+                          <small>
+                            <p>{order.customer.phoneNumber}</p>
+                          </small>
+                        </p>
+                      </td>
+                      <td>
+                        <b>{`${order.vehicle.make} ${order.vehicle.model}`}</b>
+                        <p>{order.vehicle.year}</p>
+                      </td>
+                      <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                      <td>{`${order.employee.firstName} ${order.employee.lastName}`}</td>
+                      <td>
+                        <span
+                          style={{
+                            padding: "5px 10px",
+                            borderRadius: "5px",
+                            ...getStatusColor(order.activeOrder),
+                          }}
+                        >
+                          {order.activeOrder === 1 ? "In Process" : "Completed"}
+                        </span>
+                      </td>
+                      <td>
+                        <Button
+                          variant="info"
+                          size="sm"
+                          className="me-2"
+                          style={{ fontSize: "0.8rem" }}
+                          onClick={() => handleViewClick(order.orderId)}
+                        >
+                          <FaEye /> View
+                        </Button>
+                        <Button
+                          variant="warning"
+                          size="sm"
+                          onClick={() => handleEditClick(order)}
+                          style={{ fontSize: "0.8rem" }}
+                        >
+                          <FaEdit /> Edit
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+
+              {/* Pagination component */}
+              <Pagination>
+                {Array.from({
+                  length: Math.ceil(orders.length / ordersPerPage),
+                }).map((_, index) => (
+                  <Pagination.Item
+                    key={index + 1}
+                    active={index + 1 === currentPage}
+                    onClick={() => paginate(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
                 ))}
-              </tbody>
-            </Table>
+              </Pagination>
+
+              {/* Modal for showing order details */}
+              <Modal show={selectedOrder !== null} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Order Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  {selectedOrder && (
+                    <>
+                      <h5>Order ID: {selectedOrder.orderId}</h5>
+                      <p>
+                        <b>Customer Name:</b>{" "}
+                        {`${selectedOrder.customer.firstName} ${selectedOrder.customer.lastName}`}
+                      </p>
+                      <p>
+                        <b>Email:</b> {selectedOrder.customer.email}
+                      </p>
+                      <p>
+                        <b>Phone Number:</b>{" "}
+                        {selectedOrder.customer.phoneNumber}
+                      </p>
+                      <p>
+                        <b>Vehicle:</b>{" "}
+                        {`${selectedOrder.vehicle.make} ${selectedOrder.vehicle.model} (${selectedOrder.vehicle.year})`}
+                      </p>
+                      <p>
+                        <b>Order Date:</b>{" "}
+                        {new Date(selectedOrder.orderDate).toLocaleDateString()}
+                      </p>
+                      <p>
+                        <b>Received by:</b>{" "}
+                        {`${selectedOrder.employee.firstName} ${selectedOrder.employee.lastName}`}
+                      </p>
+                      <p>
+                        <b>Status:</b>{" "}
+                        {selectedOrder.activeOrder === 1
+                          ? "In Process"
+                          : "Completed"}
+                      </p>
+                    </>
+                  )}
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleCloseModal}>
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            </>
           )}
         </Card.Body>
       </Card>

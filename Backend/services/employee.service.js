@@ -71,6 +71,13 @@ async function getEmployeeByEmail(employee_email) {
   const rows = await conn.query(query, [employee_email]);
   return rows;
 }
+
+async function getCustomerByEmail(customer_email) {
+  const query = "SELECT * FROM customer_identifier  WHERE customer_email = ?";
+  const rows = await conn.query(query, [customer_email]);
+  return rows;
+}
+
 // A function to get all employees
 const getAllEmployees = async () => {
   try {
@@ -230,10 +237,8 @@ async function getEmployeeStats() {
       inactiveEmployees,
     };
     // Return the data
-    console.log("Employee stats fetched successfully:", data);
     return data;
   } catch (error) {
-    console.error("Error fetching employee stats:", error);
     // Return an error
     return error;
   }
@@ -246,14 +251,9 @@ async function resetEmployeePassword(employeeId) {
     const hashedPassword = await bcrypt.hash("123456", salt);
     const result = await conn.query(query, [hashedPassword, employeeId]);
     if (result.affectedRows === 0) {
-      console.error(
-        "Failed to reset employee password for employee_id:",
-        employeeId
-      );
       throw new Error("Failed to reset employee password");
     }
 
-    console.log("Employee password reset successfully:", employeeId);
     return true; // Success
   } catch (error) {
     console.error("Service Error:", error.message);
@@ -271,4 +271,5 @@ module.exports = {
   deleteEmployee,
   getEmployeeStats,
   resetEmployeePassword,
+  getCustomerByEmail,
 };

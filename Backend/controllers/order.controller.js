@@ -66,24 +66,35 @@ const getAllOrders = async (req, res) => {
 // Function to handle retrieving an order by ID
 async function getOrderById(req, res) {
   try {
-    const orderId = req.params.id;
+    const orderId = req.params.orderId; // Extract orderId from URL parameters
 
-    // Fetch the order details using the service
+    if (!orderId) {
+      // Return 400 Bad Request if no orderId is provided
+      return res.status(400).json({
+        error: "Bad Request",
+        message: "Order ID is required",
+      });
+    }
+
+    // Fetch the order by ID from your service layer
     const order = await orderService.getOrderById(orderId);
 
-    // Check if the order exists
     if (!order) {
+      // Return 404 Not Found if the order doesn't exist
       return res.status(404).json({
         error: "Not Found",
         message: "Order not found",
       });
     }
 
-    // Send back the order details
-    res.status(200).json(order);
+    // If order is found, return it with 200 OK status
+    return res.status(200).json(order);
   } catch (error) {
+    // Log the error for debugging purposes
     console.error("Error retrieving order:", error);
-    res.status(500).json({
+
+    // Return 500 Internal Server Error in case of unexpected issues
+    return res.status(500).json({
       error: "Internal Server Error",
       message: "An unexpected error occurred.",
     });
