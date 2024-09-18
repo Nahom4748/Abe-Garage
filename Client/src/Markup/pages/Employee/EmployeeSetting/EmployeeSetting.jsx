@@ -1,7 +1,7 @@
 import React from "react";
-import EmployeeMenu from "../../Components/Employee/EmployeeMenu/EmployeeMenu";
-import EmployeeDashboard from "../../Components/Employee/EmployeeDashboard";
-function EmployeeDash() {
+import EmployeeMenu from "../../../Components/Employee/EmployeeMenu/EmployeeMenu";
+import EmpSetting from "../../../Components/Employee/EmpSetting/EmpSetting";
+function EmployeeSetting() {
   return (
     <>
       <div className="container-fluid admin-pages">
@@ -10,7 +10,7 @@ function EmployeeDash() {
             <EmployeeMenu />
           </div>
           <div className="col-md-9 admin-right-side">
-            <EmployeeDashboard />
+            <EmpSetting />
           </div>
         </div>
       </div>
@@ -18,4 +18,4 @@ function EmployeeDash() {
   );
 }
 
-export default EmployeeDash;
+export default EmployeeSetting;

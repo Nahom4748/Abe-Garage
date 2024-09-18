@@ -2,7 +2,7 @@
 // const api_url = process.env.REACT_APP_API_URL;
 // Import axios
 import axios from "axios";
-
+const API_URL = "http://localhost:5000/api";
 // A function to send post request to create a new employee
 
 const createEmployee = async (formData, token) => {
@@ -127,11 +127,53 @@ const resetEmployeePassword = async (employeeId, token) => {
     console.error("Error resetting employee password:", error);
   }
 };
+
+const fetchEmployeeById = async (employeeId, token) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/employee/${employeeId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+      }
+    );
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching employee:", error);
+  }
+};
+const changePassword = (employeeId, newPassword) => {
+  const url = `http://localhost:5000/api/user/password/${employeeId}`;
+  const requestOptions = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ newPassword }),
+  };
+  fetch(url, requestOptions)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Password changed successfully:", data);
+    })
+    .catch((error) => {
+      console.error("Error changing password:", error);
+    });
+};
 // Export all the functions
 const employeeService = {
   createEmployee,
   getAllEmployees,
   updateEmployee,
   deleteEmployee,
+  resetEmployeePassword,
+  fetchEmployeeById,
+  changePassword,
 };
 export default employeeService;

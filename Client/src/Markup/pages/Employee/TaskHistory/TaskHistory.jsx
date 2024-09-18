@@ -1,7 +1,8 @@
 import React from "react";
-import EmployeeMenu from "../../Components/Employee/EmployeeMenu/EmployeeMenu";
-import EmployeeDashboard from "../../Components/Employee/EmployeeDashboard";
-function EmployeeDash() {
+import EmployeeMenu from "../../../Components/Employee/EmployeeMenu/EmployeeMenu";
+import EmployeeHistory from "../../../Components/Employee/Taskhistory/EmployeeHistory";
+
+function TaskHistory() {
   return (
     <>
       <div className="container-fluid admin-pages">
@@ -10,7 +11,7 @@ function EmployeeDash() {
             <EmployeeMenu />
           </div>
           <div className="col-md-9 admin-right-side">
-            <EmployeeDashboard />
+            <EmployeeHistory />
           </div>
         </div>
       </div>
@@ -18,4 +19,4 @@ function EmployeeDash() {
   );
 }
 
-export default EmployeeDash;
+export default TaskHistory;

@@ -34,7 +34,7 @@
 
 .employee-image-modal {
   max-width: 150px;
-  max-height: 150px;
+  max-height: 150px !important;
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 15px;

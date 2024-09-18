@@ -21,7 +21,6 @@ const EmployeeStatsChart = () => {
         const data = await response.json();
         console.log(data);
 
-        // Set chart data with blue, red, and yellow colors
         setChartData({
           labels: ["Active Employees", "Inactive Employees", "Total Employees"],
           datasets: [
@@ -33,14 +32,14 @@ const EmployeeStatsChart = () => {
                 data.data.totalEmployees,
               ],
               backgroundColor: [
-                "rgba(0, 123, 255, 0.6)", // Blue for active employees
-                "rgba(255, 99, 132, 0.6)", // Red for inactive employees
-                "rgba(255, 205, 86, 0.6)", // Yellow for total employees
+                "rgba(0, 123, 255, 0.6)",
+                "rgba(255, 99, 132, 0.6)",
+                "rgba(255, 205, 86, 0.6)",
               ],
               borderColor: [
-                "rgba(0, 123, 255, 1)", // Blue border
-                "rgba(255, 99, 132, 1)", // Red border
-                "rgba(255, 205, 86, 1)", // Yellow border
+                "rgba(0, 123, 255, 1)",
+                "rgba(255, 99, 132, 1)",
+                "rgba(255, 205, 86, 1)",
               ],
               borderWidth: 1,
             },
@@ -100,12 +99,16 @@ const EmployeeStatsChart = () => {
 
   return (
     <Card
-      style={{ backgroundColor: "#fff", borderColor: "#ddd", height: "80vh" }}
+      style={{
+        backgroundColor: "#fff",
+        borderColor: "#ddd",
+        height: "80vh",
+      }}
     >
       <Card.Header as="h5" style={{ color: "#000" }}>
         Employee Statistics
       </Card.Header>
-      <Card.Body style={{ height: "100%" }}>
+      <Card.Body style={{ height: "80%", paddingBottom: "50px" }}>
         <div style={{ height: "100%" }}>
           <Pie data={chartData} options={options} />
         </div>

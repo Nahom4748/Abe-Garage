@@ -279,7 +279,84 @@ async function getOredrByCustumerId(req, res) {
     });
   }
 }
+// order checked controller
+async function orderServiceCheck(req, res) {
+  try {
+    const { serviceId, orderId, serviceCompleted } = req.body;
 
+    // Validate required fields
+    if (!serviceId || !orderId || serviceCompleted === undefined) {
+      return res.status(400).json({
+        error: "Bad Request",
+        message:
+          "Invalid input. serviceId, orderId, and serviceCompleted are required.",
+      });
+    }
+
+    // Call the service to update the database
+    const updateSuccess = await orderService.orderServiceCheck({
+      serviceId,
+      orderId,
+      serviceCompleted,
+    });
+
+    if (updateSuccess) {
+      res.status(200).json({
+        success: true,
+        message: "Service status updated successfully",
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "Failed to update service status",
+      });
+    }
+  } catch (error) {
+    console.error("Controller Error:", error.message);
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: error.message,
+    });
+  }
+}
+// order completed controller
+async function orderServiceCompleted(req, res) {
+  try {
+    const { orderId } = req.body;
+
+    // Validate required fields
+    if (!orderId === undefined) {
+      return res.status(400).json({
+        error: "Bad Request",
+        message:
+          "Invalid input. serviceId, orderId, and serviceCompleted are required.",
+      });
+    }
+
+    // Call the service to update the database
+    const updateSuccess = await orderService.OrderCompleted({
+      orderId,
+    });
+
+    if (updateSuccess) {
+      res.status(200).json({
+        success: true,
+        message: "Service status updated successfully",
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "Failed to update service status",
+      });
+    }
+  } catch (error) {
+    console.error("Controller Error:", error.message);
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: error.message,
+    });
+  }
+}
 // Export the controller function
 module.exports = {
   addOrder,
@@ -289,4 +366,6 @@ module.exports = {
   deleteOrder,
   getTasksByEmployeeId,
   getOredrByCustumerId,
+  orderServiceCheck,
+  orderServiceCompleted,
 };

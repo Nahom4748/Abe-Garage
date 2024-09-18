@@ -13,9 +13,13 @@ router.post(
   vehicleController.createVehicle
 );
 // create a route for the vehicle controller request with a GET all vehicles request
-router.get("/api/vehicles/:customer_id", vehicleController.getAllVehicles);
+// router.get("/api/vehicles/:customer_id", vehicleController.getAllVehicles);
 // create a route for the vehicle controller request with a GET vehicle by id request
-router.get("/api/vehicle/:id", vehicleController.getVehicleById);
+router.get(
+  "/api/vehicle/customer/:customer_id",
+  [authMiddleware.verifyToken, authMiddleware.isManager_or_Admin],
+  vehicleController.getVehicleById
+);
 //create a route for the vehicle controller request with a PUT request
 router.put("/api/vehicle/", vehicleController.updateVehicle);
 

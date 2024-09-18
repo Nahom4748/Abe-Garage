@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Modal, Alert, Row, Col } from "react-bootstrap";
 import vehicleService from "../../../../services/vehicle.service"; // Adjust the path as needed
 import { useAuth } from "../../../../Contexts/AuthContext";
+import { useNavigate } from "react-router";
 
 function AddVehicleForm({ show, handleClose, customerId }) {
   const [vehicle_make, setMake] = useState("");
@@ -17,6 +18,7 @@ function AddVehicleForm({ show, handleClose, customerId }) {
   const [serverError, setServerError] = useState("");
   const { employee } = useAuth();
   const token = employee ? employee.employee_token : null;
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -81,6 +83,7 @@ function AddVehicleForm({ show, handleClose, customerId }) {
       setServerError("");
       setTimeout(() => {
         handleClose();
+        navigate("/admin/customers");
       }, 2000);
     } catch (error) {
       setServerError(error.message);
