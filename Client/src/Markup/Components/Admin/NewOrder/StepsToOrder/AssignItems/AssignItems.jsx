@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Assignitems.css";
 import { useAuth } from "../../../../../../Contexts/AuthContext";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 
 const Assignitems = ({
   customer = {},
@@ -16,7 +16,7 @@ const Assignitems = ({
 }) => {
   const { employee } = useAuth();
   const token = employee ? employee.employee_token : null;
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const selectedServices = orderDetails.selectedServices || [];
   const additionalNotes = orderDetails.additionalNotes || "N/A";
@@ -27,7 +27,7 @@ const Assignitems = ({
   const [error, setError] = useState(null);
   const [estimatedCompletionDate, setEstimatedCompletionDate] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false); // New state for success message
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const serviceMap = services.reduce((acc, service) => {
     acc[service.service_id] = {
@@ -66,6 +66,17 @@ const Assignitems = ({
     );
   };
 
+  const formatDate = (date) => {
+    if (!date) return null;
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const day = ("0" + date.getDate()).slice(-2);
+    const hours = ("0" + date.getHours()).slice(-2);
+    const minutes = ("0" + date.getMinutes()).slice(-2);
+    const seconds = ("0" + date.getSeconds()).slice(-2);
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  };
+
   const handleFinalizeOrder = async () => {
     if (selectedEmployees.length === 0 || !estimatedCompletionDate) {
       setShowAlert(true);
@@ -76,9 +87,9 @@ const Assignitems = ({
       const customer_id = customer.customer_id;
       const vehicle_id = vehicles[0].vehicle_id;
       const order_description = additionalNotes;
-      const estimated_completion_date = estimatedCompletionDate.toISOString();
+      const estimated_completion_date = formatDate(estimatedCompletionDate);
       const employee_id = selectedEmployees[0];
-      const Order_Date = new Date();
+      const Order_Date = formatDate(new Date());
       const order_completed = 1;
       const order_services = JSON.stringify(
         selectedServices.map((service) => ({
@@ -112,11 +123,10 @@ const Assignitems = ({
         },
       });
 
-      // Show success message and navigate after 2 seconds
       setShowSuccess(true);
       setTimeout(() => {
         setShowSuccess(false);
-        navigate("/admin/orders"); // Navigate to homepage
+        navigate("/admin/orders");
       }, 2000);
     } catch (err) {
       console.error("Error finalizing order:", err);
@@ -289,61 +299,46 @@ const Assignitems = ({
               </td>
               <td>${customPrice}</td>
             </tr>
+            <tr>
+              <td>
+                <strong>Estimated Completion Date:</strong>
+              </td>
+              <td>
+                <DatePicker
+                  selected={estimatedCompletionDate}
+                  onChange={(date) => setEstimatedCompletionDate(date)}
+                  showTimeSelect
+                  dateFormat="Pp"
+                  placeholderText="Select a date"
+                />
+              </td>
+            </tr>
           </tbody>
         </Table>
 
-        {/* Estimated Completion Date */}
-        <h5 className="mt-4 fs-5">
-          Estimated Completion Date{" "}
-          {hasCompletionDate ? (
-            <FaCheck className="text-success ms-2" />
-          ) : (
-            <FaTimes className="text-danger ms-2" />
-          )}
-        </h5>
-        <DatePicker
-          selected={estimatedCompletionDate}
-          onChange={(date) => setEstimatedCompletionDate(date)}
-          className="form-control date-picker"
-          dateFormat="MMMM d, yyyy"
-          placeholderText="Select a date"
-        />
-        {!hasCompletionDate && (
-          <Alert variant="warning" className="mt-2">
-            Estimated completion date is required.
+        {/* Alert and Success Messages */}
+        {showAlert && (
+          <Alert variant="danger" className="mt-3">
+            Please select at least one employee and choose an estimated
+            completion date.
           </Alert>
         )}
-        <br />
-        <br />
-        <Button
-          variant="primary"
-          className="mt-3"
-          onClick={handleFinalizeOrder}
-        >
-          Finalize Order
-        </Button>
-
-        {/* Success Alert */}
         {showSuccess && (
-          <Alert variant="success" className="mt-3 text-center">
-            Order has been finalized successfully!
+          <Alert variant="success" className="mt-3">
+            Order finalized successfully!
           </Alert>
         )}
 
-        {/* Alert Modal */}
-        <Alert
-          variant="danger"
-          show={showAlert}
-          onClose={() => setShowAlert(false)}
-          dismissible
-          className="mt-3"
-        >
-          <Alert.Heading>Please Complete All Required Fields</Alert.Heading>
-          <p>
-            You need to assign at least one employee and select an estimated
-            completion date before finalizing the order.
-          </p>
-        </Alert>
+        {/* Finalize Order Button */}
+        <div className="d-flex justify-content-end mt-4">
+          <Button
+            variant="primary"
+            onClick={handleFinalizeOrder}
+            disabled={!hasSelectedEmployees || !hasCompletionDate}
+          >
+            Finalize Order
+          </Button>
+        </div>
       </Card.Body>
     </Card>
   );

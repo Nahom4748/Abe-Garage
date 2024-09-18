@@ -22,11 +22,13 @@ const serviceRouter = require("./service.routes");
 //import the vehicle routes
 const vehicleRouter = require("./vehicle.routes");
 const orderRouter = require("./order.routes");
+const profileRouter = require("./profile.routes");
 
 // Use the order router
 router.use(orderRouter);
 
 router.use(customerRouter);
+router.use("/profile", profileRouter);
 
 //add the service routes
 router.use(serviceRouter);

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaTasks,
+  FaClipboardList,
   FaCalendarAlt,
   FaUser,
   FaCog,
@@ -13,7 +14,7 @@ function CustumerMenu() {
   return (
     // State to manage the visibility of the sub-menus
     <div className="employee-menu">
-      <h2>Employee Menu</h2>
+      <h2>Customer Menu</h2>
       <div className="list-group">
         <Link to="/employee" className="list-group-item">
           <FaTachometerAlt className="icon" /> Dashboard
@@ -24,8 +25,14 @@ function CustumerMenu() {
           <FaTasks className="icon" /> My Orders
         </Link>
 
+        {/* oder history */}
+        <Link to="/Costumer/history" className="list-group-item">
+          <FaClipboardList className="icon" />
+          My Order History
+        </Link>
+
         {/* Profile Menu */}
-        <Link to="/employee/profile" className="list-group-item">
+        <Link to="/customer/profile" className="list-group-item">
           <FaUser className="icon" /> Profile
         </Link>
 

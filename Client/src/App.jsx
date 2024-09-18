@@ -42,10 +42,15 @@ import EmployeeDash from "./Markup/pages/Employee/EmployeeDash";
 import EmployeeTasks from "./Markup/pages/Employee/EmployeeTasks";
 import CustomerDash from "./Markup/pages/Customer/CustomerDash";
 import MyOrdersList from "./Markup/pages/Customer/MyOrdersList/MyOrdersList";
+
+import MyHistoryList from "./Markup/pages/Customer/MyHistory/MyHistoryList";
+import MyProfileList from "./Markup/pages/Customer/MyProfileList/MyProfileList";
+
 import TaskHistory from "./Markup/pages/Employee/TaskHistory/TaskHistory";
 import ManageCustomer from "./Markup/pages/admin/ManageCustomer";
 import EmployeePofile from "./Markup/pages/Employee/EmployeePofile/EmployeePofile";
 import EmployeeSetting from "./Markup/pages/Employee/EmployeeSetting/EmployeeSetting";
+
 
 function App() {
   const { isLogged, userType } = useAuth();
@@ -137,6 +142,10 @@ function App() {
                 <Route path="/" element={<Navigate to="/Customer" />} />
                 <Route path="/Customer" element={<CustomerDash />} />
                 <Route path="/Costumer/Orders" element={<MyOrdersList />} />
+                <Route path="/Costumer/history" element={<MyHistoryList />} />
+                <Route path="/customer/profile" element={<MyProfileList />} />
+
+                {/* <Route path="/customer/profile" element={<MyProfileList />} /> */}
               </>
             )}
           </Route>

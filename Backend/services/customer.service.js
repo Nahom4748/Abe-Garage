@@ -1,4 +1,4 @@
-const db = require("../config/db.config");
+ const db = require("../config/db.config");
 const bcrypt = require("bcrypt");
 
 // A function to check if a customer exists
@@ -142,7 +142,6 @@ async function updateCustomer(customer) {
       customer.active_customer_status,
       customer.customer_id,
     ]);
-
     console.log("Customer updated successfully");
     return { success: true };
   } catch (error) {
@@ -185,6 +184,7 @@ async function getCustomerStatus() {
     return null;
   }
 }
+
 // Export the functions
 module.exports = {
   checkIfCustomerExists,

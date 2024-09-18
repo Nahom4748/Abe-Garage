@@ -35,5 +35,12 @@ router.delete(
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
   serviceController.deactivateService
 );
+
+// router.get(
+//   "/api/customer/services",
+//   // [authMiddleware.verifyToken], // Ensure the user is authenticated
+//   serviceController.getCustomerServices
+// );
+
 // Export the router
 module.exports = router;

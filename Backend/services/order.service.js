@@ -3,6 +3,13 @@ const conn = require("../config/db.config");
 // Function to add a new order
 async function addOrder(orderData) {
   try {
+    let additionalRequestsCompleted = orderData.additional_requests_completed;
+    if (
+      additionalRequestsCompleted === undefined ||
+      additionalRequestsCompleted === null
+    ) {
+      additionalRequestsCompleted = 0; // Default to 0 if not provided
+    }
     const insertOrderQuery = `
             INSERT INTO orders (employee_id, customer_id, vehicle_id, order_date, active_order, order_hash)
             VALUES (?, ?, ?, ?, ?, ?)
@@ -35,7 +42,8 @@ async function addOrder(orderData) {
       orderData.Order_description || "",
       orderData.notes_for_internal_use || "",
       orderData.notes_for_customer || "",
-      orderData.additional_requests_completed || 0,
+      // additional_requests_completed,
+      (orderData.additional_requests_completed = false),
     ]);
 
     // Insert services related to the order in the order_services table
@@ -673,13 +681,19 @@ async function getOrderByCustomerId(customerId) {
 
     const [rows] = await conn.query(orderQuery, [customerId]); // Destructuring to get rows
     console.log("Query Result:", rows);
+    console.log("Type of rows:", Array.isArray(rows));
+    const resultArray = Array.isArray(rows) ? rows : [rows];
 
-    if (!rows || rows.length === 0) {
+    if (resultArray.length === 0) {
       return null;
     }
 
+    // if (!rows || rows.length === 0) {
+    //   return null;
+    // }
+
     // Format the result into a structured object
-    const formattedOrders = rows.map((row) => ({
+    const formattedOrders = resultArray.map((row) => ({
       orderId: row.order_id,
       orderDate: row.order_date,
       activeOrder: row.active_order,
