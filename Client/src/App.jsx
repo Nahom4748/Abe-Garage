@@ -34,7 +34,6 @@ import ServicePage from "./Markup/pages/ServicePage/ServicePage";
 import ContactUsPage from "./Markup/pages/contactUsPage/ContactUsPage";
 import ViewServices from "./Markup/pages/admin/ViewServices";
 import Addcustomer from "./Markup/pages/admin/Addcustomer";
-import CustomerEdit from "./Markup/pages/admin/CustomerEdit";
 import AddCustomerForm from "./Markup/Components/Admin/AddCustomer/AddCustomerForm";
 import AddItem from "./Markup/pages/admin/AddItem";
 import SingleOrder from "./Markup/pages/admin/SingleOrder";
@@ -43,6 +42,10 @@ import EmployeeDash from "./Markup/pages/Employee/EmployeeDash";
 import EmployeeTasks from "./Markup/pages/Employee/EmployeeTasks";
 import CustomerDash from "./Markup/pages/Customer/CustomerDash";
 import MyOrdersList from "./Markup/pages/Customer/MyOrdersList/MyOrdersList";
+import TaskHistory from "./Markup/pages/Employee/TaskHistory/TaskHistory";
+import ManageCustomer from "./Markup/pages/admin/ManageCustomer";
+import EmployeePofile from "./Markup/pages/Employee/EmployeePofile/EmployeePofile";
+import EmployeeSetting from "./Markup/pages/Employee/EmployeeSetting/EmployeeSetting";
 
 function App() {
   const { isLogged, userType } = useAuth();
@@ -78,7 +81,7 @@ function App() {
                 <Route path="/admin/add_customer" element={<Addcustomer />} />
                 <Route
                   path="/admin/customer/:customer_id"
-                  element={<CustomerEdit />}
+                  element={<ManageCustomer />}
                 />
                 <Route
                   path="/view-single-order/:orderId"
@@ -118,6 +121,15 @@ function App() {
               <>
                 <Route path="/" element={<Navigate to="/employee" />} />
                 <Route path="/employee/tasks" element={<EmployeeTasks />} />
+                <Route path="/employee/profile" element={<EmployeePofile />} />
+                <Route
+                  path="/employee/settings"
+                  element={<EmployeeSetting />}
+                />
+                <Route
+                  path="/employee/task-history"
+                  element={<TaskHistory />}
+                />
                 <Route path="/employee" element={<EmployeeDash />} />
               </>
             ) : (

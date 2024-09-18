@@ -7,6 +7,7 @@ import {
   FaUser,
   FaCog,
   FaEnvelope,
+  FaHistory,
 } from "react-icons/fa";
 import "./Employee.css"; // Assuming you have a separate CSS file for styling
 
@@ -21,9 +22,10 @@ function EmployeeMenu() {
         <Link to="/employee/tasks" className="list-group-item">
           <FaTasks className="icon" /> My Tasks
         </Link>
-        <Link to="/employee/schedule" className="list-group-item">
-          <FaCalendarAlt className="icon" /> Schedule
+        <Link to="/employee/task-history" className="list-group-item">
+          <FaHistory className="icon" /> Task History
         </Link>
+
         <Link to="/employee/profile" className="list-group-item">
           <FaUser className="icon" /> Profile
         </Link>

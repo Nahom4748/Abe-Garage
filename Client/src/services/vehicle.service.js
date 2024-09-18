@@ -93,7 +93,7 @@ const getAllVehicles = async (token) => {
 };
 
 // A function to send a GET request to retrieve vehicles by customer name
-const getVehicleByCustomerName = async (customerName, token) => {
+const getVehicleByCustomerId = async (customer_id, token) => {
   const requestOptions = {
     method: "GET",
     headers: {
@@ -102,9 +102,10 @@ const getVehicleByCustomerName = async (customerName, token) => {
     },
   };
   const response = await fetch(
-    `${api_url}/api/vehicles/customer/${customerName}`,
+    `http://localhost:5000/api/vehicles/customer/${customer_id}`,
     requestOptions
   );
+  console.log(response);
   return response;
 };
 
@@ -114,7 +115,7 @@ const vehicleService = {
   updateVehicle,
   deleteVehicle,
   getAllVehicles,
-  getVehicleByCustomerName,
+  getVehicleByCustomerId,
 };
 
 export default vehicleService;

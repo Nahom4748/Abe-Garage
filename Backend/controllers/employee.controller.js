@@ -77,7 +77,6 @@ async function getAllEmployees(req, res, next) {
 }
 async function updateEmployee(req, res, next) {
   const updatedEmployeeData = req.body;
-  console.log(updatedEmployeeData);
   try {
     const result = await employeeService.updateEmployee(updatedEmployeeData);
     if (!result) {
@@ -119,6 +118,28 @@ async function deleteEmployee(req, res, next) {
     // console.log("controller error",error)
   }
 }
+
+//get by id
+async function getEmployeeById(req, res, next) {
+  const employeeId = req.params.employeeId;
+  try {
+    const employee = await employeeService.getEmployeeById(employeeId);
+    if (!employee) {
+      return res.status(400).json({
+        error: "Failed to get employee!",
+      });
+    }
+    res.status(200).json({
+      status: "success",
+      data: employee,
+    });
+  } catch (error) {
+    console.log("Controller Error:", error.message);
+    res.status(500).json({
+      error: "Internal Server Error",
+    });
+  }
+}
 // Create the getEmployeeStats controller
 async function getEmployeeStats(req, res, next) {
   // Call the getEmployeeStats method from the employee service
@@ -157,7 +178,32 @@ async function resetEmployeePassword(req, res, next) {
   }
 }
 // Export the createEmployee controller
-
+//change password
+async function changePassword(req, res, next) {
+  const employeeId = req.params.employeeId;
+  const newPassword = req.body.newPassword;
+  try {
+    const result = await employeeService.changePassword(
+      employeeId,
+      newPassword
+    );
+    if (!result) {
+      return res.status(400).json({
+        error: "Failed to change password!",
+      });
+    }
+    res.status(200).json({
+      success: "true",
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    console.log("Controller Error:", error.message);
+    res.status(500).json({
+      error: "Internal Server Error",
+    });
+    // console.log("controller error",error)
+  }
+}
 module.exports = {
   createEmployee,
   getAllEmployees,
@@ -165,4 +211,6 @@ module.exports = {
   deleteEmployee,
   getEmployeeStats,
   resetEmployeePassword,
+  getEmployeeById,
+  changePassword,
 };

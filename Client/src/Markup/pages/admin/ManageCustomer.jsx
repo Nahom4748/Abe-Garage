@@ -1,21 +1,22 @@
 import React from "react";
-import EmployeeMenu from "../../Components/Employee/EmployeeMenu/EmployeeMenu";
-import EmployeeDashboard from "../../Components/Employee/EmployeeDashboard";
-function EmployeeDash() {
+import AdminMenu from "../../Components/Admin/AdminMenu/AdminMenu";
+import CustomerEdit from "../../Components/Admin/CusromerEdit/CustomerEdit";
+
+function ManageCustomer() {
   return (
-    <>
+    <div>
       <div className="container-fluid admin-pages">
         <div className="row">
           <div className="col-md-3 admin-left-side">
-            <EmployeeMenu />
+            <AdminMenu />
           </div>
           <div className="col-md-9 admin-right-side">
-            <EmployeeDashboard />
+            <CustomerEdit />
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
-export default EmployeeDash;
+export default ManageCustomer;

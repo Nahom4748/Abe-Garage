@@ -49,5 +49,19 @@ router.delete(
   orderController.deleteOrder
 );
 
+// route order status check
+router.put(
+  "/api/orderscheck",
+  authMiddleware.verifyToken,
+  orderController.orderServiceCheck
+);
+
+// route complete order
+router.put(
+  "/api/orders/completed",
+  authMiddleware.verifyToken,
+  orderController.orderServiceCompleted
+);
+
 // Export the router
 module.exports = router;

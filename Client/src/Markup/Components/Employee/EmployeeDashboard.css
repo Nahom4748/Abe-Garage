@@ -1,14 +1,27 @@
-/* Sidebar styling */
-.bg-light {
-  background-color: #f8f9fa !important;
+.welcome-card {
+  background-color: #f0f8ff;
+  border: 1px solid #dce3e8;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Card styling */
-.card-body {
-  padding: 1.5rem;
+.welcome-icon {
+  font-size: 3rem;
+  color: #007bff;
 }
 
-/* Additional custom styles */
-h4 {
+.card-title {
+  font-size: 1.5rem;
   font-weight: bold;
+}
+
+.card-text {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+button {
+  margin: 5px;
 }
