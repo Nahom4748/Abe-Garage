@@ -13,7 +13,7 @@ router.post(
   vehicleController.createVehicle
 );
 // create a route for the vehicle controller request with a GET all vehicles request
-// router.get("/api/vehicles/:customer_id", vehicleController.getAllVehicles);
+router.get("/api/vehicles/:customer_id", vehicleController.getAllVehicles);
 // create a route for the vehicle controller request with a GET vehicle by id request
 router.get(
   "/api/vehicle/customer/:customer_id",
