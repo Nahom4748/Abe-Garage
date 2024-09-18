@@ -53,10 +53,10 @@ async function getAllVehicles(req, res, next) {
 
 // create a function to get a vehicle by id
 async function getVehicleById(req, res, next) {
-  const { id } = req.params; // Assuming ID is passed as a URL parameter
-  console.log("Fetching vehicle with ID:", id); // Log the ID
+  const { customer_id } = req.params; // Assuming ID is passed as a URL parameter
+  console.log("Fetching vehicle with ID:", customer_id); // Log the ID
   try {
-    const vehicle = await vehicleService.getVehicleById(id);
+    const vehicle = await vehicleService.getVehicleById(customer_id);
     console.log("Vehicle found:", vehicle); // Log the vehicle object
     if (!vehicle) {
       return res.status(404).json({ error: "Vehicle not found" });

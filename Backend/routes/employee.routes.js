@@ -31,6 +31,13 @@ router.put(
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
   employeeController.updateEmployee
 );
+
+//get employee by id
+router.get(
+  "/api/employee/:employeeId",
+  // authMiddleware.verifyToken,
+  employeeController.getEmployeeById
+);
 //delete employee
 router.delete(
   "/api/employee/:employeeId",
@@ -42,6 +49,13 @@ router.put(
   "/api/employee/password/:employeeId",
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
   employeeController.resetEmployeePassword
+);
+
+//password change
+router.put(
+  "/api/user/password/:employeeId",
+  // [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  employeeController.changePassword
 );
 // router employee stats data
 router.get("/api/employees/stats", employeeController.getEmployeeStats);

@@ -54,19 +54,19 @@ async function getAllVehicles(customer_id) {
 }
 
 // create a function to get a vehicle by id
-async function getVehicleById(id) {
+async function getVehicleById(customer_id) {
   try {
     // Query to get a vehicle by id
     const query = `
       SELECT * FROM customer_vehicle_info WHERE vehicle_id = ?`;
 
-    const vehicle = await conn.query(query, [id]);
+    const vehicle = await conn.query(query, [customer_id]);
 
     // If no vehicle is found
     if (!vehicle || vehicle.length === 0) {
       return null;
     }
-
+    console.log(vehicle);
     return vehicle[0];
   } catch (error) {
     return null;

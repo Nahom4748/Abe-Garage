@@ -747,11 +747,68 @@ async function getOrderByCustomerId(customerId) {
       },
     }));
 
-    console.log("Formatted Orders:", formattedOrders);
     return formattedOrders;
   } catch (error) {
     console.error("Error retrieving orders by customer ID:", error);
     throw new Error("Failed to retrieve orders");
+  }
+}
+//status change function
+async function orderServiceCheck(status) {
+  const { serviceId, orderId, serviceCompleted } = status;
+
+  // Ensure that the necessary fields are provided
+  if (!serviceId || !orderId || serviceCompleted === undefined) {
+    throw new Error("Invalid status object");
+  }
+
+  try {
+    const query = `
+      UPDATE order_services
+      SET service_completed = ?
+      WHERE service_id = ? AND order_id = ?
+    `;
+
+    const result = await conn.query(query, [
+      serviceCompleted,
+      serviceId,
+      orderId,
+    ]);
+
+    // Ensure the update was successful
+    if (result.affectedRows > 0) {
+      return true;
+    } else {
+      throw new Error("No rows were updated. Check the order and service IDs.");
+    }
+  } catch (error) {
+    console.error("Database Error:", error.message);
+    throw new Error("Failed to update service status");
+  }
+}
+// completed order
+async function OrderCompleted(orderid) {
+  const { orderId } = orderid;
+  try {
+    const query = `
+      UPDATE order_status os
+      JOIN order_info oi ON os.order_id = oi.order_id
+      SET os.order_status = 0,
+          oi.completion_date = NOW()
+      WHERE os.order_id = ?;
+    `;
+
+    const result = await conn.query(query, [orderId]);
+
+    // Ensure the update was successful
+    if (result.affectedRows > 0) {
+      return true;
+    } else {
+      throw new Error("No rows were updated. Check the order ID.");
+    }
+  } catch (error) {
+    console.error("Database Error:", error.message);
+    throw new Error("Failed to update order status");
   }
 }
 
@@ -764,4 +821,6 @@ module.exports = {
   deleteOrderById,
   getOrderByEmployeeId,
   getOrderByCustomerId,
+  orderServiceCheck,
+  OrderCompleted,
 };

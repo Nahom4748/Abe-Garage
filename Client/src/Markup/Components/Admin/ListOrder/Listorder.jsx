@@ -164,14 +164,19 @@ function Listorder() {
                       <td>
                         <span
                           style={{
-                            padding: "5px 10px",
-                            borderRadius: "5px",
-                            ...getStatusColor(order.activeOrder),
+                            padding: "5px 10px", // Adds padding
+                            borderRadius: "5px", // Rounds the corners
+
+                            backgroundColor:
+                              order.OrderStatus === 1 ? "yellow" : "green",
+                            // Conditional background color
+                            color: "black ", // Text color for visibility
                           }}
                         >
-                          {order.activeOrder === 1 ? "In Process" : "Completed"}
+                          {order.OrderStatus === 1 ? "In Process" : "Completed"}
                         </span>
                       </td>
+
                       <td>
                         <Button
                           variant="info"

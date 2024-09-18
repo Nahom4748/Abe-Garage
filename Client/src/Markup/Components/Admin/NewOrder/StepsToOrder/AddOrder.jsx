@@ -39,7 +39,7 @@ function AddOrder({ customer, onProceed }) {
   };
 
   if (!customer) return <div>Select a customer to see details.</div>;
-
+  console.log(vehicles);
   return (
     <div>
       <h5 className="mt-4 fs-5">

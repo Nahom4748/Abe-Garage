@@ -107,6 +107,45 @@ const getAllEmployees = async () => {
     throw new Error("Error fetching employees");
   }
 };
+//get by id
+const getEmployeeById = async (employee_id) => {
+  try {
+    // Query to fetch employee data by ID
+    const rows = await conn.query(
+      `
+      SELECT e.employee_id, e.employee_email, e.active_employee, e.added_date, e.employee_image,
+             ei.employee_first_name, ei.employee_last_name, ei.employee_phone,
+             er.company_role_id
+      FROM employee e
+      JOIN employee_info ei ON e.employee_id = ei.employee_id
+      JOIN employee_role er ON e.employee_id = er.employee_id
+      WHERE e.employee_id = ?
+    `,
+      [employee_id]
+    );
+
+    // Check if any rows were returned
+    if (rows.length === 0) {
+      throw new Error(`Employee with ID ${employee_id} not found.`);
+    }
+
+    // Construct full image URL if using a URL or static path
+    const baseImageUrl = "http://localhost:5000"; // Update with your actual base URL or path
+
+    // Format the employee data
+    const employee = {
+      ...rows[0],
+      employee_image: rows[0].employee_image
+        ? baseImageUrl + rows[0].employee_image
+        : null,
+    };
+
+    return employee;
+  } catch (error) {
+    console.error(`Error fetching employee with ID ${employee_id}:`, error);
+    throw new Error("Error fetching employee details");
+  }
+};
 
 // delete employee
 async function deleteEmployee(employee_id) {
@@ -204,7 +243,6 @@ async function updateEmployee(updatedEmployeeData) {
       }
     }
 
-    console.log("Employee updated successfully:", employee_id);
     return true; // Success
   } catch (error) {
     console.error("Service Error:", error.message);
@@ -261,6 +299,22 @@ async function resetEmployeePassword(employeeId) {
     return false; // Fail
   }
 }
+//change password
+async function changePassword(employeeId, newPassword) {
+  try {
+    const query = `UPDATE employee_pass SET employee_password_hashed = ? WHERE employee_id = ?`;
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    const result = await conn.query(query, [hashedPassword, employeeId]);
+    if (result.affectedRows === 0) {
+      throw new Error("Failed to change employee password");
+    }
+
+    return true; // Success
+  } catch (error) {
+    console.error("Service Error:", error.message);
+  }
+}
 // Export the functions for use in the controller
 module.exports = {
   checkIfEmployeeExists,
@@ -272,4 +326,6 @@ module.exports = {
   getEmployeeStats,
   resetEmployeePassword,
   getCustomerByEmail,
+  getEmployeeById,
+  changePassword,
 };
