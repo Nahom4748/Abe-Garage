@@ -216,7 +216,7 @@ function DetailSingleOrder() {
                               </p>
                               <p>
                                 <strong>Completed:</strong>{" "}
-                                {service.serviceCompleted === 1 ? "Yes" : "No"}
+                                {service.serviceCompleted === 0 ? "Yes" : "No"}
                               </p>
                             </div>
                             <Button

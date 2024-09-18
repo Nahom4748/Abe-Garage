@@ -524,10 +524,10 @@ function MyOrders() {
         orderDetails.map((order) => (
           <Card className="mt-4" key={order.orderId}>
             <Card.Header>
-              <h4>Order Summary</h4>
+              <h4>Your History</h4>
             </Card.Header>
             <Card.Body>
-              <h5>Customer Information</h5>
+              {/* <h5>Customer Information</h5>
               <ListGroup>
                 <ListGroup.Item>
                   <strong>Name:</strong> {order.customer.firstName}{" "}
@@ -575,60 +575,10 @@ function MyOrders() {
                     order.orderInfo.estimatedCompletionDate
                   ).toLocaleDateString()}
                 </ListGroup.Item>
-              </ListGroup>
+              </ListGroup> */}
 
               <h5 className="mt-3">Service Information</h5>
               <ListGroup>
-                {order.services ? (
-                  // Check if services is an array or an object
-                  Array.isArray(order.services) ? (
-                    order.services.length > 0 ? (
-                      order.services.map((service) => (
-                        <ListGroup.Item key={service.serviceId}>
-                          <div>
-                            <strong>Service Name:</strong> {service.serviceName}
-                          </div>
-                          <div>
-                            <strong>Description:</strong>{" "}
-                            {service.serviceDescription}
-                          </div>
-                          <div>
-                            <strong>Price:</strong> ${service.servicePrice}
-                          </div>
-                          <div>
-                            <strong>Service Completed:</strong>{" "}
-                            {service.serviceCompleted ? "Yes" : "No"}
-                          </div>
-                        </ListGroup.Item>
-                      ))
-                    ) : (
-                      <ListGroup.Item>No services available</ListGroup.Item>
-                    )
-                  ) : (
-                    // Handle the case where services is a single object
-                    <ListGroup.Item>
-                      <div>
-                        <strong>Service Name:</strong>{" "}
-                        {order.services.serviceName}
-                      </div>
-                      <div>
-                        <strong>Description:</strong>{" "}
-                        {order.services.serviceDescription}
-                      </div>
-                      <div>
-                        <strong>Price:</strong> ${order.services.servicePrice}
-                      </div>
-                      <div>
-                        <strong>Service Completed:</strong>{" "}
-                        {order.services.serviceCompleted ? "Yes" : "No"}
-                      </div>
-                    </ListGroup.Item>
-                  )
-                ) : (
-                  <ListGroup.Item>No services available</ListGroup.Item>
-                )}
-              </ListGroup>
-              {/* <ListGroup>
                 <ListGroup.Item>
                   <strong>Service Name:</strong> {order.services.serviceName}
                 </ListGroup.Item>
@@ -643,7 +593,7 @@ function MyOrders() {
                   <strong>Service Completed:</strong>{" "}
                   {order.services.serviceCompleted ? "Yes" : "No"}
                 </ListGroup.Item>
-              </ListGroup> */}
+              </ListGroup>
             </Card.Body>
           </Card>
         ))

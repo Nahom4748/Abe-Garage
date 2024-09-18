@@ -1,6 +1,30 @@
 // Import the employee service
 const serviceService = require("../services/service.service");
 
+async function getCustomerServices(req, res, next) {
+  try {
+    const customerId = req.user.customerId; // Get the customer ID from the request user
+    const services = await serviceService.getServicesByCustomerId(customerId);
+
+    if (!services || services.length === 0) {
+      return res.status(404).json({
+        status: "error",
+        message: "No services found for this customer",
+      });
+    } else {
+      res.status(200).json({
+        status: "success",
+        data: services,
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching customer services:", error);
+    res.status(500).json({
+      status: "error",
+      message: "Failed to fetch customer services",
+    });
+  }
+}
 async function getAllServices(req, res, next) {
   try {
     const services = await serviceService.getAllServices();
@@ -101,4 +125,5 @@ module.exports = {
   getServiceById,
   updateServiceController,
   deactivateService,
+  getCustomerServices,
 };

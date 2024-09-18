@@ -1,4 +1,4 @@
-const db = require("../config/db.config");
+ const db = require("../config/db.config");
 const bcrypt = require("bcrypt");
 
 // A function to check if a customer exists
