@@ -1,14 +1,4 @@
-// Import from the env
-// const api_url = process.env.REACT_APP_API_URL;
-// Import axios
-
-// import axios from "axios";
-
-import axios from "../Axios/Axios";
-
-
 import axios from "axios";
-const API_URL = "http://localhost:5000/api";
 // A function to send post request to create a new employee
 
 const createEmployee = async (formData, token) => {
@@ -135,8 +125,6 @@ const resetEmployeePassword = async (employeeId, token) => {
   }
 };
 
-
-
 const fetchEmployeeById = async (employeeId, token) => {
   try {
     const response = await fetch(
@@ -184,9 +172,7 @@ const employeeService = {
   deleteEmployee,
   resetEmployeePassword,
 
-
   fetchEmployeeById,
   changePassword,
-
 };
 export default employeeService;
