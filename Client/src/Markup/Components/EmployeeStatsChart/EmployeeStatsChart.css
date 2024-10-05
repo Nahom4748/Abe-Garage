@@ -1,0 +1,44 @@
+/* EmployeeStatsChart.css */
+
+.employee-stats-card {
+  border-radius: 15px; /* Rounded corners for the card */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.employee-stats-card:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+}
+
+.employee-stats-header {
+  background-color: #007bff; /* Bootstrap primary color */
+  color: #ffffff; /* White text for header */
+  font-size: 1.5rem; /* Larger font size for the header */
+  font-weight: bold; /* Bold header */
+  border-top-left-radius: 15px; /* Match rounded corners */
+  border-top-right-radius: 15px; /* Match rounded corners */
+}
+
+.employee-stats-body {
+  background-color: #f8f9fa; /* Light background for the body */
+  padding: 2rem; /* Ample padding inside the body */
+  border-radius: 0 0 15px 15px; /* Match rounded corners */
+}
+
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Ensure the chart fills the container */
+}
+
+@media (max-width: 768px) {
+  .employee-stats-card {
+    height: auto; /* Allow card to auto height on smaller screens */
+  }
+
+  .employee-stats-body {
+    padding: 1rem; /* Reduced padding for smaller screens */
+  }
+}

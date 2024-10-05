@@ -51,7 +51,6 @@ import ManageCustomer from "./Markup/pages/admin/ManageCustomer";
 import EmployeePofile from "./Markup/pages/Employee/EmployeePofile/EmployeePofile";
 import EmployeeSetting from "./Markup/pages/Employee/EmployeeSetting/EmployeeSetting";
 
-
 function App() {
   const { isLogged, userType } = useAuth();
 

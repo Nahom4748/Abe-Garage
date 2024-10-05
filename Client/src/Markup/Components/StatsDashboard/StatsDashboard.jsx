@@ -14,7 +14,7 @@ const StatsDashboard = () => {
           <Card className="text-white bg-primary">
             <Card.Body>
               <Card.Title>Total Orders</Card.Title>
-              <Card.Text>37</Card.Text>
+              <Card.Text style={{ color: "white" }}>37</Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -22,7 +22,7 @@ const StatsDashboard = () => {
           <Card className="text-white bg-success">
             <Card.Body>
               <Card.Title>Total Items</Card.Title>
-              <Card.Text>49</Card.Text>
+              <Card.Text style={{ color: "white" }}>49</Card.Text>
             </Card.Body>
           </Card>
         </Col>

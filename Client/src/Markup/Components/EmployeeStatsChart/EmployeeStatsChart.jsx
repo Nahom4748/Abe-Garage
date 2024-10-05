@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
 import { Card } from "react-bootstrap";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import "./EmployeeStatsChart.css"; // Import the CSS file
 
 // Register necessary components with ChartJS
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -56,16 +57,17 @@ const EmployeeStatsChart = () => {
   if (!chartData) {
     return (
       <Card
+        className="employee-stats-card"
         style={{
-          backgroundColor: "#fff", // White background
-          borderColor: "#ddd",
           height: "100vh",
         }}
       >
-        <Card.Header as="h5" style={{ color: "#000" }}>
+        <Card.Header as="h5" className="employee-stats-header">
           Employee Statistics
         </Card.Header>
-        <Card.Body style={{ height: "100%" }}>Loading...</Card.Body>
+        <Card.Body className="employee-stats-body" style={{ height: "100%" }}>
+          Loading...
+        </Card.Body>
       </Card>
     );
   }
@@ -77,7 +79,7 @@ const EmployeeStatsChart = () => {
       legend: {
         position: "top",
         labels: {
-          color: "#000", // Legend text color changed to black
+          color: "#000",
         },
       },
       tooltip: {
@@ -98,18 +100,12 @@ const EmployeeStatsChart = () => {
   };
 
   return (
-    <Card
-      style={{
-        backgroundColor: "#fff",
-        borderColor: "#ddd",
-        height: "80vh",
-      }}
-    >
-      <Card.Header as="h5" style={{ color: "#000" }}>
+    <Card className="employee-stats-card">
+      <Card.Header as="h5" className="employee-stats-header">
         Employee Statistics
       </Card.Header>
-      <Card.Body style={{ height: "80%", paddingBottom: "50px" }}>
-        <div style={{ height: "100%" }}>
+      <Card.Body className="employee-stats-body">
+        <div className="chart-container">
           <Pie data={chartData} options={options} />
         </div>
       </Card.Body>

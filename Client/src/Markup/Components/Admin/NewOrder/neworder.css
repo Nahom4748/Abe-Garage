@@ -1,4 +1,4 @@
-.circle {
+/* .circle {
   font-size: 1.25rem;
   display: flex;
   justify-content: center;
@@ -20,7 +20,7 @@
   transform: translateX(-50%);
   width: 100%;
   height: 2px;
-  background-color: #4caf50; /* Green color for the underline */
+  background-color: #4caf50; 
 }
 
 .step-content {
@@ -38,11 +38,11 @@
 }
 
 .next-button {
-  background-color: #4caf50; /* Green color for Next button */
+  background-color: #4caf50; 
 }
 
 .prev-button {
-  background-color: #6c757d; /* Grey color for Previous button */
+  background-color: #6c757d; 
 }
 
 .next-button:hover,
@@ -69,7 +69,7 @@ button:disabled {
 }
 
 .label-box {
-  border: 2px solid #28a745; /* Green border for completed/active steps */
+  border: 2px solid #28a745; 
   border-radius: 10px;
   padding: 5px 10px;
   margin-top: 10px;
@@ -78,7 +78,7 @@ button:disabled {
 }
 
 .label-box.text-muted {
-  border-color: #ccc; /* Light gray border for inactive steps */
+  border-color: #ccc; 
 }
 
 .label-text {
@@ -93,4 +93,116 @@ button:disabled {
 
 .step-footer {
   margin-top: 20px;
+} */
+
+/* neworder.css */
+
+/* Full height for the main container */
+.full-height {
+  height: 100vh; /* Full viewport height */
+  margin-bottom: 200px; /* Space below the container */
+}
+
+/* Step container styling */
+.step-container {
+  padding: 20px; /* Padding around the step container */
+  background-color: #f9f9f9; /* Light background for contrast */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+/* Circle indicators for steps */
+.circle {
+  width: 3rem; /* Fixed width */
+  height: 3rem; /* Fixed height */
+  font-size: 1.25rem; /* Font size for step number */
+  display: flex; /* Flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  margin-bottom: 0.5rem; /* Space below circles */
+  transition: background-color 0.3s; /* Smooth transition */
+}
+
+/* Active and completed circle styles */
+.bg-success {
+  background-color: #28a745 !important; /* Green for completed/active steps */
+  color: white; /* White text for contrast */
+}
+
+.bg-light {
+  background-color: #e9ecef; /* Light gray for inactive steps */
+}
+
+/* Label styling */
+.label-box {
+  border: 2px solid #28a745; /* Green border for completed/active steps */
+  border-radius: 10px; /* Rounded corners */
+  padding: 5px 10px; /* Padding inside the label box */
+  margin-top: 10px; /* Space above the label box */
+  display: inline-block; /* Inline block for spacing */
+  transition: border-color 0.3s ease-in-out; /* Smooth border color transition */
+}
+
+.label-box.text-muted {
+  border-color: #ccc; /* Light gray border for inactive steps */
+}
+
+/* Step content styling */
+.step-content {
+  margin-bottom: 1rem; /* Space below the step content */
+}
+
+/* Button group styling */
+.button-group {
+  display: flex; /* Flexbox for horizontal alignment */
+  justify-content: center; /* Center the buttons */
+}
+
+/* Button styling */
+.next-button,
+.prev-button {
+  width: auto; /* Auto width for buttons */
+  transition: background-color 0.3s; /* Smooth transition for background */
+}
+
+.next-button {
+  background-color: #4caf50; /* Green color for Next button */
+}
+
+.prev-button {
+  background-color: #6c757d; /* Grey color for Previous button */
+}
+
+/* Button hover effects */
+.next-button:hover,
+.prev-button:hover {
+  opacity: 0.8; /* Dim buttons on hover */
+}
+
+/* Disabled button styling */
+button:disabled {
+  opacity: 0.65; /* Dimmed appearance for disabled buttons */
+  cursor: not-allowed; /* Cursor change for disabled buttons */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .step-container {
+    padding: 1rem; /* Less padding on smaller screens */
+  }
+
+  .circle {
+    width: 2.5rem; /* Smaller size for circles */
+    height: 2.5rem; /* Smaller size for circles */
+    font-size: 1rem; /* Smaller font size */
+  }
+
+  .label-text {
+    font-size: 0.9rem; /* Smaller font size for label text */
+  }
+}
+
+/* Footer for steps */
+.step-footer {
+  margin-top: 20px; /* Space above the footer */
 }

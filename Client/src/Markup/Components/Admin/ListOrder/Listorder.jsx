@@ -12,6 +12,7 @@ import {
 } from "react-bootstrap";
 import { FaEye, FaEdit, FaSortUp, FaSortDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import "./ListOrder.css";
 
 function Listorder() {
   const [orders, setOrders] = useState([]);

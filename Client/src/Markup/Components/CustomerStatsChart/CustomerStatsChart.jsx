@@ -1,4 +1,3 @@
-// src/components/CustomerStatsChart.jsx
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { Card } from "react-bootstrap";
@@ -11,6 +10,7 @@ import {
   Legend,
 } from "chart.js";
 import axios from "axios";
+import "./CustomerStatsChart.css"; // Import your CSS
 
 // Register necessary components with ChartJS
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
@@ -74,26 +74,22 @@ const CustomerStatsChart = () => {
 
   if (loading) {
     return (
-      <Card
-        style={{ backgroundColor: "#fff", borderColor: "#ddd", height: "80vh" }}
-      >
-        <Card.Header as="h5" style={{ color: "#000" }}>
+      <Card className="customer-stats-card">
+        <Card.Header as="h5" className="customer-stats-header">
           Customer Statistics
         </Card.Header>
-        <Card.Body style={{ height: "100%" }}>Loading...</Card.Body>
+        <Card.Body className="customer-stats-body">Loading...</Card.Body>
       </Card>
     );
   }
 
   if (error) {
     return (
-      <Card
-        style={{ backgroundColor: "#fff", borderColor: "#ddd", height: "80vh" }}
-      >
-        <Card.Header as="h5" style={{ color: "#000" }}>
+      <Card className="customer-stats-card">
+        <Card.Header as="h5" className="customer-stats-header">
           Customer Statistics
         </Card.Header>
-        <Card.Body style={{ height: "100%" }}>{error}</Card.Body>
+        <Card.Body className="customer-stats-body">{error}</Card.Body>
       </Card>
     );
   }
@@ -134,14 +130,12 @@ const CustomerStatsChart = () => {
   };
 
   return (
-    <Card
-      style={{ backgroundColor: "#fff", borderColor: "#ddd", height: "80vh" }}
-    >
-      <Card.Header as="h5" style={{ color: "#000" }}>
+    <Card className="customer-stats-card">
+      <Card.Header as="h5" className="customer-stats-header">
         Customer Statistics
       </Card.Header>
-      <Card.Body style={{ height: "100%" }}>
-        <div style={{ height: "100%" }}>
+      <Card.Body className="customer-stats-body">
+        <div className="chart-container">
           <Bar data={chartData} options={options} />
         </div>
       </Card.Body>

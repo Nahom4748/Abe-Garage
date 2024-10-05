@@ -4,8 +4,7 @@
 
 // import axios from "axios";
 
-import axios from "../Axios/Axios";
-
+// import axios from "../Axios/Axios";
 
 import axios from "axios";
 const API_URL = "http://localhost:5000/api";
@@ -135,8 +134,6 @@ const resetEmployeePassword = async (employeeId, token) => {
   }
 };
 
-
-
 const fetchEmployeeById = async (employeeId, token) => {
   try {
     const response = await fetch(
@@ -184,9 +181,7 @@ const employeeService = {
   deleteEmployee,
   resetEmployeePassword,
 
-
   fetchEmployeeById,
   changePassword,
-
 };
 export default employeeService;
